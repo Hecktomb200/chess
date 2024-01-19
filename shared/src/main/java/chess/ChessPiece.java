@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.*;
 
 /**
  * Represents a single chess piece
@@ -10,6 +11,7 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessPiece {
+
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
     }
@@ -30,6 +32,7 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
+        //return color;
         throw new RuntimeException("Not implemented");
     }
 
@@ -37,6 +40,7 @@ public class ChessPiece {
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
+        //return type;
         throw new RuntimeException("Not implemented");
     }
 
@@ -45,9 +49,19 @@ public class ChessPiece {
      * Does not take into account moves that are illegal due to leaving the king in
      * danger
      *
+     * First, start with Bishop moves. What tiles they can move to, If they can take a piece or are blocked by it
+     *  Index to move [+1,+1], [+1,-1], [-1,+1], [-1,-1]?
+     *  Some kind of check each tile it wants to move to see if there's another piece already holding that position.
+     *      This will need a database of sorts to store the information, right? Or perhaps a for loop to run through all current pieces.
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+        ArrayList<Object> validMoves;
+        ChessPiece chessPiece = board.getPiece(myPosition);
+        if (chessPiece.getPieceType() == PieceType.BISHOP) {
+
+        }
+
         return new ArrayList<>();
 
     }
