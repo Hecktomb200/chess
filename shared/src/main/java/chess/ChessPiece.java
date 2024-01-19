@@ -11,10 +11,12 @@ import java.util.*;
  * signature of the existing methods.
  */
 public class ChessPiece {
-    private ChessGame.TeamColor color;
+    private ChessGame.TeamColor pieceColor;
     private ChessPiece.PieceType type;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.pieceColor = pieceColor;
+        this.type = type;
     }
 
     /**
@@ -33,16 +35,16 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        //return color;
-        throw new RuntimeException("Not implemented");
+        return pieceColor;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        //return type;
-        throw new RuntimeException("Not implemented");
+        return type;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -57,30 +59,62 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        ArrayList<ChessMove> validMoves = null;
+        ArrayList<ChessMove> validMoves = new ArrayList<>();
         ChessPiece chessPiece = board.getPiece(myPosition);
         if (chessPiece.getPieceType() == PieceType.BISHOP) {
 
         }
         if (chessPiece.getPieceType() == PieceType.KING) {
             ChessPosition lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn() + 1 );
-            validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+            if ( lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+                }
+            }
             lastPosition = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            if ( lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+                }
+            }
             lastPosition = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1 );
-            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            if ( lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+                }
+            }
             lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn() - 1 );
-            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            if ( lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+                }
+            }
             lastPosition = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() );
-            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            if ( lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+                }
+            }
             lastPosition = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1 );
-            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            if ( lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+                }
+            }
             lastPosition = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1 );
-            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            if ( lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+                }
+            }
             lastPosition = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1 );
-            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            if ( lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+                }
+            }
 
-            return validMoves;
+
         }
         if (chessPiece.getPieceType() == PieceType.QUEEN) {
 
@@ -95,16 +129,8 @@ public class ChessPiece {
 
         }
 
-        return new ArrayList<>();
+        return validMoves;
 
-    }
-
-    @Override
-    public String toString() {
-        return "ChessPiece{" +
-                "color=" + color +
-                ", type=" + type +
-                '}';
     }
 
     @Override
@@ -112,11 +138,20 @@ public class ChessPiece {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessPiece that=(ChessPiece) o;
-        return color == that.color && type == that.type;
+        return pieceColor == that.pieceColor && type == that.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(color, type);
+        return Objects.hash(pieceColor, type);
     }
+
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "pieceColor=" + pieceColor +
+                ", type=" + type +
+                '}';
+    }
+
 }
