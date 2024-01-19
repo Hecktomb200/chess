@@ -61,6 +61,21 @@ public class ChessPiece {
         if (chessPiece.getPieceType() == PieceType.BISHOP) {
 
         }
+        if (chessPiece.getPieceType() == PieceType.KING) {
+
+        }
+        if (chessPiece.getPieceType() == PieceType.QUEEN) {
+
+        }
+        if (chessPiece.getPieceType() == PieceType.KNIGHT) {
+
+        }
+        if (chessPiece.getPieceType() == PieceType.ROOK) {
+
+        }
+        if (chessPiece.getPieceType() == PieceType.PAWN) {
+
+        }
 
         return new ArrayList<>();
 
