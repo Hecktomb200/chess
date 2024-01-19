@@ -11,7 +11,8 @@ import java.util.*;
  * signature of the existing methods.
  */
 public class ChessPiece {
-
+    private ChessGame.TeamColor color;
+    private ChessPiece.PieceType type;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
     }
@@ -56,13 +57,30 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        ArrayList<Object> validMoves;
+        ArrayList<ChessMove> validMoves = null;
         ChessPiece chessPiece = board.getPiece(myPosition);
         if (chessPiece.getPieceType() == PieceType.BISHOP) {
 
         }
         if (chessPiece.getPieceType() == PieceType.KING) {
+            ChessPosition lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn() + 1 );
+            validMoves.add(new ChessMove(myPosition ,lastPosition, null));
+            lastPosition = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
+            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            lastPosition = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1 );
+            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn() - 1 );
+            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            lastPosition = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() );
+            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            lastPosition = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1 );
+            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            lastPosition = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1 );
+            validMoves.add(new ChessMove(myPosition, lastPosition, null));
+            lastPosition = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1 );
+            validMoves.add(new ChessMove(myPosition, lastPosition, null));
 
+            return validMoves;
         }
         if (chessPiece.getPieceType() == PieceType.QUEEN) {
 
@@ -79,5 +97,26 @@ public class ChessPiece {
 
         return new ArrayList<>();
 
+    }
+
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "color=" + color +
+                ", type=" + type +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessPiece that=(ChessPiece) o;
+        return color == that.color && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, type);
     }
 }
