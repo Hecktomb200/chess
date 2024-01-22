@@ -487,12 +487,12 @@ public class ChessPiece {
 
         }
         if (chessPiece.getPieceType() == PieceType.PAWN) {
-            boolean firstRound = true;
+            //boolean firstRound = true;
             ChessPosition lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn());
 
             if (board.getPiece(lastPosition).getTeamColor() == ChessGame.TeamColor.WHITE) {
-                if (firstRound) {
-                    firstRound=false;
+                if (lastPosition.getRow() == 2) {
+                    //firstRound=false;
                     lastPosition=new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn());
                     if (lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
                         if (board.getPiece(lastPosition) == null) {
@@ -540,8 +540,8 @@ public class ChessPiece {
 
             lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn());
             if (board.getPiece(lastPosition).getTeamColor() == ChessGame.TeamColor.BLACK) {
-                if (firstRound) {
-                    firstRound=false;
+                if (lastPosition.getRow() == 7) {
+                    //firstRound=false;
                     lastPosition=new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn());
                     if (lastPosition.getRow() <= 8 && lastPosition.getRow() >= 1 && lastPosition.getColumn() <= 8 && lastPosition.getColumn() >= 1) {
                         if (board.getPiece(lastPosition) == null) {
