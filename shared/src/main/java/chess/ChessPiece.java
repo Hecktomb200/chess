@@ -171,6 +171,82 @@ public class ChessPiece {
 
         }
         if (chessPiece.getPieceType() == PieceType.ROOK) {
+            int onRow =myPosition.getRow();
+            int onCol =myPosition.getColumn();
+            ChessPosition lastPosition = new ChessPosition(onRow, onCol);
+            while (onRow <= 8 && onRow >= 1 && onCol <= 8 && onCol >= 1) {
+                onRow += 1;
+                lastPosition = new ChessPosition(onRow, onCol);
+                if (onRow == 9) {
+                    break;
+                }
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, lastPosition, null));
+                }
+                if (board.getPiece(lastPosition) != null && board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    break;
+                }
+                if (board.getPiece(lastPosition) != null && board.getPiece(lastPosition).getTeamColor() == pieceColor) {
+                    break;
+                }
+            }
+            onRow =myPosition.getRow();
+            onCol =myPosition.getColumn();
+            lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn());
+            while (onRow <= 8 && onRow >= 1 && onCol <= 8 && onCol >= 1) {
+                onRow -= 1;
+                lastPosition = new ChessPosition(onRow,onCol);
+                if (onRow == 0) {
+                    break;
+                }
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, lastPosition, null));
+                }
+                if (board.getPiece(lastPosition) != null && board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    break;
+                }
+                if (board.getPiece(lastPosition) != null && board.getPiece(lastPosition).getTeamColor() == pieceColor) {
+                    break;
+                }
+            }
+            onRow =myPosition.getRow();
+            onCol =myPosition.getColumn();
+            lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn());
+            while (onRow <= 8 && onRow >= 1 && onCol <= 8 && onCol >= 1) {
+                onCol += 1;
+                lastPosition = new ChessPosition(onRow,onCol);
+                if (onCol == 9) {
+                    break;
+                }
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, lastPosition, null));
+                }
+                if (board.getPiece(lastPosition) != null && board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    break;
+                }
+                if (board.getPiece(lastPosition) != null && board.getPiece(lastPosition).getTeamColor() == pieceColor) {
+                    break;
+                }
+            }
+            onRow =myPosition.getRow();
+            onCol =myPosition.getColumn();
+            lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn());
+            while (onRow <= 8 && onRow > 1 && onCol <= 8 && onCol >= 1) {
+                onCol -= 1;
+                lastPosition = new ChessPosition(onRow,onCol);
+                if (onCol == 0) {
+                    break;
+                }
+                if (board.getPiece(lastPosition) == null || board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, lastPosition, null));
+                }
+                if (board.getPiece(lastPosition) != null && board.getPiece(lastPosition).getTeamColor() != pieceColor) {
+                    break;
+                }
+                if (board.getPiece(lastPosition) != null && board.getPiece(lastPosition).getTeamColor() == pieceColor) {
+                    break;
+                }
+            }
 
         }
         if (chessPiece.getPieceType() == PieceType.PAWN) {
