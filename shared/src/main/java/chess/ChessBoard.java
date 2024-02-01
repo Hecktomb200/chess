@@ -52,7 +52,7 @@ public class ChessBoard {
      * Sets the board to the default starting board
      * (How the game of chess normally starts)
      *
-     * Start by initializing full board  pieces, into their correct position on the board array. - TEST
+     * Start by initializing full board  pieces, into their correct position on the board array.
      */
     public void resetBoard() {
         squares = new ChessPiece[8][8];
