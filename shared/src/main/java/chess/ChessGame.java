@@ -42,6 +42,17 @@ public class ChessGame {
         BLACK
     }
 
+    public void getValids(ChessMove moves) {
+        ChessPiece piece = board.getPiece(moves.getStartPosition());
+        if (moves.getPromotionPiece() == null) {
+            this.board.addPiece(moves.getEndPosition(), piece);
+        }
+        else {
+            this.board.addPiece(moves.getEndPosition(), new ChessPiece(piece.getTeamColor(), moves.getPromotionPiece()));
+        }
+        this.board.addPiece(moves.getStartPosition(), null);
+    }
+
     /**
      * Gets a valid moves for a piece at the given location
      *
@@ -62,7 +73,10 @@ public class ChessGame {
             previousBoard = board.clone();
             try {
                 getValids(moves);
-                if (!isInCheck(teamColor))
+                if (!isInCheck(ChessPiece.getTeamColor())) {
+                    finalMoves.add(moves);
+                }
+                board = previousBoard;
             }
 
         }
