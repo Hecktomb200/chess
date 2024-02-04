@@ -57,6 +57,16 @@ public class ChessGame {
             return null;
         }
         ArrayList<ChessMove> finalMoves = new ArrayList<>();
+        ArrayList<ChessMove> allMoves = new ArrayList<>(chessPiece.pieceMoves(board,startPosition));
+        for (ChessMove moves : allMoves) {
+            previousBoard = board.clone();
+            try {
+                getValids(moves);
+                if (!isInCheck(teamColor))
+            }
+
+        }
+
         return finalMoves;
     }
 
