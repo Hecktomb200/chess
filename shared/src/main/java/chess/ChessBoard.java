@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Arrays;
+import java.lang.Object;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -8,10 +9,14 @@ import java.util.Arrays;
  * Note: You can add to this class, but you may not alter
  * signature of the existing methods.
  */
-public class ChessBoard {
+public class ChessBoard implements Cloneable{
     private ChessPiece[][] squares = new ChessPiece[8][8];
     public ChessBoard() {
-        
+        for (int row = 0; row < 8; row++) {
+            for (int col=0; col < 8; col++) {
+                squares[row][col]=null;
+            }
+        }
     }
 
     /**
@@ -48,6 +53,27 @@ public class ChessBoard {
         return Arrays.deepHashCode(squares);
     }
 
+    @Override
+    public ChessBoard clone() {
+        try {
+            ChessBoard clonedBoard = (ChessBoard) super.clone();
+
+            clonedBoard.squares = new ChessPiece[8][8];
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (this.squares[i][j] != null) {
+                        clonedBoard.squares[i][j] = this.squares[i][j].clone();
+                    }
+                }
+            }
+
+            return clonedBoard;
+        }
+        catch (CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
+    }
+
     /**
      * Sets the board to the default starting board
      * (How the game of chess normally starts)
@@ -56,6 +82,11 @@ public class ChessBoard {
      */
     public void resetBoard() {
         squares = new ChessPiece[8][8];
+        for (int row = 0; row < 8; row++) {
+            for (int col=0; col < 8; col++) {
+                squares[row][col]=null;
+            }
+        }
         addPiece(new ChessPosition(8,5), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING));
         addPiece(new ChessPosition(8,4), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN));
         addPiece(new ChessPosition(8,3), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP));

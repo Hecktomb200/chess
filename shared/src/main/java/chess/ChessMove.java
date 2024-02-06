@@ -20,7 +20,7 @@ public class ChessMove {
     /**
      * @return ChessPosition of starting location
      */
-    public ChessPosition getStartPosition(ChessPosition startPosition) {
+    public ChessPosition getStartPosition() {
         return startPosition;
         //throw new RuntimeException("Not implemented");
     }
@@ -28,7 +28,7 @@ public class ChessMove {
     /**
      * @return ChessPosition of ending location
      */
-    public ChessPosition getEndPosition(ChessPosition endPosition) {
+    public ChessPosition getEndPosition() {
         return endPosition;
         //throw new RuntimeException("Not implemented");
     }
@@ -39,7 +39,7 @@ public class ChessMove {
      *
      * @return Type of piece to promote a pawn to, or null if no promotion
      */
-    public ChessPiece.PieceType getPromotionPiece(ChessPiece.PieceType promotionPiece) {
+    public ChessPiece.PieceType getPromotionPiece() {
         return promotionPiece;
         //throw new RuntimeException("Not implemented");
     }
