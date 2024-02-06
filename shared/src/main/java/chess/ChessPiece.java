@@ -125,7 +125,7 @@ public class ChessPiece implements Cloneable {
             onRow =myPosition.getRow();
             onCol =myPosition.getColumn();
             lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn());
-            while (onRow <= 8 && onRow > 1 && onCol <= 8 && onCol >= 1) {
+            while (onRow <= 8 && onRow >= 1 && onCol <= 8 && onCol >= 1) {
                 onRow += 1;
                 onCol -= 1;
                 lastPosition = new ChessPosition(onRow,onCol);
@@ -468,7 +468,7 @@ public class ChessPiece implements Cloneable {
             onRow =myPosition.getRow();
             onCol =myPosition.getColumn();
             lastPosition = new ChessPosition(myPosition.getRow(), myPosition.getColumn());
-            while (onRow <= 8 && onRow > 1 && onCol <= 8 && onCol >= 1) {
+            while (onRow <= 8 && onRow >= 1 && onCol <= 8 && onCol >= 1) {
                 onCol -= 1;
                 lastPosition = new ChessPosition(onRow,onCol);
                 if (onCol == 0) {

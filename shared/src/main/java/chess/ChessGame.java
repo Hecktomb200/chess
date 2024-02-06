@@ -114,6 +114,7 @@ public class ChessGame {
         else if (move.getPromotionPiece() != null) {
             board.addPiece(move.getEndPosition(), new ChessPiece(piece.getTeamColor(), move.getPromotionPiece()));
         }
+        board.addPiece(move.getStartPosition(), null);
         if (getTeamTurn() == TeamColor.WHITE) {
             setTeamTurn(TeamColor.BLACK);
         }
@@ -144,8 +145,7 @@ public class ChessGame {
         ArrayList<ChessPosition> teamPositions=new ArrayList<>();
         for (int row=1; row < 9; row++) {
             for (int col=1; col < 9; col++) {
-                if (board.getPiece(new ChessPosition(row, col)).getTeamColor() != teamColor) {
-                    if ((board.getPiece(new ChessPosition(row, col)) != null)) {
+                if (board.getPiece(new ChessPosition(row, col)) != null && board.getPiece(new ChessPosition(row, col)).getTeamColor() != teamColor) {
                         //ChessPiece piece = board.getPiece(new ChessPosition(row, col));
                         teamPositions.add(new ChessPosition(row, col));
                     }
@@ -153,7 +153,6 @@ public class ChessGame {
 
                 }
             }
-        }
         for (ChessPosition position : teamPositions) {
             ChessPiece enemyPiece = board.getPiece(position);
             ArrayList<ChessMove> enemyMoves = new ArrayList<>(enemyPiece.pieceMoves(board, position));
