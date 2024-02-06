@@ -31,7 +31,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        this.teamColor = teamTurn;
+        this.teamColor = team;
     }
 
     /**
@@ -63,17 +63,17 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece chessPiece = board.getPiece(startPosition);
         ChessBoard previousBoard = board.clone();
+        ArrayList<ChessMove> finalMoves = new ArrayList<>();
+        ArrayList<ChessMove> allMoves = new ArrayList<>(chessPiece.pieceMoves(board,startPosition));
 
         if (chessPiece == null) {
             return null;
         }
-        ArrayList<ChessMove> finalMoves = new ArrayList<>();
-        ArrayList<ChessMove> allMoves = new ArrayList<>(chessPiece.pieceMoves(board,startPosition));
         for (ChessMove moves : allMoves) {
             previousBoard = board.clone();
             try {
                 getValids(moves);
-                if (!isInCheck(ChessPiece.getTeamColor())) {
+                if (!isInCheck(chessPiece.getTeamColor())) {
                     finalMoves.add(moves);
                 }
                 board = previousBoard;
@@ -205,7 +205,26 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if (isInCheck(teamColor) == true) {
+            return false;
+        }
+        if (isInCheck(teamColor) == false) {
+            ArrayList<ChessPosition> enemyPositions = new ArrayList<>();
+            for (int row=1; row < 9; row++) {
+                for (int col=1; col < 9; col++) {
+                    ChessPiece piece=board.getPiece(new ChessPosition(row, col));
+                    if (piece != null && piece.getTeamColor() == teamColor && piece.getPieceType() == ChessPiece.PieceType.KING) {
+                        enemyPositions.add(new ChessPosition(row, col));
+                    }
+                }
+            }
+            for (ChessPosition position : enemyPositions) {
+                if(!validMoves(position).isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
