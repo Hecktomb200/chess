@@ -74,6 +74,13 @@ public class ChessBoard implements Cloneable{
         }
     }
 
+    @Override
+    public String toString() {
+        return "ChessBoard{" +
+                "squares=" + Arrays.toString(squares) +
+                '}';
+    }
+
     /**
      * Sets the board to the default starting board
      * (How the game of chess normally starts)
