@@ -618,7 +618,7 @@ public class ChessPiece implements Cloneable {
         try {
             return (ChessPiece) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new InternalError(e);
+            throw new RuntimeException(e);
         }
     }
 
