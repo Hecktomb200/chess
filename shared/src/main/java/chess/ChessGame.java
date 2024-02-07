@@ -42,17 +42,6 @@ public class ChessGame {
         BLACK
     }
 
-    public void getValids(ChessMove moves) {
-        ChessPiece piece = board.getPiece(moves.getStartPosition());
-        if (moves.getPromotionPiece() == null) {
-            this.board.addPiece(moves.getEndPosition(), piece);
-        }
-        else {
-            this.board.addPiece(moves.getEndPosition(), new ChessPiece(piece.getTeamColor(), moves.getPromotionPiece()));
-        }
-        this.board.addPiece(moves.getStartPosition(), null);
-    }
-
     /**
      * Gets a valid moves for a piece at the given location
      *
@@ -72,7 +61,14 @@ public class ChessGame {
         for (ChessMove moves : allMoves) {
             previousBoard = board.clone();
             try {
-                getValids(moves);
+                ChessPiece piece = board.getPiece(moves.getStartPosition());
+                if (moves.getPromotionPiece() == null) {
+                    this.board.addPiece(moves.getEndPosition(), piece);
+                }
+                else {
+                    this.board.addPiece(moves.getEndPosition(), new ChessPiece(piece.getTeamColor(), moves.getPromotionPiece()));
+                }
+                this.board.addPiece(moves.getStartPosition(), null);
                 if (!isInCheck(chessPiece.getTeamColor())) {
                     finalMoves.add(moves);
                 }
@@ -146,11 +142,8 @@ public class ChessGame {
         for (int row=1; row < 9; row++) {
             for (int col=1; col < 9; col++) {
                 if (board.getPiece(new ChessPosition(row, col)) != null && board.getPiece(new ChessPosition(row, col)).getTeamColor() != teamColor) {
-                        //ChessPiece piece = board.getPiece(new ChessPosition(row, col));
                         teamPositions.add(new ChessPosition(row, col));
                     }
-                    //board.getPiece(new ChessPosition(row, col)).pieceMoves(board, new ChessPosition(row, col));
-
                 }
             }
         for (ChessPosition position : teamPositions) {
