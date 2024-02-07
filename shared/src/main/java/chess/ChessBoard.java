@@ -55,23 +55,22 @@ public class ChessBoard implements Cloneable{
 
     @Override
     public ChessBoard clone() {
-        ChessBoard clonedBoard =null;
+        ChessBoard cloneBoard =null;
         try {
-            clonedBoard=(ChessBoard) super.clone();
+            cloneBoard=(ChessBoard) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
 
-        clonedBoard.squares = new ChessPiece[8][8];
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (this.squares[i][j] != null) {
-                        clonedBoard.squares[i][j] = this.squares[i][j].clone();
+        cloneBoard.squares = new ChessPiece[8][8];
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if (this.squares[row][col] != null) {
+                        cloneBoard.squares[row][col] = squares[row][col].clone();
                     }
                 }
             }
-
-            return clonedBoard;
+            return cloneBoard;
     }
 
     @Override
