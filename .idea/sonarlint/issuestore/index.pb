@@ -17,3 +17,15 @@ t
 Dshared/src/test/java/passoffTests/chessTests/ChessPositionTests.java,b\6\b6da2b321f147e6973776aa3b7f592e5551e291d
 q
 Ashared/src/test/java/passoffTests/chessTests/ChessBoardTests.java,9\b\9b6410093bb8fe026dcb494e17062e36d849bab6
+]
+-shared/src/main/java/chess/ChessPosition.java,3\b\3b013a24b64d343e15bac32b29d3d69c6c135d82
+p
+@shared/src/test/java/passoffTests/chessTests/ChessGameTests.java,0\9\09fb38f0b8eedd1ffd34485f6149bba3b4852ef4
+Y
+)shared/src/main/java/chess/ChessMove.java,c\5\c52f67c55315a844e23611bb848b35269aaedb66
+Y
+)shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
+Z
+*shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
+Z
+*shared/src/main/java/chess/ChessBoard.java,d\f\dfc4ec84b5d57ac6e0266e9c319b728da99e0c51
