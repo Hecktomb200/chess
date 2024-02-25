@@ -29,3 +29,9 @@ Y
 )shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
 Z
 *shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
+g
+7server/src/main/java/dataAccess/UserDAO/SQLUserDAO.java,6\6\66da17ab1d370ce98da4dc9b59b5fb807448ef93
+j
+:server/src/main/java/dataAccess/UserDAO/MemoryUserDAO.java,f\7\f724f5cd91fb0806ac4b0ba1e1723daa8cb56277
+j
+:server/src/main/java/dataAccess/GameDAO/MemoryGameDAO.java,1\1\110af92deebfbcdf30b7b0e6551f05180180c3a5
