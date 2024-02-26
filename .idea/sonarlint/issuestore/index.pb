@@ -29,10 +29,6 @@ Z
 *shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
 Z
 *shared/src/main/java/chess/ChessBoard.java,d\f\dfc4ec84b5d57ac6e0266e9c319b728da99e0c51
-^
-.server/src/main/java/service/GamesService.java,0\6\06b0d6454da860ce9e4293ab224851a7f97fbb24
-_
-/server/src/main/java/service/RemoveService.java,d\c\dc4efa3ae44b7f3cad4faaf1c6830a4a8eeea9ab
 ]
 -server/src/main/java/service/UserService.java,a\8\a8700e81e1eb2180e7427c199a2e2a92de0b6161
 W
@@ -41,8 +37,6 @@ X
 (shared/src/main/java/model/AuthData.java,f\7\f7739bee04cb37ee6899e6476894792bc648a47e
 X
 (shared/src/main/java/model/UserData.java,4\a\4a7475d8234e0a3bd1fad3b5ac4f0ea9e6d43286
-l
-<shared/src/main/java/model/createGame/CreateGameRequest.java,d\b\db39a19c3bcf8723655a8e0a69fba9f9032f7049
 h
 8shared/src/main/java/model/joinGame/JoinGameRequest.java,3\e\3e47caa77242f1fc719c1073ccac0696da84c188
 j
