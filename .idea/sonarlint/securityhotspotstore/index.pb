@@ -29,8 +29,6 @@ Y
 )shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
 Z
 *shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
-j
-:server/src/main/java/dataAccess/UserDAO/MemoryUserDAO.java,f\7\f724f5cd91fb0806ac4b0ba1e1723daa8cb56277
 ^
 .server/src/main/java/service/GamesService.java,0\6\06b0d6454da860ce9e4293ab224851a7f97fbb24
 _
