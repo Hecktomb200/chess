@@ -57,10 +57,11 @@ public class Server {
 
         try {
             removeService.removeAllServices();
+            responseClear.status(200);
+            return new Gson().toJson("");
         } catch (Exception e) {
             responseClear.status(500);
             return new Gson().toJson(new ErrorMessageResult(e.toString()));
         }
-        return "";
     }
 }

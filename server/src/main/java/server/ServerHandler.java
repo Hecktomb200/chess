@@ -53,6 +53,7 @@ public class ServerHandler {
     try {
       var request = new Gson().fromJson(registerRequest.body(), RegisterRequest.class);
       var response = userService.registerUser(request);
+      registerResponse.status(200);
       return new Gson().toJson(response);
     } catch(DataAccessException e) {
       if(Objects.equals(e.getMessage(), "User already exists")) {
