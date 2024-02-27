@@ -6,6 +6,7 @@ import dataAccess.GameDAO.MemoryGameDAO;
 import dataAccess.GameDAO.SQLGameDAO;
 import dataAccess.UserDAO.MemoryUserDAO;
 import dataAccess.UserDAO.SQLUserDAO;
+import model.ErrorMessageResult;
 import service.GamesService;
 import service.UserService;
 import service.RemoveService;
@@ -58,7 +59,7 @@ public class Server {
             removeService.removeAllServices();
         } catch (Exception e) {
             responseClear.status(500);
-            return new Gson().toJson(new ErrorMessage(e.toString()));
+            return new Gson().toJson(new ErrorMessageResult(e.toString()));
         }
         return "";
     }
