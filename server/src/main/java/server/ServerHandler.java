@@ -54,7 +54,7 @@ public class ServerHandler {
       var request = new Gson().fromJson(registerRequest.body(), RegisterRequest.class);
       var response = userService.registerUser(request);
       return new Gson().toJson(response);
-    } catch(Exception e) {
+    } catch(DataAccessException e) {
       if(Objects.equals(e.getMessage(), "User already exists")) {
         registerResponse.status(403);
         return new Gson().toJson(new ErrorMessageResult("Error: already taken"));
@@ -65,6 +65,9 @@ public class ServerHandler {
       }
       registerResponse.status(500);
       return new Gson().toJson(new ErrorMessageResult("Error: DataAccessException thrown but not caught correctly"));
+    } catch(Exception e) {
+      registerResponse.status(500);
+      return new Gson().toJson(new ErrorMessageResult(e.getMessage()));
     }
   }
   public Object listGamesHandler(Request listRequest, Response listResponse) {
