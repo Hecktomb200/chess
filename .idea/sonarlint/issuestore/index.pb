@@ -67,3 +67,5 @@ l
 <shared/src/main/java/model/createGame/CreateGameRequest.java,d\b\db39a19c3bcf8723655a8e0a69fba9f9032f7049
 k
 ;shared/src/main/java/model/createGame/CreateGameResult.java,7\0\70995f0fd52dc45019dfbafe886f4e3cf4ca9432
+g
+7server/src/main/java/dataAccess/UserDAO/SQLUserDAO.java,6\6\66da17ab1d370ce98da4dc9b59b5fb807448ef93

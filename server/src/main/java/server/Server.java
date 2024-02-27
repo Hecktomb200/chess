@@ -6,12 +6,9 @@ import dataAccess.GameDAO.MemoryGameDAO;
 import dataAccess.GameDAO.SQLGameDAO;
 import dataAccess.UserDAO.MemoryUserDAO;
 import dataAccess.UserDAO.SQLUserDAO;
-import dataAccess.*;
-import org.w3c.dom.UserDataHandler;
 import service.GamesService;
 import service.UserService;
 import service.RemoveService;
-import model.*;
 import com.google.gson.Gson;
 import spark.*;
 
@@ -22,7 +19,7 @@ public class Server {
     SQLGameDAO gameDAO;
     UserService userService;
     GamesService gamesService;
-    UserDataHandler userHandler;
+    ServerHandler serverHandler;
 
     public Server() {
         userDAO = new MemoryUserDAO();
@@ -37,12 +34,12 @@ public class Server {
         Spark.staticFiles.location("web");
 
         Spark.delete("/db", this::clear);
-        Spark.post("/user", userHandler::registerHandler);
-        Spark.post("/session", userHandler::loginHandler);
-        Spark.delete("/session", userHandler::logoutHandler);
-        Spark.get("/game", gameHandler::listGamesHandler);
-        Spark.post("/game", gameHandler::createGameHandler);
-        Spark.put("/game", gameHandler::joinGameHandler);
+        Spark.post("/user", serverHandler::registerHandler);
+        Spark.post("/session", serverHandler::loginHandler);
+        Spark.delete("/session", serverHandler::logoutHandler);
+        Spark.get("/game", serverHandler::listGamesHandler);
+        Spark.post("/game", serverHandler::createGameHandler);
+        Spark.put("/game", serverHandler::joinGameHandler);
 
 
         Spark.awaitInitialization();
@@ -55,6 +52,14 @@ public class Server {
     }
 
     private Object clear(Request requestClear, Response responseClear) {
+        RemoveService removeService = new RemoveService(authDAO, userDAO, gameDAO);
 
+        try {
+            removeService.removeAllServices();
+        } catch (Exception e) {
+            responseClear.status(500);
+            return new Gson().toJson(new ErrorMessage(e.toString()));
+        }
+        return "";
     }
 }
