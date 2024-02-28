@@ -94,7 +94,7 @@ public class UserServiceTests {
     }
 
     @Test
-    void registerServiceError() {
+    void LogoutTestNegative() {
         SQLUserDAO userDAO = new MemoryUserDAO();
         SQLAuthDAO authDAO = new MemoryAuthDAO();
         UserService userService = new UserService(authDAO, userDAO);
