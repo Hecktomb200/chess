@@ -127,19 +127,19 @@ public class ServerHandler {
       var request = new Gson().fromJson(joinRequest.body(), JoinGameRequest.class);
       gamesService.joinGame(request, authToken);
       joinResponse.status(200);
-      return "";
+      return "{}";
     } catch(Exception e) {
       if(Objects.equals(e.getMessage(), "Unauthorized")) {
         joinResponse.status(401);
-        return new Gson().toJson(new ErrorMessageResult("Error: unauthorized"));
+        return new Gson().toJson(new ErrorMessageResult("Error: Unauthorized"));
       }
-      if(Objects.equals(e.getMessage(), "Bad request")) {
+      if(Objects.equals(e.getMessage(), "Bad Request")) {
         joinResponse.status(400);
-        return new Gson().toJson(new ErrorMessageResult("Error: bad request"));
+        return new Gson().toJson(new ErrorMessageResult("Error: Bad Request"));
       }
-      if(Objects.equals(e.getMessage(), "Already taken")) {
+      if(Objects.equals(e.getMessage(), "Color Already Taken")) {
         joinResponse.status(403);
-        return new Gson().toJson(new ErrorMessageResult("Error: already taken"));
+        return new Gson().toJson(new ErrorMessageResult("Error: Forbidden"));
       }
       joinResponse.status(500);
       return new Gson().toJson(new ErrorMessageResult("Error: DataAccessException thrown but not caught correctly"));

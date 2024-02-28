@@ -23,7 +23,7 @@ public class GamesService {
     AuthData auth = authDAO.getAuth(authToken);
 
     if (auth == null) {
-      throw new DataAccessException("Invalid");
+      throw new DataAccessException("Unauthorized");
     }
     if (gameRequest.gameName() == null) {
       throw new DataAccessException("Not found");
@@ -41,13 +41,19 @@ public class GamesService {
     GameData game = gameDAO.getGame(joinRequest.gameID());
 
     if (joinRequest.playerColor() == null) {
+      if (game == null) {
+        throw new DataAccessException("Bad Request");
+      }
+      if (auth == null) {
+        throw new DataAccessException("Unauthorized");
+      }
       return;
     }
     if (auth == null) {
-      throw new DataAccessException("Invalid");
+      throw new DataAccessException("Unauthorized");
     }
     if (game == null) {
-      throw new DataAccessException("Not found");
+      throw new DataAccessException("Bad Request");
     }
 
     String whiteUsername = game.whiteUsername();
@@ -56,11 +62,11 @@ public class GamesService {
     if (joinRequest.playerColor().equals("WHITE") && game.whiteUsername() == null) {
       whiteUsername = auth.username();
     }
-    else if (joinRequest.playerColor().equals("BLACK") && game.whiteUsername() == null) {
+    else if (joinRequest.playerColor().equals("BLACK") && game.blackUsername() == null) {
       blackUsername = auth.username();
     }
     else {
-      throw new DataAccessException("Color already taken");
+      throw new DataAccessException("Color Already Taken");
     }
 
     gameDAO.updateGame(new GameData(game.gameID(), whiteUsername, blackUsername, game.gameName(), game.game()));
