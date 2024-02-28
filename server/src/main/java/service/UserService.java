@@ -22,8 +22,10 @@ public class UserService {
   }
 
   public RegisterResult registerUser(RegisterRequest register) throws DataAccessException {
-    if (register.username().isBlank() || register.password().isBlank() || register.email().isBlank()) {
-      throw new DataAccessException("Invalid");
+    if(register.username() == null || register.username().isEmpty() ||
+            register.password() == null || register.password().isEmpty() ||
+            register.email() == null || register.email().isEmpty()) {
+      throw new DataAccessException("Bad request");
     }
 
     UserData username = userDAO.getUser(register.username());

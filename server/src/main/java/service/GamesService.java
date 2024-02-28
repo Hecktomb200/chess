@@ -56,10 +56,7 @@ public class GamesService {
     if (joinRequest.playerColor().equals("WHITE") && game.whiteUsername() == null) {
       whiteUsername = auth.username();
     }
-    else {
-      throw new DataAccessException("Color already taken");
-    }
-    if (joinRequest.playerColor().equals("BLACK") && game.whiteUsername() == null) {
+    else if (joinRequest.playerColor().equals("BLACK") && game.whiteUsername() == null) {
       blackUsername = auth.username();
     }
     else {

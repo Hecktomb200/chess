@@ -7,6 +7,7 @@ import dataAccess.GameDAO.MemoryGameDAO;
 import dataAccess.GameDAO.SQLGameDAO;
 import dataAccess.UserDAO.MemoryUserDAO;
 import dataAccess.UserDAO.SQLUserDAO;
+import model.GameData;
 import model.createGame.CreateGameRequest;
 import model.joinGame.JoinGameRequest;
 import model.listGames.ListGamesRequest;
@@ -156,5 +157,8 @@ public class ServerHandler {
       responseClear.status(500);
       return new Gson().toJson(new ErrorMessageResult(e.toString()));
     }
+  }
+  record games(GameData[] games) {
+
   }
 }

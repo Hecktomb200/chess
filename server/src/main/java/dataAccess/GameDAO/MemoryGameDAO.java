@@ -4,6 +4,7 @@ import chess.ChessGame;
 import model.GameData;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,8 +27,9 @@ public class MemoryGameDAO implements SQLGameDAO{
   }
 
   @Override
-  public ArrayList<GameData> listGames() {
-    return (ArrayList<GameData>) games.values();
+  public Collection<GameData> listGames() {
+    var name = games.values().toArray(new GameData[0]);
+    return games.values();
   }
 
   @Override

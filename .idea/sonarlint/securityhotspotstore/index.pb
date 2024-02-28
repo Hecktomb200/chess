@@ -39,18 +39,8 @@ j
 :shared/src/main/java/model/listGames/ListGamesRequest.java,8\3\83d7dd8976878e9f623bb664a5844c1e8b46c7ec
 d
 4shared/src/main/java/model/logout/LogoutRequest.java,c\e\ce6686de345139c1ccb11f8992b84b81e553ebf5
-h
-8shared/src/main/java/model/register/RegisterRequest.java,2\8\28576fa766cde21ce33bd99c118bd4c9eb9e47d3
 a
 1shared/src/main/java/model/login/LoginResult.java,8\0\80a72340c01b03dae8a925a9315cb87fe4dd08f7
-i
-9shared/src/main/java/model/listGames/ListGamesResult.java,d\9\d9844656ba12127fc9687117059a2b08e7055e72
-g
-7server/src/main/java/dataAccess/GameDAO/SQLGameDAO.java,b\9\b97c753f9007f26007ec2dffc2796282ff75332d
-X
-(shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
-j
-:server/src/main/java/dataAccess/GameDAO/MemoryGameDAO.java,1\1\110af92deebfbcdf30b7b0e6551f05180180c3a5
 h
 8server/src/main/java/dataAccess/DataAccessException.java,2\6\263075e6ff98ad42ac65d0ab9954cb3792b4b975
 g
@@ -59,8 +49,6 @@ l
 <shared/src/main/java/model/createGame/CreateGameRequest.java,d\b\db39a19c3bcf8723655a8e0a69fba9f9032f7049
 k
 ;shared/src/main/java/model/createGame/CreateGameResult.java,7\0\70995f0fd52dc45019dfbafe886f4e3cf4ca9432
-^
-.server/src/main/java/service/GamesService.java,0\6\06b0d6454da860ce9e4293ab224851a7f97fbb24
 _
 /server/src/main/java/service/RemoveService.java,d\c\dc4efa3ae44b7f3cad4faaf1c6830a4a8eeea9ab
 Z
