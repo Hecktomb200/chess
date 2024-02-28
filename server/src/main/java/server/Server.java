@@ -27,6 +27,7 @@ public class Server {
         authDAO = new MemoryAuthDAO();
         gameDAO = new MemoryGameDAO();
         userService = new UserService(authDAO, userDAO);
+        serverHandler = new ServerHandler();
     }
 
     public int run(int desiredPort) {
@@ -52,13 +53,13 @@ public class Server {
         Spark.awaitStop();
     }
 
-    private Object clear(Request requestClear, Response responseClear) {
+    private Object clear(Request requestClear, Response responseClear) { //Move into ServerHandler to avoid copies
         RemoveService removeService = new RemoveService(authDAO, userDAO, gameDAO);
 
         try {
             removeService.removeAllServices();
             responseClear.status(200);
-            return new Gson().toJson("");
+            return "{}";
         } catch (Exception e) {
             responseClear.status(500);
             return new Gson().toJson(new ErrorMessageResult(e.toString()));

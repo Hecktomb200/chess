@@ -1,8 +1,11 @@
 package server;
 
+import dataAccess.AuthDAO.MemoryAuthDAO;
 import dataAccess.AuthDAO.SQLAuthDAO;
 import dataAccess.DataAccessException;
+import dataAccess.GameDAO.MemoryGameDAO;
 import dataAccess.GameDAO.SQLGameDAO;
+import dataAccess.UserDAO.MemoryUserDAO;
 import dataAccess.UserDAO.SQLUserDAO;
 import model.createGame.CreateGameRequest;
 import model.joinGame.JoinGameRequest;
@@ -23,12 +26,18 @@ public class ServerHandler {
   SQLAuthDAO authDAO;
   SQLGameDAO gameDAO;
 
+  public ServerHandler() {
+    this.userDAO = new MemoryUserDAO();
+    this.authDAO = new MemoryAuthDAO();
+    this.gameDAO = new MemoryGameDAO();
+  }
   public Object logoutHandler(Request logoutRequest, Response logoutResponse) {
     UserService userService = new UserService(authDAO, userDAO);
 
     try {
       LogoutRequest request = new LogoutRequest(logoutRequest.headers("authorization"));
       userService.logoutUser(request);
+      logoutResponse.status(200);
       return "";
     } catch(Exception e) {
       logoutResponse.status(401);
@@ -41,6 +50,7 @@ public class ServerHandler {
     try {
       var request = new Gson().fromJson(loginRequest.body(), LoginRequest.class);
       var response = userService.loginUser(request);
+      loginResponse.status(200);
       return new Gson().toJson(response);
     } catch(Exception e) {
       loginResponse.status(401);
@@ -56,7 +66,7 @@ public class ServerHandler {
       registerResponse.status(200);
       return new Gson().toJson(response);
     } catch(DataAccessException e) {
-      if(Objects.equals(e.getMessage(), "User already exists")) {
+      if(Objects.equals(e.getMessage(), "Username already exists")) {
         registerResponse.status(403);
         return new Gson().toJson(new ErrorMessageResult("Error: already taken"));
       }
@@ -77,6 +87,7 @@ public class ServerHandler {
     try {
       ListGamesRequest request=new ListGamesRequest(listRequest.headers("authorization"));
       var response=gamesService.listGames(request);
+      listResponse.status(200);
       return new Gson().toJson(response);
     } catch (Exception e) {
       listResponse.status(401);
@@ -91,6 +102,7 @@ public class ServerHandler {
       String authToken = createRequest.headers("authorization");
       var request = new Gson().fromJson(createRequest.body(), CreateGameRequest.class);
       var response = gamesService.createGame(request, authToken);
+      createResponse.status(200);
       return new Gson().toJson(response);
     } catch(Exception e) {
       if(Objects.equals(e.getMessage(), "Bad request")) {
@@ -112,6 +124,7 @@ public class ServerHandler {
       String authToken = joinRequest.headers("authorization");
       var request = new Gson().fromJson(joinRequest.body(), JoinGameRequest.class);
       gamesService.joinGame(request, authToken);
+      joinResponse.status(200);
       return "";
     } catch(Exception e) {
       if(Objects.equals(e.getMessage(), "Unauthorized")) {

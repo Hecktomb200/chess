@@ -59,11 +59,7 @@ h
 8server/src/main/java/dataAccess/DataAccessException.java,2\6\263075e6ff98ad42ac65d0ab9954cb3792b4b975
 g
 7server/src/main/java/dataAccess/AuthDAO/SQLAuthDAO.java,4\a\4acf2d9d475d066781706de1baa93692f7998126
-j
-:server/src/main/java/dataAccess/AuthDAO/MemoryAuthDAO.java,8\9\8961beb51f75b4d1c17068b39a7170f706f92caa
 l
 <shared/src/main/java/model/createGame/CreateGameRequest.java,d\b\db39a19c3bcf8723655a8e0a69fba9f9032f7049
 k
 ;shared/src/main/java/model/createGame/CreateGameResult.java,7\0\70995f0fd52dc45019dfbafe886f4e3cf4ca9432
-g
-7server/src/main/java/dataAccess/UserDAO/SQLUserDAO.java,6\6\66da17ab1d370ce98da4dc9b59b5fb807448ef93
