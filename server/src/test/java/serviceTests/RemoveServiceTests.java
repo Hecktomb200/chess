@@ -23,27 +23,27 @@ public class RemoveServiceTests {
         userDAO.createUser("Username2", "Password2","Email@Email2");
         userDAO.createUser("Username3", "Password3","Email@Email3");
         userDAO.createUser("Username4", "Password4","Email@Email4");
-        String authToken1 = authDAO.createAuth("Username1");
-        String authToken2 =authDAO.createAuth("Username2");
-        String authToken3 =authDAO.createAuth("Username3");
-        String authToken4 =authDAO.createAuth("Username4");
-        int gameID1 = gameDAO.createGame("Game1");
-        int gameID2 = gameDAO.createGame("Game2");
-        int gameID3 = gameDAO.createGame("Game3");
-        int gameID4 = gameDAO.createGame("Game4");
+        int gameID_1 = gameDAO.createGame("Game1");
+        int gameID_2 = gameDAO.createGame("Game2");
+        int gameID_3 = gameDAO.createGame("Game3");
+        int gameID_4 = gameDAO.createGame("Game4");
+        String authToken_1 = authDAO.createAuth("Username1");
+        String authToken_2 =authDAO.createAuth("Username2");
+        String authToken_3 =authDAO.createAuth("Username3");
+        String authToken_4 =authDAO.createAuth("Username4");
 
         deleteService.removeAllServices();
         Assertions.assertNull(userDAO.getUser("Username1"));
         Assertions.assertNull(userDAO.getUser("Username2"));
         Assertions.assertNull(userDAO.getUser("Username3"));
         Assertions.assertNull(userDAO.getUser("Username4"));
-        Assertions.assertNull(authDAO.getAuth(authToken1));
-        Assertions.assertNull(authDAO.getAuth(authToken2));
-        Assertions.assertNull(authDAO.getAuth(authToken3));
-        Assertions.assertNull(authDAO.getAuth(authToken4));
-        Assertions.assertNull(gameDAO.getGame(gameID1));
-        Assertions.assertNull(gameDAO.getGame(gameID2));
-        Assertions.assertNull(gameDAO.getGame(gameID3));
-        Assertions.assertNull(gameDAO.getGame(gameID4));
+        Assertions.assertNull(gameDAO.getGame(gameID_1));
+        Assertions.assertNull(gameDAO.getGame(gameID_2));
+        Assertions.assertNull(gameDAO.getGame(gameID_3));
+        Assertions.assertNull(gameDAO.getGame(gameID_4));
+        Assertions.assertNull(authDAO.getAuth(authToken_1));
+        Assertions.assertNull(authDAO.getAuth(authToken_2));
+        Assertions.assertNull(authDAO.getAuth(authToken_3));
+        Assertions.assertNull(authDAO.getAuth(authToken_4));
     }
 }
