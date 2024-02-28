@@ -49,8 +49,6 @@ l
 <shared/src/main/java/model/createGame/CreateGameRequest.java,d\b\db39a19c3bcf8723655a8e0a69fba9f9032f7049
 k
 ;shared/src/main/java/model/createGame/CreateGameResult.java,7\0\70995f0fd52dc45019dfbafe886f4e3cf4ca9432
-_
-/server/src/main/java/service/RemoveService.java,d\c\dc4efa3ae44b7f3cad4faaf1c6830a4a8eeea9ab
 Z
 *shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
 >

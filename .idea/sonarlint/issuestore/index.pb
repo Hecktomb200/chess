@@ -49,8 +49,6 @@ l
 <shared/src/main/java/model/createGame/CreateGameRequest.java,d\b\db39a19c3bcf8723655a8e0a69fba9f9032f7049
 k
 ;shared/src/main/java/model/createGame/CreateGameResult.java,7\0\70995f0fd52dc45019dfbafe886f4e3cf4ca9432
-_
-/server/src/main/java/service/RemoveService.java,d\c\dc4efa3ae44b7f3cad4faaf1c6830a4a8eeea9ab
 >
 client/pom.xml,0\4\041f522da4f7523dfafc230a092f5af2a53c5e8e
 A
