@@ -10,6 +10,8 @@ import model.logout.LogoutRequest;
 import model.register.RegisterRequest;
 import model.register.RegisterResult;
 
+import java.util.Objects;
+
 public class UserService {
   private final SQLAuthDAO authDAO;
   private final SQLUserDAO userDAO;
@@ -37,7 +39,7 @@ public class UserService {
 
   public LoginResult loginUser(LoginRequest requestLogin) throws DataAccessException {
       UserData username = userDAO.getUser(requestLogin.username());
-      if (username == null || username.password() != requestLogin.password()) {
+      if (username == null || !Objects.equals(username.password(), requestLogin.password())) {
         throw new DataAccessException("Invalid");
       }
 

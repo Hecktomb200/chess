@@ -35,7 +35,7 @@ public class Server {
 
         Spark.staticFiles.location("web");
 
-        Spark.delete("/db", this::clear);
+        Spark.delete("/db", serverHandler::clear);
         Spark.post("/user", serverHandler::registerHandler);
         Spark.post("/session", serverHandler::loginHandler);
         Spark.delete("/session", serverHandler::logoutHandler);
@@ -51,18 +51,5 @@ public class Server {
     public void stop() {
         Spark.stop();
         Spark.awaitStop();
-    }
-
-    private Object clear(Request requestClear, Response responseClear) { //Move into ServerHandler to avoid copies
-        RemoveService removeService = new RemoveService(authDAO, userDAO, gameDAO);
-
-        try {
-            removeService.removeAllServices();
-            responseClear.status(200);
-            return "{}";
-        } catch (Exception e) {
-            responseClear.status(500);
-            return new Gson().toJson(new ErrorMessageResult(e.toString()));
-        }
     }
 }

@@ -14,6 +14,7 @@ import model.login.LoginRequest;
 import model.logout.LogoutRequest;
 import model.register.RegisterRequest;
 import service.GamesService;
+import service.RemoveService;
 import service.UserService;
 import com.google.gson.Gson;
 import model.ErrorMessageResult;
@@ -141,6 +142,19 @@ public class ServerHandler {
       }
       joinResponse.status(500);
       return new Gson().toJson(new ErrorMessageResult("Error: DataAccessException thrown but not caught correctly"));
+    }
+  }
+
+  public Object clear(Request requestClear, Response responseClear) {
+    RemoveService removeService = new RemoveService(authDAO, userDAO, gameDAO);
+
+    try {
+      removeService.removeAllServices();
+      responseClear.status(200);
+      return "{}";
+    } catch (Exception e) {
+      responseClear.status(500);
+      return new Gson().toJson(new ErrorMessageResult(e.toString()));
     }
   }
 }
