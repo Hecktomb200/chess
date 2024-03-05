@@ -1,7 +1,6 @@
 package dataAccess.GameDAO;
 
 import model.GameData;
-
 import java.util.Collection;
 
 public class GameDatabase implements SQLGameDAO {
