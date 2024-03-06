@@ -77,8 +77,6 @@ _
 /server/src/main/java/service/RemoveService.java,d\c\dc4efa3ae44b7f3cad4faaf1c6830a4a8eeea9ab
 ^
 .server/src/main/java/service/GamesService.java,0\6\06b0d6454da860ce9e4293ab224851a7f97fbb24
-^
-.server/src/main/java/server/ServerHandler.java,9\9\993b96beec07be30936e52e7fa9dd3ccb2324e7c
 W
 'server/src/main/java/server/Server.java,8\0\8036b8cb9ce2e6760f04e2a3b475b260935bb7b8
 h
