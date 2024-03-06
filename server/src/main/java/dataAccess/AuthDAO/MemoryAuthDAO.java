@@ -1,11 +1,10 @@
 package dataAccess.AuthDAO;
-import dataAccess.AuthDAO.SQLAuthDAO;
 import model.AuthData;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class MemoryAuthDAO implements SQLAuthDAO{
+public class MemoryAuthDAO implements AuthDAO {
   private final HashMap<String, AuthData> authentication = new HashMap<>();
 
   @Override

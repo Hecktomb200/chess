@@ -1,7 +1,7 @@
 package service;
-import dataAccess.AuthDAO.SQLAuthDAO;
+import dataAccess.AuthDAO.AuthDAO;
 import dataAccess.DataAccessException;
-import dataAccess.GameDAO.SQLGameDAO;
+import dataAccess.GameDAO.GameDAO;
 import model.AuthData;
 import model.GameData;
 import model.createGame.CreateGameRequest;
@@ -11,10 +11,10 @@ import model.listGames.ListGamesRequest;
 import model.listGames.ListGamesResult;
 
 public class GamesService {
-  private final SQLAuthDAO authDAO;
-  private final SQLGameDAO gameDAO;
+  private final AuthDAO authDAO;
+  private final GameDAO gameDAO;
 
-  public GamesService (SQLAuthDAO authDAO, SQLGameDAO gameDAO) {
+  public GamesService (AuthDAO authDAO, GameDAO gameDAO) {
     this.authDAO = authDAO;
     this.gameDAO = gameDAO;
   }

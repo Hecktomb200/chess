@@ -2,9 +2,9 @@ package serviceTests;
 
 import dataAccess.*;
 import dataAccess.AuthDAO.MemoryAuthDAO;
-import dataAccess.AuthDAO.SQLAuthDAO;
+import dataAccess.AuthDAO.AuthDAO;
 import dataAccess.GameDAO.MemoryGameDAO;
-import dataAccess.GameDAO.SQLGameDAO;
+import dataAccess.GameDAO.GameDAO;
 import model.GameData;
 import model.createGame.CreateGameRequest;
 import model.createGame.CreateGameResult;
@@ -22,8 +22,8 @@ public class GameServiceTests {
 
     @Test
     void createGamesTestPositive() throws DataAccessException {
-        SQLGameDAO gameDAO = new MemoryGameDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        GameDAO gameDAO = new MemoryGameDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         GamesService gamesService = new GamesService(authDAO, gameDAO);
 
         String authToken = authDAO.createAuth("GoodUsername");
@@ -37,8 +37,8 @@ public class GameServiceTests {
 
     @Test
     void createGamesTestNegative() {
-        SQLGameDAO gameDAO = new MemoryGameDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        GameDAO gameDAO = new MemoryGameDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         GamesService gamesService = new GamesService(authDAO, gameDAO);
 
         String authToken = authDAO.createAuth("BadUsername");
@@ -55,8 +55,8 @@ public class GameServiceTests {
 
     @Test
     void listGamesTestPositive() throws DataAccessException {
-        SQLGameDAO gameDAO = new MemoryGameDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        GameDAO gameDAO = new MemoryGameDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         GamesService gamesService = new GamesService(authDAO, gameDAO);
 
         String authToken = authDAO.createAuth("GoodUsername");
@@ -74,8 +74,8 @@ public class GameServiceTests {
 
     @Test
     void listGamesServiceNegative() {
-        SQLGameDAO gameDAO = new MemoryGameDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        GameDAO gameDAO = new MemoryGameDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         GamesService gamesService = new GamesService(authDAO, gameDAO);
 
         authDAO.createAuth("BadUsername");
@@ -88,8 +88,8 @@ public class GameServiceTests {
 
     @Test
     void joinGameServicePositive() throws DataAccessException {
-        SQLGameDAO gameDAO = new MemoryGameDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        GameDAO gameDAO = new MemoryGameDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         GamesService gamesService = new GamesService(authDAO, gameDAO);
 
         String authToken = authDAO.createAuth("GoodUsername");
@@ -105,8 +105,8 @@ public class GameServiceTests {
 
     @Test
     void joinGameServiceNegative() throws DataAccessException {
-        SQLGameDAO gameDAO = new MemoryGameDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        GameDAO gameDAO = new MemoryGameDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         GamesService gamesService = new GamesService(authDAO, gameDAO);
 
         String authToken = authDAO.createAuth("BadUsername");

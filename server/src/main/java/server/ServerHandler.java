@@ -1,12 +1,12 @@
 package server;
 
 import dataAccess.AuthDAO.MemoryAuthDAO;
-import dataAccess.AuthDAO.SQLAuthDAO;
+import dataAccess.AuthDAO.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO.MemoryGameDAO;
-import dataAccess.GameDAO.SQLGameDAO;
+import dataAccess.GameDAO.GameDAO;
 import dataAccess.UserDAO.MemoryUserDAO;
-import dataAccess.UserDAO.SQLUserDAO;
+import dataAccess.UserDAO.UserDAO;
 import model.GameData;
 import model.createGame.CreateGameRequest;
 import model.joinGame.JoinGameRequest;
@@ -24,9 +24,9 @@ import spark.*;
 import java.util.Objects;
 
 public class ServerHandler {
-  SQLUserDAO userDAO;
-  SQLAuthDAO authDAO;
-  SQLGameDAO gameDAO;
+  UserDAO userDAO;
+  AuthDAO authDAO;
+  GameDAO gameDAO;
 
   public ServerHandler() {
     this.userDAO = new MemoryUserDAO();

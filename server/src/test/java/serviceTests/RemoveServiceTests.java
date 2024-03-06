@@ -2,11 +2,11 @@ package serviceTests;
 
 import dataAccess.*;
 import dataAccess.AuthDAO.MemoryAuthDAO;
-import dataAccess.AuthDAO.SQLAuthDAO;
+import dataAccess.AuthDAO.AuthDAO;
 import dataAccess.GameDAO.MemoryGameDAO;
-import dataAccess.GameDAO.SQLGameDAO;
+import dataAccess.GameDAO.GameDAO;
 import dataAccess.UserDAO.MemoryUserDAO;
-import dataAccess.UserDAO.SQLUserDAO;
+import dataAccess.UserDAO.UserDAO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.RemoveService;
@@ -14,9 +14,9 @@ import service.RemoveService;
 public class RemoveServiceTests {
     @Test
     void clearAllTests() throws DataAccessException {
-        SQLGameDAO gameDAO = new MemoryGameDAO();
-        SQLUserDAO userDAO = new MemoryUserDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        GameDAO gameDAO = new MemoryGameDAO();
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         RemoveService deleteService = new RemoveService(authDAO, userDAO, gameDAO);
 
         userDAO.createUser("Username1", "Password1","Email@Email1");

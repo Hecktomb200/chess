@@ -1,6 +1,6 @@
 package dataAccess.AuthDAO;
 import model.AuthData;
-public interface SQLAuthDAO {
+public interface AuthDAO {
 
   String createAuth (String username);
   AuthData getAuth (String authToken);

@@ -1,7 +1,7 @@
 package service;
-import dataAccess.AuthDAO.SQLAuthDAO;
+import dataAccess.AuthDAO.AuthDAO;
 import dataAccess.DataAccessException;
-import dataAccess.UserDAO.SQLUserDAO;
+import dataAccess.UserDAO.UserDAO;
 import model.AuthData;
 import model.UserData;
 import model.login.LoginRequest;
@@ -13,10 +13,10 @@ import model.register.RegisterResult;
 import java.util.Objects;
 
 public class UserService {
-  private final SQLAuthDAO authDAO;
-  private final SQLUserDAO userDAO;
+  private final AuthDAO authDAO;
+  private final UserDAO userDAO;
 
-  public UserService(SQLAuthDAO authDAO, SQLUserDAO userDAO) {
+  public UserService(AuthDAO authDAO, UserDAO userDAO) {
     this.authDAO = authDAO;
     this.userDAO = userDAO;
   }

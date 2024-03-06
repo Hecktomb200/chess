@@ -1,8 +1,8 @@
 package serviceTests;
 
 import dataAccess.*;
-import dataAccess.AuthDAO.SQLAuthDAO;
-import dataAccess.UserDAO.SQLUserDAO;
+import dataAccess.AuthDAO.AuthDAO;
+import dataAccess.UserDAO.UserDAO;
 import dataAccess.AuthDAO.MemoryAuthDAO;
 import dataAccess.UserDAO.MemoryUserDAO;
 import model.login.LoginRequest;
@@ -18,8 +18,8 @@ import java.util.UUID;
 public class UserServiceTests {
     @Test
     void registerTestPositive() throws DataAccessException {
-        SQLUserDAO userDAO = new MemoryUserDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         UserService userService = new UserService(authDAO, userDAO);
 
         RegisterRequest request = new RegisterRequest("GoodUsername", "GoodPassword", "GoodEmail@Email");
@@ -35,8 +35,8 @@ public class UserServiceTests {
 
     @Test
     void registerTestNegative() throws DataAccessException {
-        SQLUserDAO userDAO = new MemoryUserDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         UserService userService = new UserService(authDAO, userDAO);
 
         RegisterRequest request = new RegisterRequest("BadUsername1", "BadPassword1", "BadEmail@Email1");
@@ -51,8 +51,8 @@ public class UserServiceTests {
 
     @Test
     void loginTestPositive() throws DataAccessException {
-        SQLUserDAO userDAO = new MemoryUserDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         UserService userService = new UserService(authDAO, userDAO);
 
         userDAO.createUser("GoodUsername", "GoodPassword", "GoodEmail@Email");
@@ -67,8 +67,8 @@ public class UserServiceTests {
 
     @Test
     void loginTestNegative() {
-        SQLUserDAO userDAO = new MemoryUserDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         UserService userService = new UserService(authDAO, userDAO);
 
         userDAO.createUser("BadUsername", "BadPassword", "BadEmail@Email");
@@ -82,8 +82,8 @@ public class UserServiceTests {
 
     @Test
     void LogoutTestPositive() throws DataAccessException {
-        SQLUserDAO userDAO = new MemoryUserDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         UserService userService = new UserService(authDAO, userDAO);
 
         String authToken = authDAO.createAuth("GoodUsername");
@@ -95,8 +95,8 @@ public class UserServiceTests {
 
     @Test
     void LogoutTestNegative() {
-        SQLUserDAO userDAO = new MemoryUserDAO();
-        SQLAuthDAO authDAO = new MemoryAuthDAO();
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
         UserService userService = new UserService(authDAO, userDAO);
 
         authDAO.createAuth("BadUsername");

@@ -3,13 +3,12 @@ package dataAccess.GameDAO;
 import chess.ChessGame;
 import model.GameData;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class MemoryGameDAO implements SQLGameDAO{
+public class MemoryGameDAO implements GameDAO {
   private final HashMap<Integer, GameData> games = new HashMap<>();
   private AtomicInteger gameIdGenerator = new AtomicInteger(0);
 

@@ -1,9 +1,8 @@
 package dataAccess.AuthDAO;
 
 import model.AuthData;
-import java.util.Collection;
 
-public class AuthDatabase implements SQLAuthDAO{
+public class SQLAuthDatabase implements AuthDAO {
 
     @Override
     public String createAuth(String username) {

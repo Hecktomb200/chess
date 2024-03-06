@@ -3,7 +3,7 @@ package dataAccess.GameDAO;
 import model.GameData;
 import java.util.Collection;
 
-public class GameDatabase implements SQLGameDAO {
+public class SQLGameDatabase implements GameDAO {
     @Override
     public Integer createGame(String gameName) {
         return null;

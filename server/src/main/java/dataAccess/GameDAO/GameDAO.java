@@ -2,11 +2,9 @@ package dataAccess.GameDAO;
 
 import model.GameData;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Collection;
 
-public interface SQLGameDAO {
+public interface GameDAO {
   Integer createGame(String gameName);
   GameData getGame(int gameID);
   Collection<GameData> listGames();

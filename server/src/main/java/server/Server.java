@@ -1,23 +1,20 @@
 package server;
 
 import dataAccess.AuthDAO.MemoryAuthDAO;
-import dataAccess.AuthDAO.SQLAuthDAO;
+import dataAccess.AuthDAO.AuthDAO;
 import dataAccess.GameDAO.MemoryGameDAO;
-import dataAccess.GameDAO.SQLGameDAO;
+import dataAccess.GameDAO.GameDAO;
 import dataAccess.UserDAO.MemoryUserDAO;
-import dataAccess.UserDAO.SQLUserDAO;
-import model.ErrorMessageResult;
+import dataAccess.UserDAO.UserDAO;
 import service.GamesService;
 import service.UserService;
-import service.RemoveService;
-import com.google.gson.Gson;
 import spark.*;
 
 public class Server {
 
-    SQLUserDAO userDAO;
-    SQLAuthDAO authDAO;
-    SQLGameDAO gameDAO;
+    UserDAO userDAO;
+    AuthDAO authDAO;
+    GameDAO gameDAO;
     UserService userService;
     GamesService gamesService;
     ServerHandler serverHandler;

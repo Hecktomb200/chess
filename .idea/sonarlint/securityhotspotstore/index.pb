@@ -28,8 +28,6 @@ Z
 Y
 )shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
 X
-(shared/src/main/java/model/AuthData.java,f\7\f7739bee04cb37ee6899e6476894792bc648a47e
-X
 (shared/src/main/java/model/UserData.java,4\a\4a7475d8234e0a3bd1fad3b5ac4f0ea9e6d43286
 h
 8shared/src/main/java/model/joinGame/JoinGameRequest.java,3\e\3e47caa77242f1fc719c1073ccac0696da84c188
@@ -43,8 +41,6 @@ a
 1shared/src/main/java/model/login/LoginResult.java,8\0\80a72340c01b03dae8a925a9315cb87fe4dd08f7
 h
 8server/src/main/java/dataAccess/DataAccessException.java,2\6\263075e6ff98ad42ac65d0ab9954cb3792b4b975
-g
-7server/src/main/java/dataAccess/AuthDAO/SQLAuthDAO.java,4\a\4acf2d9d475d066781706de1baa93692f7998126
 l
 <shared/src/main/java/model/createGame/CreateGameRequest.java,d\b\db39a19c3bcf8723655a8e0a69fba9f9032f7049
 k
@@ -59,8 +55,6 @@ A
 server/server.iml,3\f\3f335f11ae5914540a6aba5f5129f694b55a8d87
 A
 shared/shared.iml,7\9\79ea1508e9af0cc867e2dcc0eceb8e335efeb3ab
-g
-7server/src/main/java/dataAccess/UserDAO/SQLUserDAO.java,6\6\66da17ab1d370ce98da4dc9b59b5fb807448ef93
 N
 server/src/main/java/Main.java,f\4\f49eb7b67ea6fd5de7d54f4d8e080215196bedf3
 g
@@ -81,3 +75,11 @@ j
 -server/src/main/java/service/UserService.java,a\8\a8700e81e1eb2180e7427c199a2e2a92de0b6161
 _
 /server/src/main/java/service/RemoveService.java,d\c\dc4efa3ae44b7f3cad4faaf1c6830a4a8eeea9ab
+^
+.server/src/main/java/service/GamesService.java,0\6\06b0d6454da860ce9e4293ab224851a7f97fbb24
+^
+.server/src/main/java/server/ServerHandler.java,9\9\993b96beec07be30936e52e7fa9dd3ccb2324e7c
+W
+'server/src/main/java/server/Server.java,8\0\8036b8cb9ce2e6760f04e2a3b475b260935bb7b8
+h
+8shared/src/main/java/model/register/RegisterRequest.java,2\8\28576fa766cde21ce33bd99c118bd4c9eb9e47d3
