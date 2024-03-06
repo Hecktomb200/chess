@@ -60,14 +60,13 @@ public class SQLUserDatabase implements UserDAO {
         } catch (Exception e) {
             throw new DataAccessException(e.toString());
         }
-
         //return null;
     }
 
     @Override
     public void deleteUsers() {
         try (var connection = DatabaseManager.getConnection()) {
-            var statement = "INSERT INTO user (username, password, email) VALUES(?, ?, ?)";
+            var statement = "TRUNCATE user";
             executeUpdate(statement);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -90,7 +89,6 @@ public class SQLUserDatabase implements UserDAO {
                 if (resultSet.next()) {
                     return resultSet.getInt(1);
                 }
-
                 return 0;
             }
         } catch (SQLException e) {
