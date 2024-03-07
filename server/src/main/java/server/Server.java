@@ -24,13 +24,21 @@ public class Server {
     ServerHandler serverHandler;
 
     public Server() {
-        userDAO = new SQLUserDatabase();
+        try {
+            userDAO = new SQLUserDatabase();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
         try {
             authDAO = new SQLAuthDatabase();
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
-        gameDAO = new SQLGameDatabase();
+        try {
+            gameDAO = new SQLGameDatabase();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
         userService = new UserService(authDAO, userDAO);
         serverHandler = new ServerHandler();
     }

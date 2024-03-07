@@ -12,8 +12,7 @@ import static java.sql.Types.NULL;
 
 public class SQLUserDatabase implements UserDAO {
 
-    public SQLUserDatabase() {
-        try (var connection = DatabaseManager.getConnection()) {
+    public SQLUserDatabase() throws DataAccessException {
             String[] createTestTable = {"""            
                     CREATE TABLE if NOT EXISTS user (
                                     username VARCHAR(255) NOT NULL,
@@ -23,22 +22,17 @@ public class SQLUserDatabase implements UserDAO {
                                     )"""
             };
             configureDatabase(createTestTable);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
-    }
 
     @Override
-    public void createUser(String username, String password, String email) {
+    public void createUser(String username, String password, String email) throws DataAccessException {
         try (var connection = DatabaseManager.getConnection()) {
             var statement = "INSERT INTO user (username, password, email) VALUES(?, ?, ?)";
                 executeUpdate(statement, username, password, email);
             } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException(e.toString());
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException(e.toString());
         }
     }
 
@@ -50,13 +44,17 @@ public class SQLUserDatabase implements UserDAO {
             try (var preparedStatement = connection.prepareStatement(statement)) {
                 preparedStatement.setString(1, username);
                 try (var resultSet = preparedStatement.executeQuery()) {
-                    resultSet.next();
-                    var password = resultSet.getString("password");
-                    var email = resultSet.getString("email");
-                    return new UserData(username, password, email);
+                    if (resultSet.next()) {
+                        var password = resultSet.getString("password");
+                        var email = resultSet.getString("email");
+                        return new UserData(username, password, email);
+                    } else {
+                        return null;
+                    }
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DataAccessException(e.toString());
         }
         //return null;
@@ -74,7 +72,7 @@ public class SQLUserDatabase implements UserDAO {
         }
     }
 
-    private int executeUpdate(String statement, Object... parameters) {
+    private int executeUpdate(String statement, Object... parameters) throws DataAccessException {
         try (var connection = DatabaseManager.getConnection()) {
             try (var preparedStatement = connection.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
                 for (var i = 0; i < parameters.length; i++) {
@@ -91,9 +89,9 @@ public class SQLUserDatabase implements UserDAO {
                 return 0;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException(e.toString());
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException(e.toString());
         }
     }
 

@@ -119,6 +119,19 @@ public class ChessGame {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessGame chessGame = (ChessGame) o;
+        return teamColor == chessGame.teamColor && Objects.equals(board, chessGame.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(teamColor, board);
+    }
+
     /**
      * Determines if the given team is in check
      *

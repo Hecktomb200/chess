@@ -12,91 +12,91 @@ import java.util.UUID;
 public class SQLAuthDatabaseTests {
 
     @Test
-    void createAuthSuccess() throws DataAccessException {
-        AuthDAO createAuthDAO = new SQLAuthDatabase();
+    void createAuthTestPositive() throws DataAccessException {
+        AuthDAO authDAO = new SQLAuthDatabase();
 
-        String authToken = createAuthDAO.createAuth("TestUsername");
-        String authToken1 = createAuthDAO.createAuth("TestUsername1");
+        String authToken = authDAO.createAuth("GoodUsername");
+        String authToken1 = authDAO.createAuth("GoodUsername1");
 
-        AuthData retrievedData = createAuthDAO.getAuth(authToken);
-        AuthData retrievedData1 = createAuthDAO.getAuth(authToken1);
+        AuthData retrievedData = authDAO.getAuth(authToken);
+        AuthData retrievedData1 = authDAO.getAuth(authToken1);
 
 
-        Assertions.assertEquals(new AuthData(authToken, "TestUsername"), retrievedData);
-        Assertions.assertEquals(new AuthData(authToken1, "TestUsername1"), retrievedData1);
+        Assertions.assertEquals(new AuthData(authToken, "GoodUsername"), retrievedData);
+        Assertions.assertEquals(new AuthData(authToken1, "GoodUsername1"), retrievedData1);
 
-        createAuthDAO.deleteAuthTotal();
+        authDAO.deleteAuthTotal();
     }
 
     @Test
-    void createAuthFail() throws DataAccessException {
-        AuthDAO createAuthDAO = new SQLAuthDatabase();
+    void createAuthTestNegative() throws DataAccessException {
+        AuthDAO authDAO = new SQLAuthDatabase();
 
-        Assertions.assertThrows(DataAccessException.class, () -> createAuthDAO.createAuth(null));
+        Assertions.assertThrows(DataAccessException.class, () -> authDAO.createAuth(null));
     }
 
     @Test
-    void getAuthSuccess() throws DataAccessException {
-        AuthDAO getAuthDAO = new SQLAuthDatabase();
+    void getAuthTestPositive() throws DataAccessException {
+        AuthDAO authDAO = new SQLAuthDatabase();
 
-        String authToken = getAuthDAO.createAuth("TestUsername");
-        String authToken1 = getAuthDAO.createAuth("TestUsername1");
+        String authToken = authDAO.createAuth("GoodUsername");
+        String authToken1 = authDAO.createAuth("GoodUsername1");
 
-        AuthData retrievedData = getAuthDAO.getAuth(authToken);
-        AuthData retrievedData1 = getAuthDAO.getAuth(authToken1);
+        AuthData retrievedData = authDAO.getAuth(authToken);
+        AuthData retrievedData1 = authDAO.getAuth(authToken1);
 
 
-        Assertions.assertEquals(new AuthData(authToken, "TestUsername"), retrievedData);
-        Assertions.assertEquals(new AuthData(authToken1, "TestUsername1"), retrievedData1);
+        Assertions.assertEquals(new AuthData(authToken, "GoodUsername"), retrievedData);
+        Assertions.assertEquals(new AuthData(authToken1, "GoodUsername1"), retrievedData1);
 
-        getAuthDAO.deleteAuthTotal();
+        authDAO.deleteAuthTotal();
     }
 
     @Test
-    void getAuthFail() throws DataAccessException {
-        AuthDAO getAuthDAO = new SQLAuthDatabase();
+    void getAuthTestNegative() throws DataAccessException {
+        AuthDAO authDAO = new SQLAuthDatabase();
 
-        Assertions.assertNull(getAuthDAO.getAuth(UUID.randomUUID().toString()));
+        Assertions.assertNull(authDAO.getAuth(UUID.randomUUID().toString()));
     }
 
     @Test
-    void deleteAuthSuccess() throws DataAccessException {
-        AuthDAO deleteAuthDAO = new SQLAuthDatabase();
+    void deleteAuthTestPositive() throws DataAccessException {
+        AuthDAO authDAO = new SQLAuthDatabase();
 
-        String authToken = deleteAuthDAO.createAuth("TestUsername");
-        String authToken1 = deleteAuthDAO.createAuth("TestUsername1");
+        String authToken = authDAO.createAuth("GoodUsername");
+        String authToken1 = authDAO.createAuth("GoodUsername1");
 
-        AuthData retrievedData = deleteAuthDAO.getAuth(authToken);
-        AuthData retrievedData1 = deleteAuthDAO.getAuth(authToken1);
+        AuthData retrievedData = authDAO.getAuth(authToken);
+        AuthData retrievedData1 = authDAO.getAuth(authToken1);
 
 
-        Assertions.assertEquals(new AuthData(authToken, "TestUsername"), retrievedData);
-        Assertions.assertEquals(new AuthData(authToken1, "TestUsername1"), retrievedData1);
+        Assertions.assertEquals(new AuthData(authToken, "GoodUsername"), retrievedData);
+        Assertions.assertEquals(new AuthData(authToken1, "GoodUsername1"), retrievedData1);
 
-        deleteAuthDAO.deleteAuth(authToken);
+        authDAO.deleteAuth(authToken);
 
-        Assertions.assertNull(deleteAuthDAO.getAuth(authToken));
-        Assertions.assertEquals(new AuthData(authToken1, "TestUsername1"), retrievedData1);
+        Assertions.assertNull(authDAO.getAuth(authToken));
+        Assertions.assertEquals(new AuthData(authToken1, "GoodUsername1"), retrievedData1);
     }
 
     @Test
-    void deleteAllAuthSuccess() throws DataAccessException {
-        AuthDAO deleteAllAuthDAO = new SQLAuthDatabase();
+    void deleteAuthTotalTestNegative() throws DataAccessException {
+        AuthDAO authDAO = new SQLAuthDatabase();
 
-        String authToken = deleteAllAuthDAO.createAuth("TestUsername");
-        String authToken1 = deleteAllAuthDAO.createAuth("TestUsername1");
+        String authToken = authDAO.createAuth("GoodUsername");
+        String authToken1 = authDAO.createAuth("GoodUsername1");
 
-        AuthData retrievedData = deleteAllAuthDAO.getAuth(authToken);
-        AuthData retrievedData1 = deleteAllAuthDAO.getAuth(authToken1);
+        AuthData retrievedData = authDAO.getAuth(authToken);
+        AuthData retrievedData1 = authDAO.getAuth(authToken1);
 
 
-        Assertions.assertEquals(new AuthData(authToken, "TestUsername"), retrievedData);
-        Assertions.assertEquals(new AuthData(authToken1, "TestUsername1"), retrievedData1);
+        Assertions.assertEquals(new AuthData(authToken, "GoodUsername"), retrievedData);
+        Assertions.assertEquals(new AuthData(authToken1, "GoodUsername1"), retrievedData1);
 
-        deleteAllAuthDAO.deleteAuthTotal();
+        authDAO.deleteAuthTotal();
 
-        Assertions.assertNull(deleteAllAuthDAO.getAuth(authToken));
-        Assertions.assertNull(deleteAllAuthDAO.getAuth(authToken1));
+        Assertions.assertNull(authDAO.getAuth(authToken));
+        Assertions.assertNull(authDAO.getAuth(authToken1));
     }
 
 }

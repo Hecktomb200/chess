@@ -23,8 +23,6 @@ p
 @shared/src/test/java/passoffTests/chessTests/ChessGameTests.java,0\9\09fb38f0b8eedd1ffd34485f6149bba3b4852ef4
 Y
 )shared/src/main/java/chess/ChessMove.java,c\5\c52f67c55315a844e23611bb848b35269aaedb66
-Y
-)shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
 Z
 *shared/src/main/java/chess/ChessBoard.java,d\f\dfc4ec84b5d57ac6e0266e9c319b728da99e0c51
 X
@@ -83,5 +81,3 @@ d
 4server/src/main/java/dataAccess/UserDAO/UserDAO.java,1\6\16264a7d6ee81e44046bc0c49e2b1851963bd3dd
 d
 4server/src/main/java/dataAccess/AuthDAO/AuthDAO.java,c\c\cc702af7f8d72b25a8ed9520232797e2c92d5ed1
-^
-.server/src/main/java/server/ServerHandler.java,9\9\993b96beec07be30936e52e7fa9dd3ccb2324e7c
