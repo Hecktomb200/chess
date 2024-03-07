@@ -81,3 +81,13 @@ W
 'server/src/main/java/server/Server.java,8\0\8036b8cb9ce2e6760f04e2a3b475b260935bb7b8
 h
 8shared/src/main/java/model/register/RegisterRequest.java,2\8\28576fa766cde21ce33bd99c118bd4c9eb9e47d3
+d
+4server/src/main/java/dataAccess/AuthDAO/AuthDAO.java,c\c\cc702af7f8d72b25a8ed9520232797e2c92d5ed1
+X
+(shared/src/main/java/model/AuthData.java,f\7\f7739bee04cb37ee6899e6476894792bc648a47e
+d
+4server/src/main/java/dataAccess/GameDAO/GameDAO.java,9\1\91cb53aeff3212ce79f9fdb947a40eee57570a91
+d
+4server/src/main/java/dataAccess/UserDAO/UserDAO.java,1\6\16264a7d6ee81e44046bc0c49e2b1851963bd3dd
+^
+.server/src/main/java/server/ServerHandler.java,9\9\993b96beec07be30936e52e7fa9dd3ccb2324e7c

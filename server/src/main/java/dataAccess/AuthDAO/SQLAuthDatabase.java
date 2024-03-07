@@ -15,18 +15,17 @@ public class SQLAuthDatabase implements AuthDAO {
 
     public SQLAuthDatabase() {
         try (var connection = DatabaseManager.getConnection()) {
-            var createTestTable = """            
+            String[] createTestTable = {"""            
                     CREATE TABLE if NOT EXISTS auth (
-                                    username VARCHAR(255) NOT NULL,
                                     authToken VARCHAR(255) NOT NULL,
+                                    username VARCHAR(255) NOT NULL,
                                     PRIMARY KEY (authToken)
-                                    )""";
-            try (var preparedStatement = connection.prepareStatement(createTestTable)) {
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+                                    )"""
+            };
+            configureDatabase(createTestTable);
         } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -45,7 +44,7 @@ public class SQLAuthDatabase implements AuthDAO {
         }
     }
 
-    private int executeUpdate(String statement, Object... parameters) {
+    private void executeUpdate(String statement, Object... parameters) {
         try (var connection = DatabaseManager.getConnection()) {
             try (var preparedStatement = connection.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
                 for (var i = 0; i < parameters.length; i++) {
@@ -57,14 +56,26 @@ public class SQLAuthDatabase implements AuthDAO {
 
                 var resultSet = preparedStatement.getGeneratedKeys();
                 if (resultSet.next()) {
-                    return resultSet.getInt(1);
+                    resultSet.getInt(1);
                 }
-                return 0;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void configureDatabase(String[] statements) throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var connection = DatabaseManager.getConnection()) {
+            for (var statement : statements) {
+                try (var preparedStatement = connection.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e.toString());
         }
     }
 

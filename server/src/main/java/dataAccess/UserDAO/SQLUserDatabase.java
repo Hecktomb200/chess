@@ -14,19 +14,18 @@ public class SQLUserDatabase implements UserDAO {
 
     public SQLUserDatabase() {
         try (var connection = DatabaseManager.getConnection()) {
-            var createTestTable = """            
+            String[] createTestTable = {"""            
                     CREATE TABLE if NOT EXISTS user (
                                     username VARCHAR(255) NOT NULL,
                                     password VARCHAR(255) NOT NULL,
                                     email VARCHAR(255),
                                     PRIMARY KEY (username)
-                                    )""";
-            try (var preparedStatement = connection.prepareStatement(createTestTable)) {
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+                                    )"""
+            };
+            configureDatabase(createTestTable);
         } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -95,6 +94,19 @@ public class SQLUserDatabase implements UserDAO {
             throw new RuntimeException(e);
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void configureDatabase(String[] statements) throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var connection = DatabaseManager.getConnection()) {
+            for (var statement : statements) {
+                try (var preparedStatement = connection.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e.toString());
         }
     }
 }

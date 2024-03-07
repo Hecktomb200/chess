@@ -9,7 +9,7 @@ public interface GameDAO {
   Integer createGame(String gameName);
   GameData getGame(int gameID) throws DataAccessException;
   Collection<GameData> listGames() throws DataAccessException;
-  void updateGame(GameData game);
+  void updateGame(GameData game) throws DataAccessException;
 
   void deleteGames();
 }

@@ -18,7 +18,7 @@ public class SQLGameDatabase implements GameDAO {
 
     public SQLGameDatabase() {
         try (var connection = DatabaseManager.getConnection()) {
-            var createTestTable = """            
+            String[] createTestTable = { """            
                     CREATE TABLE if NOT EXISTS game (
                                     gameID INT NOT NULL,
                                     whiteUsername VARCHAR(255),
@@ -26,10 +26,9 @@ public class SQLGameDatabase implements GameDAO {
                                     gameName VARCHAR(255),
                                     chessGame TEXT,
                                     PRIMARY KEY (gameID)
-                                    )""";
-            try (var preparedStatement = connection.prepareStatement(createTestTable)) {
-                preparedStatement.executeUpdate();
-            }
+                                    )"""
+        };
+        configureDatabase(createTestTable);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (DataAccessException e) {
@@ -73,9 +72,35 @@ public class SQLGameDatabase implements GameDAO {
         }
     }
 
-    @Override
-    public void updateGame(GameData game) {
+    private void configureDatabase(String[] statements) throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var connection = DatabaseManager.getConnection()) {
+            for (var statement : statements) {
+                try (var preparedStatement = connection.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e.toString());
+        }
+    }
 
+    @Override
+    public void updateGame(GameData game) throws DataAccessException{
+        int gameID = game.gameID();
+        try (var connection = DatabaseManager.getConnection()) {
+            var statement = "UPDATE game SET whiteUserName = ?, blackUserName = ?, gameName = ?, gameData = ? WHERE gameID=?";
+            try (var preparedStatement = connection.prepareStatement(statement)) {
+                preparedStatement.setString(1, game.whiteUsername());
+                preparedStatement.setString(2, game.blackUsername());
+                preparedStatement.setString(3, game.gameName());
+                preparedStatement.setString(4, new Gson().toJson(game.game()));
+                preparedStatement.setInt(5, gameID);
+                preparedStatement.executeUpdate();
+            }
+        } catch (Exception e) {
+            throw new DataAccessException(e.toString());
+        }
     }
 
     @Override
@@ -98,12 +123,13 @@ public class SQLGameDatabase implements GameDAO {
                 preparedStatement.setInt(1, gameID);
                 try (var resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
+                        var newgameID = resultSet.getInt("gameID");
                         var whiteUsername = resultSet.getString("whiteUsername");
                         var blackUsername = resultSet.getString("blackUsername");
                         var gameName = resultSet.getString("gameName");
                         var jString = resultSet.getString("gameData");
                         var chessGame = new Gson().fromJson(jString, ChessGame.class);
-                        return new GameData(gameID, whiteUsername, blackUsername, gameName, chessGame);
+                        return new GameData(newgameID, whiteUsername, blackUsername, gameName, chessGame);
                     }
                 }
             }
