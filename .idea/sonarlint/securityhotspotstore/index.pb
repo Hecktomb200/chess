@@ -39,8 +39,6 @@ d
 4shared/src/main/java/model/logout/LogoutRequest.java,c\e\ce6686de345139c1ccb11f8992b84b81e553ebf5
 a
 1shared/src/main/java/model/login/LoginResult.java,8\0\80a72340c01b03dae8a925a9315cb87fe4dd08f7
-h
-8server/src/main/java/dataAccess/DataAccessException.java,2\6\263075e6ff98ad42ac65d0ab9954cb3792b4b975
 l
 <shared/src/main/java/model/createGame/CreateGameRequest.java,d\b\db39a19c3bcf8723655a8e0a69fba9f9032f7049
 k
@@ -55,8 +53,6 @@ A
 server/server.iml,3\f\3f335f11ae5914540a6aba5f5129f694b55a8d87
 A
 shared/shared.iml,7\9\79ea1508e9af0cc867e2dcc0eceb8e335efeb3ab
-N
-server/src/main/java/Main.java,f\4\f49eb7b67ea6fd5de7d54f4d8e080215196bedf3
 g
 7shared/src/main/java/model/register/RegisterResult.java,3\7\37534acdb28a54d3981a130dda78221e9c2de837
 j
@@ -77,8 +73,6 @@ _
 /server/src/main/java/service/RemoveService.java,d\c\dc4efa3ae44b7f3cad4faaf1c6830a4a8eeea9ab
 ^
 .server/src/main/java/service/GamesService.java,0\6\06b0d6454da860ce9e4293ab224851a7f97fbb24
-W
-'server/src/main/java/server/Server.java,8\0\8036b8cb9ce2e6760f04e2a3b475b260935bb7b8
 h
 8shared/src/main/java/model/register/RegisterRequest.java,2\8\28576fa766cde21ce33bd99c118bd4c9eb9e47d3
 d

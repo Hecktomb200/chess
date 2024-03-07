@@ -5,6 +5,7 @@ import dataAccess.DatabaseManager;
 import model.AuthData;
 import model.UserData;
 
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -13,8 +14,7 @@ import static java.sql.Types.NULL;
 
 public class SQLAuthDatabase implements AuthDAO {
 
-    public SQLAuthDatabase() {
-        try (var connection = DatabaseManager.getConnection()) {
+    public SQLAuthDatabase() throws DataAccessException {
             String[] createTestTable = {"""            
                     CREATE TABLE if NOT EXISTS auth (
                                     authToken VARCHAR(255) NOT NULL,
@@ -23,28 +23,23 @@ public class SQLAuthDatabase implements AuthDAO {
                                     )"""
             };
             configureDatabase(createTestTable);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
-    }
 
     @Override
-    public String createAuth(String username) {
+    public String createAuth(String username) throws DataAccessException{
         try (var connection = DatabaseManager.getConnection()) {
             var statement = "INSERT INTO auth (authToken, username) VALUES (?, ?)";
             String authToken = UUID.randomUUID().toString();
             executeUpdate(statement, authToken, username);
             return authToken;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException(e.toString());
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException(e.toString());
         }
     }
 
-    private void executeUpdate(String statement, Object... parameters) {
+    private void executeUpdate(String statement, Object... parameters) throws DataAccessException {
         try (var connection = DatabaseManager.getConnection()) {
             try (var preparedStatement = connection.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
                 for (var i = 0; i < parameters.length; i++) {
@@ -60,9 +55,9 @@ public class SQLAuthDatabase implements AuthDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException(e.toString());
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException(e.toString());
         }
     }
 

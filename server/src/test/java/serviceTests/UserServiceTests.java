@@ -94,7 +94,7 @@ public class UserServiceTests {
     }
 
     @Test
-    void LogoutTestNegative() {
+    void LogoutTestNegative() throws DataAccessException {
         UserDAO userDAO = new MemoryUserDAO();
         AuthDAO authDAO = new MemoryAuthDAO();
         UserService userService = new UserService(authDAO, userDAO);

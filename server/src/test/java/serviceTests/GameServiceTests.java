@@ -36,7 +36,7 @@ public class GameServiceTests {
     }
 
     @Test
-    void createGamesTestNegative() {
+    void createGamesTestNegative() throws DataAccessException {
         GameDAO gameDAO = new MemoryGameDAO();
         AuthDAO authDAO = new MemoryAuthDAO();
         GamesService gamesService = new GamesService(authDAO, gameDAO);
@@ -73,7 +73,7 @@ public class GameServiceTests {
     }
 
     @Test
-    void listGamesServiceNegative() {
+    void listGamesServiceNegative() throws DataAccessException {
         GameDAO gameDAO = new MemoryGameDAO();
         AuthDAO authDAO = new MemoryAuthDAO();
         GamesService gamesService = new GamesService(authDAO, gameDAO);
