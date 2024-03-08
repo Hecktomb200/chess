@@ -2,10 +2,13 @@ package server;
 
 import dataAccess.AuthDAO.MemoryAuthDAO;
 import dataAccess.AuthDAO.AuthDAO;
+import dataAccess.AuthDAO.SQLAuthDatabase;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO.MemoryGameDAO;
 import dataAccess.GameDAO.GameDAO;
+import dataAccess.GameDAO.SQLGameDatabase;
 import dataAccess.UserDAO.MemoryUserDAO;
+import dataAccess.UserDAO.SQLUserDatabase;
 import dataAccess.UserDAO.UserDAO;
 import model.GameData;
 import model.createGame.CreateGameRequest;
@@ -29,9 +32,21 @@ public class ServerHandler {
   GameDAO gameDAO;
 
   public ServerHandler() {
-    this.userDAO = new MemoryUserDAO();
-    this.authDAO = new MemoryAuthDAO();
-    this.gameDAO = new MemoryGameDAO();
+    try {
+      this.userDAO = new SQLUserDatabase();
+    } catch (DataAccessException e) {
+      throw new RuntimeException(e);
+    }
+    try {
+      this.authDAO = new SQLAuthDatabase();
+    } catch (DataAccessException e) {
+      throw new RuntimeException(e);
+    }
+    try {
+      this.gameDAO = new SQLGameDatabase();
+    } catch (DataAccessException e) {
+      throw new RuntimeException(e);
+    }
   }
   public Object logoutHandler(Request logoutRequest, Response logoutResponse) {
     UserService userService = new UserService(authDAO, userDAO);

@@ -54,8 +54,6 @@ Z
 g
 7shared/src/main/java/model/register/RegisterResult.java,3\7\37534acdb28a54d3981a130dda78221e9c2de837
 j
-:server/src/main/java/dataAccess/AuthDAO/MemoryAuthDAO.java,8\9\8961beb51f75b4d1c17068b39a7170f706f92caa
-j
 :server/src/main/java/dataAccess/UserDAO/MemoryUserDAO.java,f\7\f724f5cd91fb0806ac4b0ba1e1723daa8cb56277
 b
 2shared/src/main/java/model/ErrorMessageResult.java,b\a\bab10f95bc6722b875e997f8bb7124eefe52a96f
