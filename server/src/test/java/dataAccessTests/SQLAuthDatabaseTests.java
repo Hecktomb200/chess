@@ -1,4 +1,4 @@
-package databaseTests;
+package dataAccessTests;
 
 import dataAccess.AuthDAO.SQLAuthDatabase;
 import dataAccess.AuthDAO.AuthDAO;

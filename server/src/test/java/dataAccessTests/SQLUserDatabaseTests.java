@@ -1,4 +1,4 @@
-package databaseTests;
+package dataAccessTests;
 
 import dataAccess.UserDAO.UserDAO;
 import dataAccess.DataAccessException;

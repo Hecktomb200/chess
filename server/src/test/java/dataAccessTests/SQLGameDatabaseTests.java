@@ -1,4 +1,4 @@
-package databaseTests;
+package dataAccessTests;
 
 import chess.ChessBoard;
 import chess.ChessGame;
