@@ -47,8 +47,8 @@ public class ServerFacade {
 
             http.setRequestMethod("POST");
             http.setDoOutput(true);
-
             http.addRequestProperty("Content-Type", "application/json");
+
             var body = Map.of("username", username,
                     "password", password,
                     "email", email);
@@ -71,10 +71,11 @@ public class ServerFacade {
 
             http.setRequestMethod("POST");
             http.setDoOutput(true);
-
             http.addRequestProperty("Content-Type", "application/json");
+
             var body = Map.of("username", username,
                     "password", password);
+
             try (var outputStream = http.getOutputStream()) {
                 var jsonBody = new Gson().toJson(body);
                 outputStream.write(jsonBody.getBytes());
@@ -91,13 +92,55 @@ public class ServerFacade {
         try {
             URL url = (new URI(this.url + "/session")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
             http.setRequestMethod("DELETE");
             http.setDoOutput(true);
-
             http.addRequestProperty("Content-Type", "application/json");
             http.addRequestProperty("authorization", authToken);
+
             http.connect();
             throwError(http);
+        } catch (Exception ex) {
+            throw new ResponseException(500, ex.getMessage());
+        }
+    }
+
+    public ListGamesResult listGames(String authToken) throws ResponseException {
+        try {
+            URL url = (new URI(this.url + "/game")).toURL();
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+            http.setRequestMethod("GET");
+            http.setDoOutput(true);
+            http.addRequestProperty("Content-Type", "application/json");
+            http.addRequestProperty("authorization", authToken);
+
+            http.connect();
+            throwError(http);
+            return getBody(http, ListGamesResult.class);
+        } catch (Exception ex) {
+            throw new ResponseException(500, ex.getMessage());
+        }
+    }
+
+    public CreateGameResult createGame(String gameName, String authToken) throws ResponseException {
+        try {
+            URL url = (new URI(this.url + "/game")).toURL();
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+            http.setRequestMethod("POST");
+            http.setDoOutput(true);
+            http.addRequestProperty("Content-Type", "application/json");
+            http.addRequestProperty("authorization", authToken);
+
+            var body = Map.of("gameName", gameName);
+            try (var outputStream = http.getOutputStream()) {
+                var jsonBody = new Gson().toJson(body);
+                outputStream.write(jsonBody.getBytes());
+            }
+            http.connect();
+            throwError(http);
+            return getBody(http, CreateGameResult.class);
         } catch (Exception ex) {
             throw new ResponseException(500, ex.getMessage());
         }
