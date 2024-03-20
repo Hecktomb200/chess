@@ -87,4 +87,20 @@ public class ServerFacade {
         }
     }
 
+    public void logout(String authToken) throws ResponseException {
+        try {
+            URL url = (new URI(this.url + "/session")).toURL();
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("DELETE");
+            http.setDoOutput(true);
+
+            http.addRequestProperty("Content-Type", "application/json");
+            http.addRequestProperty("authorization", authToken);
+            http.connect();
+            throwError(http);
+        } catch (Exception ex) {
+            throw new ResponseException(500, ex.getMessage());
+        }
+    }
+
 }
