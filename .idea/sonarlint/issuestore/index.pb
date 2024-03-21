@@ -80,8 +80,6 @@ d
 d
 4server/src/main/java/dataAccess/AuthDAO/AuthDAO.java,c\c\cc702af7f8d72b25a8ed9520232797e2c92d5ed1
 g
-7server/src/test/java/serviceTests/GameServiceTests.java,6\f\6f4cce635cda5f8d3142f5f331aa1a364380bc8b
-g
 7server/src/test/java/serviceTests/UserServiceTests.java,0\3\034a0a7c9077b6ee68d1c97d91fac89c72abff2d
 h
 8server/src/main/java/dataAccess/DataAccessException.java,2\6\263075e6ff98ad42ac65d0ab9954cb3792b4b975
@@ -115,3 +113,7 @@ s
 Cserver/src/test/java/passoffTests/serverTests/PersistenceTests.java,4\7\47d66ea0c268fe0c5cfcbd490807d2b43b84b007
 \
 ,client/src/main/java/client/postLoginUI.java,b\4\b4c4612dea1bb302101cb174531137a98e420394
+N
+server/src/main/java/Main.java,f\4\f49eb7b67ea6fd5de7d54f4d8e080215196bedf3
+[
++client/src/main/java/client/PreLoginUI.java,8\5\85f02dbd3218d51b91b8c0078a17a6ed881bca6b

@@ -84,8 +84,6 @@ h
 l
 <server/src/main/java/dataAccess/AuthDAO/SQLAuthDatabase.java,3\a\3ab04630ba110ba17230360f832d087fe50ccc89
 g
-7server/src/test/java/serviceTests/GameServiceTests.java,6\f\6f4cce635cda5f8d3142f5f331aa1a364380bc8b
-g
 7server/src/test/java/serviceTests/UserServiceTests.java,0\3\034a0a7c9077b6ee68d1c97d91fac89c72abff2d
 n
 >server/src/test/java/dataAccessTests/SQLAuthDatabaseTests.java,9\f\9f0c2caf07f32802d89b8fe7268e69aad9b4f95e
@@ -115,3 +113,7 @@ l
 ,client/src/main/java/ui/EscapeSequences.java,b\6\b6823e781e53d487887c1ba9760d63892cdd044c
 \
 ,client/src/main/java/client/postLoginUI.java,b\4\b4c4612dea1bb302101cb174531137a98e420394
+N
+server/src/main/java/Main.java,f\4\f49eb7b67ea6fd5de7d54f4d8e080215196bedf3
+[
++client/src/main/java/client/PreLoginUI.java,8\5\85f02dbd3218d51b91b8c0078a17a6ed881bca6b
