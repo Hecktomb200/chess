@@ -30,6 +30,7 @@ public class PostLoginUI {
             return switch (prompt) {
                 case "list" -> listGames();
                 case "create" -> createGame(params);
+
                 default -> help();
             };
         } catch (ResponseException ex) {
@@ -65,8 +66,12 @@ public class PostLoginUI {
 
     }
 
+    public void logout() throws ResponseException {
+        server.logout(authToken);
+    }
+
     private void printPrompt() {
-        System.out.print("\n" + SET_TEXT_COLOR_GREEN + "[LOGGED IN]>>> " + SET_TEXT_COLOR_BLUE);
+        System.out.print("\n" + SET_TEXT_COLOR_GREEN + "[LOGGED_IN] >>> " + SET_TEXT_COLOR_BLUE);
     }
 
     public String help() {

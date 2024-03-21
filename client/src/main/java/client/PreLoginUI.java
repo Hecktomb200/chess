@@ -54,7 +54,7 @@ public class PreLoginUI {
     }
 
     private void printPrompt() {
-        System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[LOGGED OUT]>>> " + SET_TEXT_COLOR_GREEN);
+        System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[LOGGED_OUT] >>> " + SET_TEXT_COLOR_GREEN);
     }
 
     public String help() {
