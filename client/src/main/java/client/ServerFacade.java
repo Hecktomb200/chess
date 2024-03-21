@@ -44,12 +44,13 @@ public class ServerFacade {
         try {
             URL url = (new URI(this.url + "/user")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            Map body;
 
             http.setRequestMethod("POST");
             http.setDoOutput(true);
             http.addRequestProperty("Content-Type", "application/json");
 
-            Map body = Map.of("username", username,
+            body = Map.of("username", username,
                     "password", password,
                     "email", email);
             try (var outputStream = http.getOutputStream()) {
@@ -68,12 +69,13 @@ public class ServerFacade {
         try {
             URL url = (new URI(this.url + "/session")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            Map body;
 
             http.setRequestMethod("POST");
             http.setDoOutput(true);
             http.addRequestProperty("Content-Type", "application/json");
 
-            Map body = Map.of("username", username,
+            body = Map.of("username", username,
                     "password", password);
 
             try (var outputStream = http.getOutputStream()) {
@@ -127,13 +129,14 @@ public class ServerFacade {
         try {
             URL url = (new URI(this.url + "/game")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            Map body;
 
             http.setRequestMethod("POST");
             http.setDoOutput(true);
             http.addRequestProperty("Content-Type", "application/json");
             http.addRequestProperty("authorization", authToken);
 
-            Map body = Map.of("gameName", gameName);
+            body = Map.of("gameName", gameName);
             try (var outputStream = http.getOutputStream()) {
                 var jsonBody = new Gson().toJson(body);
                 outputStream.write(jsonBody.getBytes());
@@ -150,12 +153,13 @@ public class ServerFacade {
         try {
             URL url = (new URI(this.url + "/game")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            Map body;
 
             http.setRequestMethod("PUT");
             http.setDoOutput(true);
             http.addRequestProperty("Content-Type", "application/json");
             http.addRequestProperty("authorization", authToken);
-            Map body = Map.of("playerColor", playerColor,
+            body = Map.of("playerColor", playerColor,
                     "gameID", gameID);
             try (var outputStream = http.getOutputStream()) {
                 var jsonBody = new Gson().toJson(body);
