@@ -1,5 +1,6 @@
 package clientTests;
 
+import client.ResponseException;
 import model.createGame.CreateGameResult;
 import model.listGames.ListGamesResult;
 import model.login.LoginResult;
@@ -58,7 +59,7 @@ public class ServerFacadeTests {
     }
 
     @Test
-    void listGamesSuccess() throws Exception {
+    void listGamesPositive() throws Exception {
         RegisterResult registerData = serverFacade.register("GoodUsername", "GoodPassword", "GoodEmail@email.com");
         serverFacade.createGame("listGames0", registerData.authToken());
         serverFacade.createGame("listGames1", registerData.authToken());
@@ -70,10 +71,20 @@ public class ServerFacadeTests {
 
 
     @Test
-    void createGameSuccess() throws Exception {
+    void createGamePositive() throws Exception {
         RegisterResult registerData = serverFacade.register("GoodUsername", "GoodPassword", "GoodEmail@email.com");
         CreateGameResult createGameData = serverFacade.createGame("GoodGame", registerData.authToken());
         Assertions.assertTrue(createGameData.gameID() > 0);
+        serverFacade.delete();
+    }
+
+    @Test
+    void joinGamePositive() throws Exception {
+        RegisterResult registerData = serverFacade.register("GoodUsername", "GoodPassword", "GoodEmail@email.com");
+        CreateGameResult createGameData = serverFacade.createGame("joinGame", registerData.authToken());
+        serverFacade.joinGame(registerData.authToken(), "WHITE", createGameData.gameID());
+        RegisterResult registerData1 = serverFacade.register("GoodUsername1", "GoodPassword1", "GoodEmail1@email.com");
+        Assertions.assertThrows(ResponseException.class, () -> serverFacade.joinGame(registerData1.authToken(), "WHITE", createGameData.gameID()));
         serverFacade.delete();
     }
 
