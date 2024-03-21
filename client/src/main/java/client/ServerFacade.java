@@ -49,7 +49,7 @@ public class ServerFacade {
             http.setDoOutput(true);
             http.addRequestProperty("Content-Type", "application/json");
 
-            var body = Map.of("username", username,
+            Map body = Map.of("username", username,
                     "password", password,
                     "email", email);
             try (var outputStream = http.getOutputStream()) {
@@ -73,7 +73,7 @@ public class ServerFacade {
             http.setDoOutput(true);
             http.addRequestProperty("Content-Type", "application/json");
 
-            var body = Map.of("username", username,
+            Map body = Map.of("username", username,
                     "password", password);
 
             try (var outputStream = http.getOutputStream()) {
@@ -133,7 +133,7 @@ public class ServerFacade {
             http.addRequestProperty("Content-Type", "application/json");
             http.addRequestProperty("authorization", authToken);
 
-            var body = Map.of("gameName", gameName);
+            Map body = Map.of("gameName", gameName);
             try (var outputStream = http.getOutputStream()) {
                 var jsonBody = new Gson().toJson(body);
                 outputStream.write(jsonBody.getBytes());
@@ -155,12 +155,27 @@ public class ServerFacade {
             http.setDoOutput(true);
             http.addRequestProperty("Content-Type", "application/json");
             http.addRequestProperty("authorization", authToken);
-            var body = Map.of("playerColor", playerColor,
+            Map body = Map.of("playerColor", playerColor,
                     "gameID", gameID);
             try (var outputStream = http.getOutputStream()) {
                 var jsonBody = new Gson().toJson(body);
                 outputStream.write(jsonBody.getBytes());
             }
+            http.connect();
+            throwError(http);
+        } catch (Exception ex) {
+            throw new ResponseException(500, ex.getMessage());
+        }
+    }
+
+    public void delete() throws ResponseException {
+        try {
+            URL url = (new URI(this.url + "/db")).toURL();
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+
+            http.setRequestMethod("DELETE");
+            http.setDoOutput(true);
+            http.addRequestProperty("Content-Type", "application/json");
             http.connect();
             throwError(http);
         } catch (Exception ex) {
