@@ -30,7 +30,8 @@ public class PostLoginUI {
             return switch (prompt) {
                 case "list" -> listGames();
                 case "create" -> createGame(params);
-
+                case "join" -> joinGame(params);
+                case "logout" -> "logout";
                 default -> help();
             };
         } catch (ResponseException ex) {
@@ -87,6 +88,7 @@ public class PostLoginUI {
     }
 
     public String listGames() throws ResponseException {
+        gameList.clear();
         ListGamesResult gamesListed = server.listGames(authToken);
         String list = "";
         int i = 0;
@@ -94,8 +96,8 @@ public class PostLoginUI {
 
         for(GameData game: games) {
             list += i + ": " + game.gameName() + "\n";
-            i++;
             gameList.put(i, game);
+            i++;
         }
         return list;
     }
@@ -106,5 +108,15 @@ public class PostLoginUI {
             return String.format("Chess game %s created.", params[0]);
         }
         throw new ResponseException(400, "Expected: <GAME NAME>");
+    }
+
+    public String joinGame(String... params) throws ResponseException {
+        if (params.length == 2) {
+            GameData game = gameList.get(Integer.parseInt(params[0]));
+            server.joinGame(authToken, params[1], game.gameID());
+            System.out.println(params[1]);
+            return String.format("Chess game %s joined.", params[0]);
+        }
+        throw new ResponseException(400, "Expected: <ID> [WHITE | BLACK]");
     }
 }
