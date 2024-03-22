@@ -1,6 +1,10 @@
 package clientTests;
 
 import client.ResponseException;
+import dataAccess.AuthDAO.AuthDAO;
+import dataAccess.AuthDAO.MemoryAuthDAO;
+import dataAccess.GameDAO.GameDAO;
+import dataAccess.GameDAO.MemoryGameDAO;
 import model.createGame.CreateGameResult;
 import model.listGames.ListGamesResult;
 import model.login.LoginResult;
@@ -8,6 +12,8 @@ import model.register.RegisterResult;
 import org.junit.jupiter.api.*;
 import server.Server;
 import client.ServerFacade;
+import java.util.Collection;
+import java.util.UUID;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ServerFacadeTests {
@@ -82,9 +88,9 @@ public class ServerFacadeTests {
     void joinGamePositive() throws Exception {
         RegisterResult registerData = serverFacade.register("GoodUsername", "GoodPassword", "GoodEmail@email.com");
         CreateGameResult createGameData = serverFacade.createGame("joinGame", registerData.authToken());
-        serverFacade.joinGame(registerData.authToken(), "WHITE", createGameData.gameID());
+        serverFacade.joinGame(registerData.authToken(), "white", createGameData.gameID());
         RegisterResult registerData1 = serverFacade.register("GoodUsername1", "GoodPassword1", "GoodEmail1@email.com");
-        Assertions.assertThrows(ResponseException.class, () -> serverFacade.joinGame(registerData1.authToken(), "WHITE", createGameData.gameID()));
+        Assertions.assertThrows(ResponseException.class, () -> serverFacade.joinGame(registerData1.authToken(), "white", createGameData.gameID()));
         serverFacade.delete();
     }
 

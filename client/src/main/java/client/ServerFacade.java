@@ -159,8 +159,11 @@ public class ServerFacade {
             http.setDoOutput(true);
             http.addRequestProperty("Content-Type", "application/json");
             http.addRequestProperty("authorization", authToken);
-            body = Map.of("playerColor", playerColor,
-                    "gameID", gameID);
+            if (playerColor == null) {
+                body = Map.of("gameID", gameID);
+            } else {
+                body = Map.of("playerColor", playerColor, "gameID", gameID);
+            }
             try (var outputStream = http.getOutputStream()) {
                 var jsonBody = new Gson().toJson(body);
                 outputStream.write(jsonBody.getBytes());

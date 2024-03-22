@@ -14,11 +14,11 @@ import static ui.EscapeSequences.*;
 public class GameplayUI {
 
     private final GameData gameData;
-    private final GameplayUI client;
+    //private final GameplayUI client;
 
     public GameplayUI(GameData display) {
         gameData = display;
-        client = new GameplayUI(gameData);
+        //client = new GameplayUI(gameData);
     }
 
     public void run() {
@@ -45,7 +45,7 @@ public class GameplayUI {
     public String displayWhiteGame() {
         ChessGame game = gameData.game();
         ChessBoard board = game.getBoard();
-        String returnString = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    a  b  c  d  e  f  g  h    " + RESET_BG_COLOR + "\n";
+        String returnString = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n";
         boolean isBlack = true;
 
         for(int i = 1; i <= 8; i++) {
@@ -64,7 +64,7 @@ public class GameplayUI {
             line += SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", i) + RESET_BG_COLOR + "\n";
             returnString = line + returnString;
         }
-        returnString = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    a  b  c  d  e  f  g  h    " +
+        returnString = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    A  B  C  D  E  F  G  H    " +
                 RESET_BG_COLOR + "\n" + returnString;
         return returnString;
     }
@@ -72,7 +72,7 @@ public class GameplayUI {
     public String displayBlackGame() {
         ChessGame game = gameData.game();
         ChessBoard board = game.getBoard();
-        String returnString = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    h  g  f  e  d  c  b  a    " + RESET_BG_COLOR + "\n";
+        String returnString = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    H  G  F  E  D  C  B  A    " + RESET_BG_COLOR + "\n";
         boolean isBlack = true;
 
         for(int i = 8; i >= 1; i--) {
@@ -91,7 +91,7 @@ public class GameplayUI {
             line += SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", i) + RESET_BG_COLOR + "\n";
             returnString = line + returnString;
         }
-        returnString = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    h  g  f  e  d  c  b  a    " +
+        returnString = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    H  G  F  E  D  C  B  A    " +
                 RESET_BG_COLOR + "\n" + returnString;
         return returnString;
     }

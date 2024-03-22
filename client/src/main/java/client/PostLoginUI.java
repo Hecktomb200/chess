@@ -115,9 +115,16 @@ public class PostLoginUI {
     public String join(String... params) throws ResponseException {
         if (params.length == 2) {
             GameData game = gameList.get(Integer.parseInt(params[0]));
+            System.out.println("Attempting to join game...");
             server.joinGame(authToken, params[1], game.gameID());
+            System.out.println("Game joined!");
             GameplayUI gameplayUI = new GameplayUI(game);
-            System.out.println(gameplayUI.displayWhiteGame());
+            if (params[1].equals("white")) {
+                System.out.println(gameplayUI.displayWhiteGame());
+            }
+            if (params[1].equals("black")) {
+                System.out.println(gameplayUI.displayBlackGame());
+            }
             return String.format("Chess game %s left.", params[0]);
         }
         throw new ResponseException(400, "Expected: <ID> [WHITE | BLACK]");
@@ -126,7 +133,9 @@ public class PostLoginUI {
     public String observe(String... params) throws ResponseException {
         if (params.length == 1) {
             GameData game = gameList.get(Integer.parseInt(params[0]));
-            server.joinGame(authToken, "null", game.gameID());
+            System.out.println("Attempting to join game...");
+            server.joinGame(authToken, null, game.gameID());
+            System.out.println("Game joined!");
             GameplayUI gameplayUI = new GameplayUI(game);
             System.out.println(gameplayUI.displayWhiteGame());
             return String.format("Chess game %s left.", params[0]);
