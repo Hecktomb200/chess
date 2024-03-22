@@ -97,7 +97,8 @@ public class PostLoginUI {
         var games = gamesListed.games();
 
         for(GameData game: games) {
-            list += i + ": " + game.gameName() + "\n";
+            list += i + ": " + game.gameName() + " --White Player: " + game.whiteUsername()
+                    + ", Black Player: " + game.blackUsername() + "\n";
             gameList.put(i, game);
             i++;
         }

@@ -66,8 +66,6 @@ h
 X
 (shared/src/main/java/model/AuthData.java,f\7\f7739bee04cb37ee6899e6476894792bc648a47e
 d
-4server/src/main/java/dataAccess/GameDAO/GameDAO.java,9\1\91cb53aeff3212ce79f9fdb947a40eee57570a91
-d
 4server/src/main/java/dataAccess/UserDAO/UserDAO.java,1\6\16264a7d6ee81e44046bc0c49e2b1851963bd3dd
 d
 4server/src/main/java/dataAccess/AuthDAO/AuthDAO.java,c\c\cc702af7f8d72b25a8ed9520232797e2c92d5ed1
@@ -79,8 +77,6 @@ l
 <server/src/main/java/dataAccess/AuthDAO/SQLAuthDatabase.java,3\a\3ab04630ba110ba17230360f832d087fe50ccc89
 n
 >server/src/test/java/dataAccessTests/SQLAuthDatabaseTests.java,9\f\9f0c2caf07f32802d89b8fe7268e69aad9b4f95e
-Y
-)shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
 W
 'server/src/main/java/server/Server.java,8\0\8036b8cb9ce2e6760f04e2a3b475b260935bb7b8
 d
