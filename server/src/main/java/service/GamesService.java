@@ -59,10 +59,10 @@ public class GamesService {
     String whiteUsername = game.whiteUsername();
     String blackUsername =game.blackUsername();
 
-    if (joinRequest.playerColor().equals("WHITE") && game.whiteUsername() == null) {
+    if (joinRequest.playerColor().equals("white") && game.whiteUsername() == null) {
       whiteUsername = auth.username();
     }
-    else if (joinRequest.playerColor().equals("BLACK") && game.blackUsername() == null) {
+    else if (joinRequest.playerColor().equals("black") && game.blackUsername() == null) {
       blackUsername = auth.username();
     }
     else {

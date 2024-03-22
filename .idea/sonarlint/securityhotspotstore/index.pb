@@ -57,8 +57,6 @@ j
 :server/src/main/java/dataAccess/UserDAO/MemoryUserDAO.java,f\7\f724f5cd91fb0806ac4b0ba1e1723daa8cb56277
 b
 2shared/src/main/java/model/ErrorMessageResult.java,b\a\bab10f95bc6722b875e997f8bb7124eefe52a96f
-X
-(shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
 i
 9shared/src/main/java/model/listGames/ListGamesResult.java,d\9\d9844656ba12127fc9687117059a2b08e7055e72
 j
@@ -67,8 +65,6 @@ j
 -server/src/main/java/service/UserService.java,a\8\a8700e81e1eb2180e7427c199a2e2a92de0b6161
 _
 /server/src/main/java/service/RemoveService.java,d\c\dc4efa3ae44b7f3cad4faaf1c6830a4a8eeea9ab
-^
-.server/src/main/java/service/GamesService.java,0\6\06b0d6454da860ce9e4293ab224851a7f97fbb24
 h
 8shared/src/main/java/model/register/RegisterRequest.java,2\8\28576fa766cde21ce33bd99c118bd4c9eb9e47d3
 d
@@ -113,3 +109,7 @@ l
 ,client/src/main/java/ui/EscapeSequences.java,b\6\b6823e781e53d487887c1ba9760d63892cdd044c
 \
 ,client/src/main/java/client/postLoginUI.java,b\4\b4c4612dea1bb302101cb174531137a98e420394
+g
+7server/src/test/java/serviceTests/GameServiceTests.java,6\f\6f4cce635cda5f8d3142f5f331aa1a364380bc8b
+X
+(shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
