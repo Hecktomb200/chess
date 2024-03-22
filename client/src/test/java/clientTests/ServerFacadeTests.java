@@ -5,6 +5,7 @@ import dataAccess.AuthDAO.AuthDAO;
 import dataAccess.AuthDAO.MemoryAuthDAO;
 import dataAccess.GameDAO.GameDAO;
 import dataAccess.GameDAO.MemoryGameDAO;
+import model.GameData;
 import model.createGame.CreateGameResult;
 import model.listGames.ListGamesResult;
 import model.login.LoginResult;
@@ -48,10 +49,24 @@ public class ServerFacadeTests {
     }
 
     @Test
+    void registerNegative() throws Exception {
+        Assertions.assertThrows(ResponseException.class,
+                () -> serverFacade.register("BadUsername", null, "BadEmail@email.com"));
+        serverFacade.delete();
+    }
+
+    @Test
     void loginPositive() throws Exception {
         serverFacade.register("GoodUsername", "GoodPassword", "GoodEmail@email.com");
         var loginData = serverFacade.login("goodUsername", "GoodPassword");
         Assertions.assertTrue(loginData.authToken().length() > 10);
+        serverFacade.delete();
+    }
+
+    @Test
+    void loginNegative() throws Exception {
+        serverFacade.register("BadUsername", "BadPassword", "pL@email.com");
+        Assertions.assertThrows(ResponseException.class, () -> serverFacade.login(null, "BadPassword"));
         serverFacade.delete();
     }
 
@@ -61,6 +76,13 @@ public class ServerFacadeTests {
         serverFacade.logout(registerData.authToken());
         LoginResult loginData = serverFacade.login("GoodUsername", "GoodPassword");
         Assertions.assertNotEquals(registerData.authToken(), loginData.authToken());
+        serverFacade.delete();
+    }
+
+    @Test
+    void logoutNegative() throws Exception {
+        serverFacade.register("BadUsername", "BadPassword", "BadEmailO@email.com");
+        Assertions.assertThrows(ResponseException.class, () -> serverFacade.logout(UUID.randomUUID().toString()));
         serverFacade.delete();
     }
 
@@ -75,6 +97,16 @@ public class ServerFacadeTests {
         serverFacade.delete();
     }
 
+    @Test
+    void listGamesNegative() throws Exception {
+        RegisterResult registerData = serverFacade.register("playerListGames", "passwordListGames", "pLGs@email.com");
+        serverFacade.createGame("gameName0", registerData.authToken());
+        serverFacade.createGame("gameName1", registerData.authToken());
+        serverFacade.createGame("gameName2", registerData.authToken());
+        Assertions.assertThrows(ResponseException.class, () -> serverFacade.listGames(UUID.randomUUID().toString()));
+        serverFacade.delete();
+    }
+
 
     @Test
     void createGamePositive() throws Exception {
@@ -85,12 +117,31 @@ public class ServerFacadeTests {
     }
 
     @Test
+    void createGameNegative() throws Exception {
+        RegisterResult registerData = serverFacade.register("BadUsername", "BadPassword", "BadEmail@email.com");
+        Assertions.assertThrows(ResponseException.class, () -> serverFacade.createGame(null, registerData.authToken()));
+        serverFacade.delete();
+    }
+
+    @Test
     void joinGamePositive() throws Exception {
         RegisterResult registerData = serverFacade.register("GoodUsername", "GoodPassword", "GoodEmail@email.com");
         CreateGameResult createGameData = serverFacade.createGame("joinGame", registerData.authToken());
         serverFacade.joinGame(registerData.authToken(), "white", createGameData.gameID());
-        RegisterResult registerData1 = serverFacade.register("GoodUsername1", "GoodPassword1", "GoodEmail1@email.com");
-        Assertions.assertThrows(ResponseException.class, () -> serverFacade.joinGame(registerData1.authToken(), "white", createGameData.gameID()));
+        ListGamesResult listGamesData = serverFacade.listGames(registerData.authToken());
+        Collection<GameData> games = listGamesData.games();
+        for(GameData game : games) {
+            Assertions.assertEquals("GoodUsername", game.whiteUsername());
+        }
+        serverFacade.delete();
+    }
+
+    @Test
+    void joinGameNegative() throws Exception {
+        RegisterResult registerData = serverFacade.register("BadUsername", "BadPassword", "BadEmail@email.com");
+        CreateGameResult createGameData = serverFacade.createGame("gameName", registerData.authToken());
+        Assertions.assertThrows(ResponseException.class, () -> serverFacade.joinGame(UUID.randomUUID().toString(),
+                "WHITE", createGameData.gameID()));
         serverFacade.delete();
     }
 
