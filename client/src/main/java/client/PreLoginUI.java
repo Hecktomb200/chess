@@ -44,7 +44,7 @@ public class PreLoginUI {
 
             try {
                 result = this.getCommands(line);
-                System.out.print(SET_TEXT_COLOR_BLUE + result);
+                System.out.print(SET_TEXT_COLOR_GREEN + result);
             } catch (Throwable e) {
                 var msg = e.toString();
                 System.out.print(msg);
