@@ -32,16 +32,16 @@ public class WebsocketHandler {
     public void onScreen(Session session, String message) throws IOException, DataAccessException {
         UserGameCommand comm = new Gson().fromJson(message, UserGameCommand.class);
         if (comm.getCommandType() == UserGameCommand.CommandType.JOIN_PLAYER) {
-            joinPlayer(new Gson().fromJson(message, JoinPlayer.class), session);
+            joinPlayer(new Gson().fromJson(message, JoinPlayerCommand.class), session);
         }
         if (comm.getCommandType() == UserGameCommand.CommandType.JOIN_OBSERVER) {
-            joinObserver(new Gson().fromJson(message, JoinObserver.class), session);
+            joinObserver(new Gson().fromJson(message, JoinObserverCommand.class), session);
         }
         if (comm.getCommandType() == UserGameCommand.CommandType.MAKE_MOVE) {
-            makeMove(new Gson().fromJson(message, MakeMove.class), session);
+            makeMove(new Gson().fromJson(message, MoveCommand.class), session);
         }
         if (comm.getCommandType() == UserGameCommand.CommandType.RESIGN) {
-            resignPlayer(new Gson().fromJson(message, Resign.class), session);
+            resignPlayer(new Gson().fromJson(message, ResignCommand.class), session);
         }
     }
 
