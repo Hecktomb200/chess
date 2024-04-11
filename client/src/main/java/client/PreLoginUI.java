@@ -1,6 +1,7 @@
 package client;
 import model.login.LoginResult;
 import model.register.RegisterResult;
+import server.ServerFacade;
 
 import java.util.Arrays;
 import java.util.Scanner;

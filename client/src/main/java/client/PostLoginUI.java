@@ -2,8 +2,7 @@ package client;
 
 import model.GameData;
 import model.listGames.ListGamesResult;
-import client.ResponseException;
-import client.ServerFacade;
+import server.ServerFacade;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -1,5 +1,6 @@
-package client;
+package server;
 
+import client.ResponseException;
 import com.google.gson.Gson;
 import model.createGame.CreateGameResult;
 import model.listGames.ListGamesResult;
@@ -21,10 +22,10 @@ public class ServerFacade {
         return status / 100 == 2;
     }
 
-    private void throwError(HttpURLConnection http) throws IOException, ResponseException {
+    private void throwError(HttpURLConnection http) throws IOException, client.ResponseException {
             var status = http.getResponseCode();
             if (!success(status)) {
-                throw new ResponseException(status, "failure: " + status);
+                throw new client.ResponseException(status, "failure: " + status);
             }
         }
 
@@ -40,7 +41,7 @@ public class ServerFacade {
         }
         return response;
     }
-    public RegisterResult register(String username, String password, String email) throws ResponseException {
+    public RegisterResult register(String username, String password, String email) throws client.ResponseException {
         try {
             URL url = (new URI(this.url + "/user")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -61,11 +62,11 @@ public class ServerFacade {
             throwError(http);
             return getBody(http, RegisterResult.class);
         } catch (Exception ex) {
-            throw new ResponseException(500, ex.getMessage());
+            throw new client.ResponseException(500, ex.getMessage());
         }
     }
 
-    public LoginResult login(String username, String password) throws ResponseException {
+    public LoginResult login(String username, String password) throws client.ResponseException {
         try {
             URL url = (new URI(this.url + "/session")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -86,11 +87,11 @@ public class ServerFacade {
             throwError(http);
             return getBody(http, LoginResult.class);
         } catch (Exception ex) {
-            throw new ResponseException(500, ex.getMessage());
+            throw new client.ResponseException(500, ex.getMessage());
         }
     }
 
-    public void logout(String authToken) throws ResponseException {
+    public void logout(String authToken) throws client.ResponseException {
         try {
             URL url = (new URI(this.url + "/session")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -103,11 +104,11 @@ public class ServerFacade {
             http.connect();
             throwError(http);
         } catch (Exception ex) {
-            throw new ResponseException(500, ex.getMessage());
+            throw new client.ResponseException(500, ex.getMessage());
         }
     }
 
-    public ListGamesResult listGames(String authToken) throws ResponseException {
+    public ListGamesResult listGames(String authToken) throws client.ResponseException {
         try {
             URL url = (new URI(this.url + "/game")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -121,11 +122,11 @@ public class ServerFacade {
             throwError(http);
             return getBody(http, ListGamesResult.class);
         } catch (Exception ex) {
-            throw new ResponseException(500, ex.getMessage());
+            throw new client.ResponseException(500, ex.getMessage());
         }
     }
 
-    public CreateGameResult createGame(String gameName, String authToken) throws ResponseException {
+    public CreateGameResult createGame(String gameName, String authToken) throws client.ResponseException {
         try {
             URL url = (new URI(this.url + "/game")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -145,11 +146,11 @@ public class ServerFacade {
             throwError(http);
             return getBody(http, CreateGameResult.class);
         } catch (Exception ex) {
-            throw new ResponseException(500, ex.getMessage());
+            throw new client.ResponseException(500, ex.getMessage());
         }
     }
 
-    public void joinGame(String authToken, String playerColor, int gameID) throws ResponseException {
+    public void joinGame(String authToken, String playerColor, int gameID) throws client.ResponseException {
         try {
             URL url = (new URI(this.url + "/game")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -171,11 +172,11 @@ public class ServerFacade {
             http.connect();
             throwError(http);
         } catch (Exception ex) {
-            throw new ResponseException(500, ex.getMessage());
+            throw new client.ResponseException(500, ex.getMessage());
         }
     }
 
-    public void delete() throws ResponseException {
+    public void delete() throws client.ResponseException {
         try {
             URL url = (new URI(this.url + "/db")).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();

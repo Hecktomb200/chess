@@ -1,10 +1,6 @@
 package clientTests;
 
 import client.ResponseException;
-import dataAccess.AuthDAO.AuthDAO;
-import dataAccess.AuthDAO.MemoryAuthDAO;
-import dataAccess.GameDAO.GameDAO;
-import dataAccess.GameDAO.MemoryGameDAO;
 import model.GameData;
 import model.createGame.CreateGameResult;
 import model.listGames.ListGamesResult;
@@ -12,7 +8,7 @@ import model.login.LoginResult;
 import model.register.RegisterResult;
 import org.junit.jupiter.api.*;
 import server.Server;
-import client.ServerFacade;
+import server.ServerFacade;
 import java.util.Collection;
 import java.util.UUID;
 

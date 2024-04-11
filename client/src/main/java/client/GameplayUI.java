@@ -4,22 +4,110 @@ import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
+import server.ResponseException;
+import client.websocket.ClientHandler;
+import client.websocket.WebsocketFacade;
 import model.GameData;
+import model.listGames.ListGamesResult;
+import server.ServerFacade;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static chess.ChessGame.TeamColor.*;
 import static ui.EscapeSequences.*;
 
-public class GameplayUI {
+public class GameplayUI implements ClientHandler {
+    private final ServerFacade serverFacade;
+    private final String authToken;
+    private final String username;
+    private boolean isBlack = true;
+    private final HashMap<String, Integer> lettersToNumbers = new HashMap<>();
+    private final WebsocketFacade webSocketFacade;
 
-    private final GameData gameData;
+    private GameData gameData;
     //private final GameplayUI client;
 
-    public GameplayUI(GameData display) {
+    public GameplayUI(GameData display, String serverURL, String auth, String user) throws server.ResponseException {
         gameData = display;
+        authToken = auth;
+        serverFacade = new ServerFacade(serverURL);
+        username = user;
         //client = new GameplayUI(gameData);
+        lettersToNumbers();
+        webSocketFacade = new WebsocketFacade(serverURL, this);
+        if(Objects.equals(gameData.blackUsername(), username)) {
+            webSocketFacade.joinPlayer(authToken, gameData.gameID(), BLACK, username);
+        } else if(Objects.equals(gameData.whiteUsername(), username)) {
+            webSocketFacade.joinPlayer(authToken, gameData.gameID(), WHITE, username);
+        } else {
+            webSocketFacade.joinObserver(authToken, gameData.gameID());
+        }
     }
+
+    private void lettersToNumbers() {
+        lettersToNumbers.put("a", 1);
+        lettersToNumbers.put("b", 2);
+        lettersToNumbers.put("c", 3);
+        lettersToNumbers.put("d", 4);
+        lettersToNumbers.put("e", 5);
+        lettersToNumbers.put("f", 6);
+        lettersToNumbers.put("g", 7);
+        lettersToNumbers.put("h", 8);
+    }
+
+    public String eval(String input) {
+        try {
+            var tokens = input.toLowerCase().split(" ");
+            var cmd = (tokens.length > 0) ? tokens[0] : "help";
+            var params = Arrays.copyOfRange(tokens, 1, tokens.length);
+            return switch (cmd) {
+                case "redraw" -> redraw();
+                case "leave" -> "leave";
+                case "move" -> makeMove(params);
+                case "resign" -> resignGame();
+                case "highlight" -> highlightMoves(params);
+                default -> help();
+            };
+        } catch (ResponseException ex) {
+            return ex.getMessage();
+        } catch (client.ResponseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String help() {
+        return """
+                - redraw
+                - move ROW,COLUMN(starting position) ROW,COLUMN(ending position)
+                - highlight ROW,COLUMN(piece position)
+                - resign
+                - leave
+                """;
+    }
+
+    public String redraw() throws server.ResponseException, client.ResponseException {
+        ListGamesResult listedGames = serverFacade.listGames(authToken);
+        var games = listedGames.games();
+        for(GameData game: games) {
+            if(game.gameID() == gameData.gameID()) {
+                gameData = game;
+                return "\n" + draw();
+            }
+        }
+        throw new ResponseException("Game not found");
+    }
+
+    private String draw() {
+        if(Objects.equals(gameData.blackUsername(), username)) {
+            return displayBlackGame();
+        }
+        return displayWhiteGame();
+    }
+
+
 
     public void run() {
         Scanner scanner = new Scanner(System.in);
