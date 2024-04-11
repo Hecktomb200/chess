@@ -97,5 +97,3 @@ Cserver/src/test/java/passoffTests/serverTests/PersistenceTests.java,4\7\47d66e
 ,client/src/main/java/client/postLoginUI.java,b\4\b4c4612dea1bb302101cb174531137a98e420394
 X
 (shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
-b
-2client/src/main/java/client/ResponseException.java,b\a\ba00f12b2ac5e5dd22fe23d026965f97cf5ee1aa
