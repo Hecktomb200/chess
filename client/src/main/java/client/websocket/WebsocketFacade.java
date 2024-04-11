@@ -31,7 +31,9 @@ public class WebsocketFacade extends Endpoint implements MessageHandler.Whole<St
                         case LOAD_GAME -> { try { clientHandler.updateGame(new Gson().fromJson(mes, LoadMessage.class));
                             } catch (ResponseException e) {
                                 throw new RuntimeException(e);
-                            }
+                            } catch (client.ResponseException e) {
+                            throw new RuntimeException(e);
+                        }
                         }
                         case NOTIFICATION -> clientHandler.printMessage(new Gson().fromJson(mes, NotificationMessage.class).getMessage());
                         case ERROR -> clientHandler.printMessage(new Gson().fromJson(mes, ErrorMessage.class).getErrorMessage());

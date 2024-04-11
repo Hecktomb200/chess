@@ -146,11 +146,12 @@ public class GameplayUI implements ClientHandler {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         var result = "";
-        while (!result.equals("quit")) {
+        while (!result.equals("leave")) {
             printPrompt();
             String line = scanner.nextLine();
 
             try {
+                result = getCommands(line);
                 System.out.print(SET_TEXT_COLOR_GREEN + result);
             } catch (Throwable e) {
                 var msg = e.toString();
@@ -161,7 +162,7 @@ public class GameplayUI implements ClientHandler {
     }
 
     private void printPrompt() {
-        System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[LOGGED_OUT] >>> " + SET_TEXT_COLOR_GREEN);
+        System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[IN_GAME] >>> " + SET_TEXT_COLOR_GREEN);
     }
 
     public String displayWhiteGame() {
