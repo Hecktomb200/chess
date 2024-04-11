@@ -57,8 +57,6 @@ i
 9shared/src/main/java/model/listGames/ListGamesResult.java,d\9\d9844656ba12127fc9687117059a2b08e7055e72
 j
 :server/src/main/java/dataAccess/GameDAO/MemoryGameDAO.java,1\1\110af92deebfbcdf30b7b0e6551f05180180c3a5
-]
--server/src/main/java/service/UserService.java,a\8\a8700e81e1eb2180e7427c199a2e2a92de0b6161
 _
 /server/src/main/java/service/RemoveService.java,d\c\dc4efa3ae44b7f3cad4faaf1c6830a4a8eeea9ab
 h
