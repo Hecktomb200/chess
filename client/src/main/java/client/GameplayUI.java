@@ -53,7 +53,7 @@ public class GameplayUI implements ClientHandler {
         lettersToNumbers.put("h", 8);
     }
 
-    public String eval(String input) {
+    public String getCommands(String input) {
         try {
             var tokens = input.toLowerCase().split(" ");
             var cmd = (tokens.length > 0) ? tokens[0] : "help";
