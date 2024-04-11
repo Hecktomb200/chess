@@ -56,7 +56,7 @@ public class WebsocketHandler {
         
     }
 
-    private void joinPlayer(JoinPlayer player, Session session) throws IOException, DataAccessException {
+    private void joinPlayer(JoinPlayerCommand player, Session session) throws IOException, DataAccessException {
         String resp = gamesService.joinPlayer(player);
 
         if (resp.contains("Error")) {
