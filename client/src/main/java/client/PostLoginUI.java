@@ -3,7 +3,7 @@ package client;
 import model.GameData;
 import model.listGames.ListGamesResult;
 import server.ServerFacade;
-
+import server.ResponseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -41,7 +41,7 @@ public class PostLoginUI {
             };
         } catch (ResponseException ex) {
             return ex.getMessage();
-        } catch (server.ResponseException e) {
+        } catch (client.ResponseException e) {
             throw new RuntimeException(e);
         }
     }
@@ -74,7 +74,7 @@ public class PostLoginUI {
 
     }
 
-    public void logout() throws ResponseException {
+    public void logout() throws ResponseException, client.ResponseException {
         server.logout(authToken);
     }
 
@@ -94,7 +94,7 @@ public class PostLoginUI {
                     """;
     }
 
-    public String list() throws ResponseException {
+    public String list() throws ResponseException, client.ResponseException {
         gameList.clear();
         ListGamesResult gamesListed = server.listGames(authToken);
         String list = "";
@@ -110,15 +110,15 @@ public class PostLoginUI {
         return list;
     }
 
-    public String create(String... params) throws ResponseException {
+    public String create(String... params) throws ResponseException, client.ResponseException {
         if (params.length == 1) {
             server.createGame(params[0], authToken);
             return String.format("Chess game %s created.", params[0]);
         }
-        throw new ResponseException(400, "Expected: <GAME NAME>");
+        throw new ResponseException("Expected: <GAME NAME>");
     }
 
-    public String join(String... params) throws ResponseException, server.ResponseException {
+    public String join(String... params) throws server.ResponseException, client.ResponseException {
         if (params.length == 2) {
             GameData game = gameList.get(Integer.parseInt(params[0]));
             System.out.println("Attempting to join game...");
@@ -129,10 +129,10 @@ public class PostLoginUI {
             new GameplayUI(game, sURL, authToken, username).run();
             return String.format("Chess game %s left.", params[0]);
         }
-        throw new ResponseException(400, "Expected: <ID> [WHITE | BLACK]");
+        throw new ResponseException("Expected: <ID> [WHITE | BLACK]");
     }
 
-    public String observe(String... params) throws ResponseException, server.ResponseException {
+    public String observe(String... params) throws server.ResponseException, client.ResponseException {
         if (params.length == 1) {
             GameData game = gameList.get(Integer.parseInt(params[0]));
             System.out.println("Attempting to join game...");
@@ -143,6 +143,6 @@ public class PostLoginUI {
             new GameplayUI(game, sURL, authToken, username).run();
             return String.format("Chess game %s left.", params[0]);
         }
-        throw new ResponseException(400, "Expected: <ID>");
+        throw new ResponseException("Expected: <ID>");
     }
 }

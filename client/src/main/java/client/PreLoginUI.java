@@ -69,7 +69,7 @@ public class PreLoginUI {
     public String login(String... params) throws ResponseException {
         if (params.length == 2) {
             LoginResult loginData = server.login(params[0], params[1]);
-            new PostLoginUI(loginData.authToken(), url).run(params[0]);
+            new PostLoginUI( url, loginData.authToken(), params[0]).run(params[0]);
             return "You have been logged out.\n";
         }
         throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD>");
@@ -78,7 +78,7 @@ public class PreLoginUI {
     public String register(String... params) throws ResponseException {
         if (params.length == 3) {
             RegisterResult registerData = server.register(params[0], params[1], params[2]);
-            new PostLoginUI(registerData.authToken(), url).run(params[0]);
+            new PostLoginUI(url, registerData.authToken(), params[0]).run(params[0]);
             return "You have been logged out.";
         }
         throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD> <EMAIL>");
