@@ -1,20 +1,15 @@
 package client;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessPiece;
-import chess.ChessPosition;
+import chess.*;
 import server.ResponseException;
 import client.websocket.ClientHandler;
 import client.websocket.WebsocketFacade;
 import model.GameData;
 import model.listGames.ListGamesResult;
 import server.ServerFacade;
+import webSocketMessages.serverMessages.LoadMessage;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 import static chess.ChessGame.TeamColor.*;
 import static ui.EscapeSequences.*;
@@ -107,6 +102,45 @@ public class GameplayUI implements ClientHandler {
         return displayWhiteGame();
     }
 
+    public void leave() throws ResponseException {
+        webSocketFacade.leaveGame(authToken, gameData.gameID());
+    }
+
+    public String makeMove(String... params) throws ResponseException {
+        if(params.length == 2) {
+            String[] preMove = params[0].split(",");
+            String[] postMove = params[1].split(",");
+            ChessPosition startingPosition =
+                    new ChessPosition(Integer.parseInt(preMove[0]), lettersToNumbers.get(preMove[1]));
+            ChessPosition endPosition =
+                    new ChessPosition(Integer.parseInt(postMove[0]), lettersToNumbers.get(postMove[1]));
+            ChessMove chessMove = new ChessMove(startingPosition, endPosition, null);
+            webSocketFacade.makeMove(authToken, gameData.gameID(), chessMove);
+            return "";
+        }
+        throw new ResponseException("Expected: ROW,COLUMN(starting position) ROW,COLUMN(ending position)");
+    }
+
+    public String resignGame() throws ResponseException {
+        webSocketFacade.resignGame(authToken, gameData.gameID());
+        return "";
+    }
+
+    private String highlightMoves(String[] params) throws ResponseException {
+        if(params.length == 1) {
+            ChessGame chessGame = gameData.game();
+            String[] positionArray = params[0].split(",");
+            ChessPosition piecePosition =
+                    new ChessPosition(Integer.parseInt(positionArray[0]), lettersToNumbers.get(positionArray[1]));
+            Collection<ChessMove> validMoves = chessGame.validMoves(piecePosition);
+            if(Objects.equals(gameData.blackUsername(), username)) {
+                return displayBlackHighlightedGame(validMoves, piecePosition);
+            } else {
+                return displayWhiteHighlightedGame(validMoves, piecePosition);
+            }
+        }
+        throw new ResponseException("Expected: highlight ROW,COLUMN(piece position)");
+    }
 
 
     public void run() {
@@ -184,6 +218,63 @@ public class GameplayUI implements ClientHandler {
         return returnString;
     }
 
+    public String displayWhiteHighlightedGame(Collection<ChessMove> validMoves, ChessPosition currentPosition) {
+        ChessGame game = gameData.game();
+        ChessBoard board = game.getBoard();
+        String returnString = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + "    a  b  c  d  e  f  g  h    " + RESET_BG_COLOR + "\n";
+        isBlack = true;
+
+        for(int i = 1; i <= 8; i++) {
+            String line = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + String.format(" %s ", i);
+            for(int j = 1; j <= 8; j++) {
+                line += alternateHighlightedColors(isBlack, validMoves,
+                        new ChessMove(currentPosition, new ChessPosition(i, j), null));
+                line = displayLoop(line, board, i, j);
+            }
+            isBlack = !isBlack;
+            line += SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + String.format(" %s ", i) + RESET_BG_COLOR + "\n";
+            returnString = line + returnString;
+        }
+        returnString = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + "    a  b  c  d  e  f  g  h    " +
+                RESET_BG_COLOR + "\n" + returnString;
+        return returnString;
+    }
+
+    public String displayBlackHighlightedGame(Collection<ChessMove> validMoves, ChessPosition currentPosition) {
+        ChessGame game = gameData.game();
+        ChessBoard board = game.getBoard();
+        String returnString = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + "    h  g  f  e  d  c  b  a    " + RESET_BG_COLOR + "\n";
+        isBlack = true;
+
+        for(int i = 8; i >= 1; i--) {
+            String line = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + String.format(" %s ", i);
+            for(int j = 8; j >= 1; j--) {
+                line += alternateHighlightedColors(isBlack, validMoves,
+                        new ChessMove(currentPosition, new ChessPosition(i, j), null));
+                line = displayLoop(line, board, i, j);
+            }
+            isBlack = !isBlack;
+            line += SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + String.format(" %s ", i) + RESET_BG_COLOR + "\n";
+            returnString = line + returnString;
+        }
+        returnString = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + "    h  g  f  e  d  c  b  a    " +
+                RESET_BG_COLOR + "\n" + returnString;
+        return returnString;
+    }
+
+    private String alternateHighlightedColors (boolean isBlack, Collection<ChessMove> validMoves, ChessMove currentPosition) {
+        if(isBlack && validMoves.contains(currentPosition)) {
+            return SET_BG_COLOR_DARK_GREEN;
+        }
+        if(!isBlack && validMoves.contains(currentPosition)) {
+            return SET_BG_COLOR_GREEN;
+        }
+        if(isBlack) {
+            return SET_BG_COLOR_BLACK;
+        }
+        return SET_BG_COLOR_WHITE;
+    }
+
     private String returnCorrectPiece (ChessPiece piece) {
         if(piece.getTeamColor() == WHITE) {
             return SET_TEXT_COLOR_RED + pieceToLetter(piece);
@@ -221,5 +312,30 @@ public class GameplayUI implements ClientHandler {
         } else {
             return SET_BG_COLOR_WHITE;
         }
+    }
+
+    private String displayLoop(String line, ChessBoard board, int i, int j) {
+        isBlack = !isBlack;
+        ChessPiece piece = board.getPiece(new ChessPosition(i, j));
+        if(piece == null) {
+            line += "   ";
+        } else {
+            line += String.format(" %s ", returnCorrectPiece(piece));
+        }
+        return line;
+    }
+
+    @Override
+    public void updateGame(LoadMessage loadGame) throws ResponseException, client.ResponseException {
+        if(loadGame.getGame() == gameData.gameID()) {
+            System.out.println(redraw());
+            System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[GAMEPLAY]>>> " + SET_TEXT_COLOR_GREEN);
+        }
+    }
+
+    @Override
+    public void printMessage(String message) {
+        System.out.println(SET_TEXT_COLOR_RED + message);
+        System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[GAMEPLAY]>>> " + SET_TEXT_COLOR_GREEN);
     }
 }
