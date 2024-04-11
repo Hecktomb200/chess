@@ -7,8 +7,8 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import service.GamesService;
 import webSocketMessages.serverMessages.ErrorMessage;
-import webSocketMessages.serverMessages.LoadGame;
-import webSocketMessages.serverMessages.Notification;
+import webSocketMessages.serverMessages.LoadMessage;
+import webSocketMessages.serverMessages.NotificationMessage;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.*;
 
@@ -64,7 +64,7 @@ public class WebsocketHandler {
             return;
         }
         session.addSessionToGame(player.getGameID(), player.getAuthString(), session);
-        sendMessage(new LoadGame(player.getGameID()), session);
+        sendMessage(new LoadMessage(player.getGameID()), session);
         String color;
         if(player.getPlayerColor() == ChessGame.TeamColor.WHITE) {
             color = "white";
