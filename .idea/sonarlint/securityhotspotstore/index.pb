@@ -99,9 +99,3 @@ X
 (shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
 b
 2client/src/main/java/client/ResponseException.java,b\a\ba00f12b2ac5e5dd22fe23d026965f97cf5ee1aa
-]
--client/src/main/java/client/ServerFacade.java,5\b\5bd64cfd26161b763663e9d940febeb7f9d2d1ad
-k
-;server/src/main/java/server/websocket/WebsocketHandler.java,7\8\78854ba64a4f72c771654f4515b7cd35b1e69362
-k
-;server/src/main/java/server/websocket/WebsocketSession.java,a\d\adca124292f7c4e04c7b848b3fa97722bbebfc17
