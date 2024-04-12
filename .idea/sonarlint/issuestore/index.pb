@@ -75,8 +75,6 @@ l
 <server/src/main/java/dataAccess/AuthDAO/SQLAuthDatabase.java,3\a\3ab04630ba110ba17230360f832d087fe50ccc89
 n
 >server/src/test/java/dataAccessTests/SQLAuthDatabaseTests.java,9\f\9f0c2caf07f32802d89b8fe7268e69aad9b4f95e
-W
-'server/src/main/java/server/Server.java,8\0\8036b8cb9ce2e6760f04e2a3b475b260935bb7b8
 d
 4server/src/main/java/dataAccess/DatabaseManager.java,8\a\8af80df7a501a92c7b9d72b5261e36dbab1df2db
 n
