@@ -12,7 +12,7 @@ import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-public class WebsocketFacade extends Endpoint implements MessageHandler.Whole<String>{
+public class WebsocketFacade extends Endpoint{
     ClientHandler clientHandler;
     Session session;
     public WebsocketFacade(String url, ClientHandler clientHandler) throws ResponseException {
@@ -75,9 +75,4 @@ public class WebsocketFacade extends Endpoint implements MessageHandler.Whole<St
 
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {}
-
-
-
-    @Override
-    public void onMessage(String s) {}
 }

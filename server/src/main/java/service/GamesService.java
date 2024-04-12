@@ -104,6 +104,7 @@ public class GamesService {
       return "Error: incorrect gameID";
     }
 
+
     if((pData.getPlayerColor() == ChessGame.TeamColor.WHITE
             && gameData.whiteUsername() == null ||
             (pData.getPlayerColor() == ChessGame.TeamColor.BLACK

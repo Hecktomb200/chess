@@ -68,6 +68,7 @@ public class Server {
         websocketHandler = new WebsocketHandler(new WebsocketSession(), new GamesService(authDAO, gameDAO));
 
         Spark.port(desiredPort);
+        Spark.webSocket("/connect",websocketHandler);
 
         Spark.staticFiles.location("web");
 
