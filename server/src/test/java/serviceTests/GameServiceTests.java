@@ -11,6 +11,7 @@ import model.createGame.CreateGameResult;
 import model.joinGame.JoinGameRequest;
 import model.listGames.ListGamesRequest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.GamesService;
 

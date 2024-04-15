@@ -6,7 +6,7 @@ import dataAccess.DataAccessException;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import service.GamesService;
-import webSocketMessages.serverMessages.ErrorMessage;
+import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.LoadMessage;
 import webSocketMessages.serverMessages.NotificationMessage;
 import webSocketMessages.serverMessages.ServerMessage;
@@ -42,11 +42,11 @@ public class WebsocketHandler {
     private void resignPlayer(ResignCommand resignData, Session session) throws DataAccessException, IOException {
         String response = gamesService.resignPlayer(resignData);
         if(response.contains("Error")) {
-            sendMessage(new ErrorMessage(response), session);
+            sendMessage(new Error(response), session);
             return;
         }
         if(sessions.checkResigned(resignData.getGameID())) {
-            sendMessage(new ErrorMessage("Another player has already resigned"), session);
+            sendMessage(new Error("Another player has already resigned"), session);
             return;
         }
         sessions.addGameToResigned(resignData.getGameID());
@@ -57,12 +57,12 @@ public class WebsocketHandler {
 
     private void makeMove(MoveCommand moveData, Session session) throws IOException, DataAccessException{
         if(sessions.checkResigned(moveData.getGameID())) {
-            sendMessage(new ErrorMessage("A player has already resigned"), session);
+            sendMessage(new Error("A player has already resigned"), session);
             return;
         }
         String resp = gamesService.makeMove(moveData);
         if (resp.contains("Error")) {
-            sendMessage(new ErrorMessage(resp), session);
+            sendMessage(new Error(resp), session);
             return;
         }
         sendMessage(new LoadMessage(moveData.getGameID()), session);
@@ -82,7 +82,7 @@ public class WebsocketHandler {
     private void joinObserver(JoinObserverCommand playerData, Session session) throws IOException, DataAccessException {
         String resp = gamesService.joinObserver(playerData);
         if (resp.contains("Error")) {
-            sendMessage(new ErrorMessage(resp), session);
+            sendMessage(new Error(resp), session);
             return;
         }
         sessions.addSessionToGame(playerData.getGameID(), playerData.getAuthString(), session);
@@ -96,7 +96,7 @@ public class WebsocketHandler {
         String resp = gamesService.joinPlayer(player);
 
         if (resp.contains("Error")) {
-            sendMessage(new ErrorMessage(resp), session);
+            sendMessage(new Error(resp), session);
             return;
         }
         sessions.addSessionToGame(player.getGameID(), player.getAuthString(), session);

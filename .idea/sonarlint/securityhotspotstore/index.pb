@@ -1,6 +1,4 @@
 
-b
-2shared/src/test/java/passoffTests/TestFactory.java,e\9\e9394cf4f23ef8e3e7f7d6cf9f7b3605ba345448
 
 Oshared/src/test/java/passoffTests/chessTests/chessPieceTests/PawnMoveTests.java,2\2\22d5d7ba9b083d375e88f3a668d54f397cf1c86c
 
@@ -73,16 +71,8 @@ l
 <server/src/main/java/dataAccess/AuthDAO/SQLAuthDatabase.java,3\a\3ab04630ba110ba17230360f832d087fe50ccc89
 g
 7server/src/test/java/serviceTests/UserServiceTests.java,0\3\034a0a7c9077b6ee68d1c97d91fac89c72abff2d
-n
->server/src/test/java/dataAccessTests/SQLAuthDatabaseTests.java,9\f\9f0c2caf07f32802d89b8fe7268e69aad9b4f95e
 d
 4server/src/main/java/dataAccess/DatabaseManager.java,8\a\8af80df7a501a92c7b9d72b5261e36dbab1df2db
-n
->server/src/test/java/dataAccessTests/SQLGameDatabaseTests.java,a\2\a22adb6670741d448102df989c632124b8280acd
-s
-Cserver/src/test/java/passoffTests/serverTests/StandardAPITests.java,6\2\62bf729b8e8a64635bd8b01f3c0b61d8e707e697
-n
->server/src/test/java/dataAccessTests/SQLUserDatabaseTests.java,d\a\daa9caee913cbe75e54408c06bae9f4330c5e71c
 j
 :server/src/main/java/dataAccess/AuthDAO/MemoryAuthDAO.java,8\9\8961beb51f75b4d1c17068b39a7170f706f92caa
 s
@@ -91,14 +81,10 @@ Cserver/src/test/java/passoffTests/serverTests/PersistenceTests.java,4\7\47d66e
 ,client/src/main/java/ui/EscapeSequences.java,b\6\b6823e781e53d487887c1ba9760d63892cdd044c
 \
 ,client/src/main/java/client/postLoginUI.java,b\4\b4c4612dea1bb302101cb174531137a98e420394
-v
-Fshared/src/main/java/webSocketMessages/serverMessages/LoadMessage.java,5\6\56f8698a481ce96dc45f20a379cd1d2440e558b4
 ~
 Nshared/src/main/java/webSocketMessages/serverMessages/NotificationMessage.java,8\5\851e25c8d95a2e6e859df153ecf4f476ed989c89
 x
 Hshared/src/main/java/webSocketMessages/serverMessages/ServerMessage.java,1\f\1f47ab5bc97ec5c3c682cb514ee17051ff425b83
-w
-Gshared/src/main/java/webSocketMessages/serverMessages/ErrorMessage.java,a\6\a640536a3b1655359766930173571274da6ef25e
 |
 Lshared/src/main/java/webSocketMessages/userCommands/JoinObserverCommand.java,a\8\a8dd052e7699bd276666d647491398e8f258c694
 u
@@ -109,10 +95,6 @@ v
 Fshared/src/main/java/webSocketMessages/userCommands/ResignCommand.java,f\e\fe9cf257d44c9da05fde98cd0e88559324f9b130
 h
 8client/src/main/java/client/websocket/ClientHandler.java,3\2\32187a50803236eb9a9ef949f362e879ab2be60f
-]
--server/src/main/java/service/UserService.java,a\8\a8700e81e1eb2180e7427c199a2e2a92de0b6161
-]
--client/src/main/java/server/ServerFacade.java,0\a\0a9e107423acbbcbe25180a8b2278db7b0963e04
 b
 2client/src/main/java/client/ResponseException.java,b\a\ba00f12b2ac5e5dd22fe23d026965f97cf5ee1aa
 b
@@ -121,3 +103,13 @@ b
 ,client/src/main/java/client/PostLoginUI.java,e\5\e50e6298456f2a698c0bcd87bc92c76ce8c097ed
 [
 +client/src/main/java/client/PreLoginUI.java,8\5\85f02dbd3218d51b91b8c0078a17a6ed881bca6b
+k
+;server/src/main/java/server/websocket/WebsocketSession.java,a\d\adca124292f7c4e04c7b848b3fa97722bbebfc17
+N
+client/src/main/java/Main.java,e\c\ecb7a1924b25558f5bedb6f53e4d6092557bd541
+X
+(shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
+z
+Jshared/src/main/java/webSocketMessages/userCommands/JoinPlayerCommand.java,3\4\3425978b99c8ddb1feb5238cb8bbe1cb5d8e1e50
+l
+<server/src/main/java/dataAccess/GameDAO/SQLGameDatabase.java,5\3\53e179cd782b51cc56f24934063d7453d90ac6db

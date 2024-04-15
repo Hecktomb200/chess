@@ -1,14 +1,11 @@
 package server;
 
 import com.google.gson.Gson;
-import dataAccess.AuthDAO.MemoryAuthDAO;
 import dataAccess.AuthDAO.AuthDAO;
 import dataAccess.AuthDAO.SQLAuthDatabase;
 import dataAccess.DataAccessException;
-import dataAccess.GameDAO.MemoryGameDAO;
 import dataAccess.GameDAO.GameDAO;
 import dataAccess.GameDAO.SQLGameDatabase;
-import dataAccess.UserDAO.MemoryUserDAO;
 import dataAccess.UserDAO.SQLUserDatabase;
 import dataAccess.UserDAO.UserDAO;
 import model.createGame.CreateGameRequest;
@@ -17,13 +14,13 @@ import model.listGames.ListGamesRequest;
 import model.login.LoginRequest;
 import model.logout.LogoutRequest;
 import model.register.RegisterRequest;
-import org.eclipse.jetty.websocket.server.WebSocketHandler;
+import server.websocket.WebsocketHandler;
 import service.GamesService;
 import service.RemoveService;
 import service.UserService;
 import server.websocket.*;
 import spark.*;
-import webSocketMessages.serverMessages.ErrorMessage;
+import webSocketMessages.serverMessages.Error;
 
 import java.util.Objects;
 
@@ -68,10 +65,10 @@ public class Server {
         websocketHandler = new WebsocketHandler(new WebsocketSession(), new GamesService(authDAO, gameDAO));
 
         Spark.port(desiredPort);
-        Spark.webSocket("/connect",websocketHandler);
 
         Spark.staticFiles.location("web");
 
+        Spark.webSocket("/connect",websocketHandler);
         Spark.delete("/db", this::deleteHandler);
         Spark.post("/user", this::registerHandler);
         Spark.post("/session", this::loginHandler);
@@ -95,17 +92,17 @@ public class Server {
         } catch(DataAccessException e) {
             if(Objects.equals(e.getMessage(), "User already exists")) {
                 response.status(403);
-                return new Gson().toJson(new ErrorMessage("Error: already taken"));
+                return new Gson().toJson(new Error("Error: already taken"));
             }
             if(Objects.equals(e.getMessage(), "Bad request")) {
                 response.status(400);
-                return new Gson().toJson(new ErrorMessage("Error: bad request"));
+                return new Gson().toJson(new Error("Error: bad request"));
             }
             response.status(500);
-            return new Gson().toJson(new ErrorMessage("Error: DataAccessException thrown but not caught correctly"));
+            return new Gson().toJson(new Error("Error: DataAccessException thrown but not caught correctly"));
         } catch(Exception e) {
             response.status(500);
-            return new Gson().toJson(new ErrorMessage(e.getMessage()));
+            return new Gson().toJson(new Error(e.getMessage()));
         }
     }
 
@@ -118,10 +115,10 @@ public class Server {
             return new Gson().toJson(res);
         } catch(DataAccessException e) {
             response.status(401);
-            return new Gson().toJson(new ErrorMessage("Error: unauthorized"));
+            return new Gson().toJson(new Error("Error: unauthorized"));
         } catch(Exception e) {
             response.status(500);
-            return new Gson().toJson(new ErrorMessage(e.getMessage()));
+            return new Gson().toJson(new Error(e.getMessage()));
         }
     }
 
@@ -134,10 +131,10 @@ public class Server {
             return "";
         } catch(DataAccessException e) {
             response.status(401);
-            return new Gson().toJson(new ErrorMessage("Error: unauthorized"));
+            return new Gson().toJson(new Error("Error: unauthorized"));
         } catch(Exception e) {
             response.status(500);
-            return new Gson().toJson(new ErrorMessage(e.getMessage()));
+            return new Gson().toJson(new Error(e.getMessage()));
         }
     }
 
@@ -152,17 +149,17 @@ public class Server {
         } catch(DataAccessException e) {
             if(Objects.equals(e.getMessage(), "Bad request")) {
                 response.status(400);
-                return new Gson().toJson(new ErrorMessage("Error: bad request"));
+                return new Gson().toJson(new Error("Error: bad request"));
             }
             if(Objects.equals(e.getMessage(), "Unauthorized")) {
                 response.status(401);
-                return new Gson().toJson(new ErrorMessage("Error: unauthorized"));
+                return new Gson().toJson(new Error("Error: unauthorized"));
             }
             response.status(500);
-            return new Gson().toJson(new ErrorMessage("Error: DataAccessException thrown but not caught correctly"));
+            return new Gson().toJson(new Error("Error: DataAccessException thrown but not caught correctly"));
         } catch(Exception e) {
             response.status(500);
-            return new Gson().toJson(new ErrorMessage(e.getMessage()));
+            return new Gson().toJson(new Error(e.getMessage()));
         }
     }
 
@@ -177,21 +174,21 @@ public class Server {
         } catch(DataAccessException e) {
             if(Objects.equals(e.getMessage(), "Unauthorized")) {
                 response.status(401);
-                return new Gson().toJson(new ErrorMessage("Error: unauthorized"));
+                return new Gson().toJson(new Error("Error: unauthorized"));
             }
             if(Objects.equals(e.getMessage(), "Bad request")) {
                 response.status(400);
-                return new Gson().toJson(new ErrorMessage("Error: bad request"));
+                return new Gson().toJson(new Error("Error: bad request"));
             }
             if(Objects.equals(e.getMessage(), "Already taken")) {
                 response.status(403);
-                return new Gson().toJson(new ErrorMessage("Error: already taken"));
+                return new Gson().toJson(new Error("Error: already taken"));
             }
             response.status(500);
-            return new Gson().toJson(new ErrorMessage("Error: DataAccessException thrown but not caught correctly"));
+            return new Gson().toJson(new Error("Error: DataAccessException thrown but not caught correctly"));
         } catch(Exception e) {
             response.status(500);
-            return new Gson().toJson(new ErrorMessage(e.getMessage()));
+            return new Gson().toJson(new Error(e.getMessage()));
         }
     }
 
@@ -204,10 +201,10 @@ public class Server {
             return new Gson().toJson(res);
         } catch(DataAccessException e) {
             response.status(401);
-            return new Gson().toJson(new ErrorMessage("Error: unauthorized"));
+            return new Gson().toJson(new Error("Error: unauthorized"));
         } catch(Exception e) {
             response.status(500);
-            return new Gson().toJson(new ErrorMessage(e.getMessage()));
+            return new Gson().toJson(new Error(e.getMessage()));
         }
     }
 
@@ -219,7 +216,7 @@ public class Server {
             websocketHandler.clearResignedIDs();
         } catch (Exception e) {
             response.status(500);
-            return new Gson().toJson(new ErrorMessage(e.toString()));
+            return new Gson().toJson(new Error(e.toString()));
         }
         return "";
     }

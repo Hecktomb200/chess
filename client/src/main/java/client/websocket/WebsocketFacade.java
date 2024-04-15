@@ -3,7 +3,7 @@ import chess.ChessGame;
 import chess.ChessMove;
 import com.google.gson.Gson;
 import server.ResponseException;
-import webSocketMessages.serverMessages.ErrorMessage;
+import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.LoadMessage;
 import webSocketMessages.serverMessages.NotificationMessage;
 import webSocketMessages.serverMessages.ServerMessage;
@@ -36,7 +36,7 @@ public class WebsocketFacade extends Endpoint{
                         }
                         }
                         case NOTIFICATION -> clientHandler.printMessage(new Gson().fromJson(mes, NotificationMessage.class).getMessage());
-                        case ERROR -> clientHandler.printMessage(new Gson().fromJson(mes, ErrorMessage.class).getErrorMessage());
+                        case ERROR -> clientHandler.printMessage(new Gson().fromJson(mes, Error.class).getErrorMessage());
                     }
                 }
             });
