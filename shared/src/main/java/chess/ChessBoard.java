@@ -50,5 +50,6 @@ public class ChessBoard {
                 squares[col][row] = null;
             }
         }
+        //place boardpieces here or in public class ChessBoard
     }
 }
