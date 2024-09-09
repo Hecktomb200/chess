@@ -35,7 +35,8 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        throw new RuntimeException("Not implemented");
+       ChessPiece pos = squares[position.getColumn() -1][position.getRow() -1];
+       return pos;
     }
 
     /**
