@@ -44,6 +44,11 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
-        throw new RuntimeException("Not implemented");
+        squares = new ChessPiece[8][8];
+        for (int col = 0; col < 8; col++) {
+            for (int row = 0; row < 8; row++) {
+                squares[col][row] = null;
+            }
+        }
     }
 }
