@@ -54,6 +54,7 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> validMoves = new ArrayList<>();
+        //moves are going to go here. Modularize this!
         return validMoves;
         //throw new RuntimeException("Not implemented");
     }
