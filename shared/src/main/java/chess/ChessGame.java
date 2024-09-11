@@ -49,13 +49,42 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        ChessBoard oldBoard = board.clone();
         ChessPiece chessPiece = board.getPiece(startPosition);
-        ArrayList<ChessMove> validMoves = new ArrayList<>();
+        if (chessPiece == null) {
+            return null; }
+        ChessBoard oldBoard = board.clone();
         ArrayList<ChessMove> possibleMoves = new ArrayList<>(chessPiece.pieceMoves(board,startPosition));
+        ArrayList<ChessMove> validMoves = new ArrayList<>();
+
+
+        for (ChessMove move : possibleMoves) {
+            if (moveIsValid(move, oldBoard)) {
+                validMoves.add(move);
+            }
+        }
+        
         return validMoves;
     }
 
+    private boolean moveIsValid(ChessMove move, ChessBoard oldBoard) {
+        try {
+            ChessPiece piece = board.getPiece(move.getStartPosition());
+            if (move.getPromotionPiece() == null) {
+                board.addPiece(move.getEndPosition(), piece); }
+            else {
+                board.addPiece(move.getEndPosition(), new ChessPiece(piece.getTeamColor(), move.getPromotionPiece()));
+            }
+
+            board.addPiece(move.getStartPosition(), null);
+            if (!isInCheck(piece.getTeamColor())) {
+                return true;
+            }
+            board = oldBoard;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 
 
     /**
