@@ -6,15 +6,26 @@ package chess;
  * Note: You can add to this class, but you may not alter
  * signature of the existing methods.
  */
-public class ChessBoard {
+public class ChessBoard implements Cloneable {
     private ChessPiece[][] squares = new ChessPiece[8][8];
 
     public ChessBoard() {
-        for (int col = 0; col < 8; col++) {
-            for (int row = 0; row < 8; row++) {
-                squares[col][row] = null;
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                squares[row][col] = null;
             }
         }
+    }
+
+    @Override
+    public ChessBoard clone() {
+        ChessBoard clonedBoard = new ChessBoard();
+        try {
+            clonedBoard=(ChessBoard) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        return clonedBoard;
     }
 
     /**
