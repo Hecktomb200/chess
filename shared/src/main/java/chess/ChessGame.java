@@ -66,6 +66,14 @@ public class ChessGame {
         return validMoves;
     }
 
+    /**
+     * Gets a valid moves for a piece at the given location
+     *
+     * @param move the chess move being tested
+     * @param oldBoard the board prior to the move being made
+     * @return If the move being tested is valid
+     * @throws RuntimeException if an error occurs while testing
+     */
     private boolean moveIsValid(ChessMove move, ChessBoard oldBoard) {
         try {
             ChessPiece piece = board.getPiece(move.getStartPosition());
@@ -94,7 +102,84 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPiece piece = board.getPiece(move.getStartPosition());
+        if (piece == null) {
+            throw new InvalidMoveException("No piece at the start position");
+        }
+
+        if (!isValidStartPosition(move.getStartPosition()) || !isValidEndPosition(move.getEndPosition())) {
+            throw new InvalidMoveException("Invalid move position");
+        }
+
+        if (!isValidMove(move)) {
+            throw new InvalidMoveException("Invalid move");
+        }
+
+        if (piece.getTeamColor() != getTeamTurn()) {
+            throw new InvalidMoveException("It's not your turn");
+        }
+
+        makeMoveInternal(move, piece);
+        switchTurn();
+    }
+
+    /**
+     * Checks if it's a valid start position
+     * @param position
+     * @return
+     */
+    private boolean isValidStartPosition(ChessPosition position) {
+        return isValidPosition(position);
+    }
+    /**
+     * Checks if it's a valid end position
+     * @param position
+     * @return
+     */
+    private boolean isValidEndPosition(ChessPosition position) {
+        return isValidPosition(position);
+    }
+    /**
+     * Checks if it's a valid position
+     * @param position
+     * @return
+     */
+    private boolean isValidPosition(ChessPosition position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        return row >= 1 && row <= 8 && column >= 1 && column <= 8;
+    }
+    /**
+     * Checks if it's a valid move
+     * @param move
+     * @return
+     */
+    private boolean isValidMove(ChessMove move) {
+        return validMoves(move.getStartPosition()).contains(move);
+    }
+    /**
+     * Makes the desired move
+     * @param move
+     * @param piece
+     */
+    private void makeMoveInternal(ChessMove move, ChessPiece piece) {
+        if (move.getPromotionPiece() == null) {
+            board.addPiece(move.getEndPosition(), piece);
+        } else {
+            board.addPiece(move.getEndPosition(), new ChessPiece(piece.getTeamColor(), move.getPromotionPiece()));
+        }
+        board.addPiece(move.getStartPosition(), null);
+    }
+
+    /**
+     * Switches current turn to other color
+     */
+    private void switchTurn() {
+        if (getTeamTurn() == TeamColor.WHITE) {
+            setTeamTurn(TeamColor.BLACK);
+        } else {
+            setTeamTurn(TeamColor.WHITE);
+        }
     }
 
     /**
