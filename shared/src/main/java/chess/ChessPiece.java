@@ -54,8 +54,48 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> validMoves = new ArrayList<>();
+
+        switch (getPieceType()) {
+            case KING:
+                addKingMoves(validMoves, board, myPosition);
+                break;
+            case QUEEN:
+                addDiagonalMoves(validMoves, board, myPosition);
+                addLinearMoves(validMoves, board, myPosition);
+                break;
+            case BISHOP:
+                addDiagonalMoves(validMoves, board, myPosition);
+                break;
+            case KNIGHT:
+                addKnightMoves(validMoves, board, myPosition);
+                break;
+            case ROOK:
+                addLinearMoves(validMoves, board, myPosition);
+                break;
+            case PAWN:
+                addPawnMoves(validMoves, board, myPosition);
+        }
         //moves are going to go here. Modularize this!
         return validMoves;
-        //throw new RuntimeException("Not implemented");
+    }
+
+    private void addDiagonalMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
+        return;
+    }
+
+    private void addKingMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
+        return;
+    }
+
+    private void addLinearMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
+        return;
+    }
+
+    private void addKnightMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
+        return;
+    }
+
+    private void addPawnMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
+        return;
     }
 }
