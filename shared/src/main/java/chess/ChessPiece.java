@@ -134,7 +134,50 @@ public class ChessPiece {
     }
 
     private void addLinearMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
-        return;
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
+
+        for (int i = -1; i <= 1; i += 2) {
+            int newRow = row + i;
+            int newCol = col;
+
+            while (newRow >= 1 && newRow <= 8) {
+                ChessPosition newPosition = new ChessPosition(newRow, newCol);
+                ChessPiece piece = board.getPiece(newPosition);
+
+                if (piece == null) {
+                    validMoves.add(new ChessMove(myPosition, newPosition, null));
+                } else if (piece.getTeamColor() != getTeamColor()) {
+                    validMoves.add(new ChessMove(myPosition, newPosition, null));
+                    break;
+                } else {
+                    break;
+                }
+
+                newRow += i;
+            }
+        }
+
+        for (int i = -1; i <= 1; i += 2) {
+            int newRow = row;
+            int newCol = col + i;
+
+            while (newCol >= 1 && newCol <= 8) {
+                ChessPosition newPosition = new ChessPosition(newRow, newCol);
+                ChessPiece piece = board.getPiece(newPosition);
+
+                if (piece == null) {
+                    validMoves.add(new ChessMove(myPosition, newPosition, null));
+                } else if (piece.getTeamColor() != getTeamColor()) {
+                    validMoves.add(new ChessMove(myPosition, newPosition, null));
+                    break;
+                } else {
+                    break;
+                }
+
+                newCol += i;
+            }
+        }
     }
 
     private void addKnightMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
