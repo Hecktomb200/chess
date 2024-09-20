@@ -310,7 +310,7 @@ public class ChessPiece {
         int row = position.getRow();
         int col = position.getColumn();
 
-        return row > 1 && row <= 8 && col > 1 && col <= 8;
+        return row >= 1 && row <= 8 && col >= 1 && col <= 8;
     }
 
     @Override
