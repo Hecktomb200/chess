@@ -80,11 +80,57 @@ public class ChessPiece {
     }
 
     private void addDiagonalMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
-        return;
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
+
+        for (int i = -1; i <= 1; i += 2) {
+            for (int j = -1; j <= 1; j += 2) {
+                int newRow = row + i;
+                int newCol = col + j;
+
+                while (newRow >= 1 && newRow <= 8 && newCol >= 1 && newCol <= 8) {
+                    ChessPosition newPosition = new ChessPosition(newRow, newCol);
+                    ChessPiece piece = board.getPiece(newPosition);
+
+                    if (piece == null) {
+                        validMoves.add(new ChessMove(myPosition, newPosition, null));
+                    } else if (piece.getTeamColor() != getTeamColor()) {
+                        validMoves.add(new ChessMove(myPosition, newPosition, null));
+                        break;
+                    } else {
+                        break;
+                    }
+
+                    newRow += i;
+                    newCol += j;
+                }
+            }
+        }
     }
 
     private void addKingMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
-        return;
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+
+                int newRow = row + i;
+                int newCol = col + j;
+
+                if (newRow >= 1 && newRow <= 8 && newCol >= 1 && newCol <= 8) {
+                    ChessPosition newPosition = new ChessPosition(newRow, newCol);
+                    ChessPiece piece = board.getPiece(newPosition);
+
+                    if (piece == null || piece.getTeamColor() != getTeamColor()) {
+                        validMoves.add(new ChessMove(myPosition, newPosition, null));
+                    }
+                }
+            }
+        }
     }
 
     private void addLinearMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
