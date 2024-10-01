@@ -48,7 +48,7 @@ public class ChessGame {
      * @return Set of valid moves for requested piece, or null if no piece at
      * startPosition
      */
-    public Collection<ChessMove> validMoves(ChessPosition startPosition) {
+    public Collection<ChessMove> validMoves(ChessPosition startPosition) throws InvalidMoveException {
         ChessPiece chessPiece = board.getPiece(startPosition);
         if (chessPiece == null) {
             return null; }
@@ -74,7 +74,7 @@ public class ChessGame {
      * @return If the move being tested is valid
      * @throws RuntimeException if an error occurs while testing
      */
-    private boolean moveIsValid(ChessMove move, ChessBoard oldBoard) {
+    private boolean moveIsValid(ChessMove move, ChessBoard oldBoard) throws InvalidMoveException {
         try {
             ChessPiece piece = board.getPiece(move.getStartPosition());
             if (move.getPromotionPiece() == null) {
@@ -89,7 +89,7 @@ public class ChessGame {
             }
             board = oldBoard;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new InvalidMoveException("Error: Invalid Move");
         }
         return false;
     }
@@ -154,7 +154,7 @@ public class ChessGame {
      * @param move
      * @return
      */
-    private boolean isValidMove(ChessMove move) {
+    private boolean isValidMove(ChessMove move) throws InvalidMoveException {
         return validMoves(move.getStartPosition()).contains(move);
     }
     /**
@@ -254,7 +254,7 @@ public class ChessGame {
      * @param teamColor which team to check for checkmate
      * @return True if the specified team is in checkmate
      */
-    public boolean isInCheckmate(TeamColor teamColor) {
+    public boolean isInCheckmate(TeamColor teamColor) throws InvalidMoveException {
         ChessPosition checkKing = checkKingPosition(teamColor);
         if (checkKing == null) {
             return false;
@@ -276,7 +276,7 @@ public class ChessGame {
      * @param teamColor which team to check for stalemate
      * @return True if the specified team is in stalemate, otherwise false
      */
-    public boolean isInStalemate(TeamColor teamColor) {
+    public boolean isInStalemate(TeamColor teamColor) throws InvalidMoveException {
         if (isInCheck(teamColor)) {
             return false;
         }
