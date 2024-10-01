@@ -1,0 +1,6 @@
+
+`	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Т‚Тйьяяяя
+q
+java:S14883"[Immediately return this expression instead of assigning it to the temporary variable "pos".(ЄЖюй
+n
+java:S2975"SRemove this "clone" implementation; use a copy constructor or copy factory instead.(ЦгТмюяяяя
