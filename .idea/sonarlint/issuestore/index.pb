@@ -13,8 +13,6 @@ l
 <shared/src/test/java/passoff/chess/piece/QueenMoveTests.java,a\2\a2bd15f35595ddc78d142da6ccffd03c5a50bac2
 k
 ;shared/src/test/java/passoff/chess/piece/RookMoveTests.java,7\f\7fcc205671386de1ff9a72d54f687d72d4f2fde0
-g
-7shared/src/test/java/passoff/chess/ChessBoardTests.java,7\0\704add9b7257f7adc3fb4fb5f33f76b7c8820901
 f
 6shared/src/test/java/passoff/chess/ChessMoveTests.java,d\0\d0976cffcef29072b835886c43fd62174459be03
 j

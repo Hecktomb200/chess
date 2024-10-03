@@ -277,10 +277,22 @@ public class ChessGame {
         if (!validMoves(kingPosition).isEmpty()) {
             return false;
         }
-        if (canStopCheck()) {
+        ArrayList<ChessPosition> teamPositions = new ArrayList<>();
+        for (int row = 1; row < 9; row++) {
+            for (int col = 1; col < 9; col++) {
+                ChessPiece piece = board.getPiece(new ChessPosition(row, col));
+                if (piece != null && piece.getTeamColor() == teamColor) {
+                    teamPositions.add(new ChessPosition(row, col));
+                }
+            }
+        }
+        ArrayList<ChessMove> moves = new ArrayList<>();
+        for (ChessPosition position : teamPositions) {
+            moves.addAll((validMoves(position)));
+        }
+        if (!moves.isEmpty()) {
             return false;
         }
-
         return true;
     }
 
