@@ -296,32 +296,6 @@ public class ChessGame {
         return true;
     }
 
-    private boolean canStopCheck() {
-        ChessPosition checkKing = checkKingPosition(teamColor);
-        Collection<ChessPosition> enemyPositions = findEnemyPositions(teamColor);
-        for (ChessPosition position : enemyPositions) {
-            ChessPiece enemyPiece = board.getPiece(position);
-            Collection<ChessMove> enemyMoves = enemyPiece.pieceMoves(board, position);
-            if (canCheckKing(enemyMoves, checkKing)) {
-                for (int row = 1; row < 9; row++) {
-                    for (int col = 1; col < 9; col++) {
-                        ChessPosition teamPosition = new ChessPosition(row, col);
-                        ChessPiece teamPiece = board.getPiece(teamPosition);
-                        if (teamPiece != null && teamPiece.getTeamColor() == teamColor) {
-                            Collection<ChessMove> teamMoves = teamPiece.pieceMoves(board, teamPosition);
-                            for (ChessMove move : teamMoves) {
-                                if (move.getEndPosition().equals(position)) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
 
     /**
      * Determines if the given team is in stalemate, which here is defined as having
