@@ -27,3 +27,9 @@ i
 9shared/src/test/java/passoff/chess/game/FullGameTest.java,3\0\304a628b79462cebf64407482375f8e693e3f5cc
 j
 :shared/src/test/java/passoff/chess/game/MakeMoveTests.java,9\1\9175234a3f303bad2cdae147fbe2e704f0f9016d
+Z
+*shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
+d
+4shared/src/main/java/chess/InvalidMoveException.java,e\3\e39c3486fec5f2b87e64591840622613400adc99
+e
+5shared/src/test/java/passoff/chess/TestUtilities.java,1\4\14062c2f20526a866f3144a841b2af7bd4bb47af
