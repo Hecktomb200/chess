@@ -53,15 +53,15 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece chessPiece = board.getPiece(startPosition);
         if (chessPiece == null) {
-            return null; }
-        ChessBoard oldBoard = board.clone();
-        ArrayList<ChessMove> possibleMoves = new ArrayList<>(chessPiece.pieceMoves(board,startPosition));
+            return null;
+        }
+        Collection<ChessMove> possibleMoves = chessPiece.pieceMoves(board,startPosition);
         ArrayList<ChessMove> validMoves = new ArrayList<>();
 
 
         for (ChessMove move : possibleMoves) {
             try {
-                if (moveIsValid(move, oldBoard)) {
+                if (moveIsValid(move)) {
                     validMoves.add(move);
                 }
             } catch (InvalidMoveException e) {
@@ -76,13 +76,15 @@ public class ChessGame {
      * Gets a valid moves for a piece at the given location
      *
      * @param move the chess move being tested
-     * @param oldBoard the board prior to the move being made
      * @return If the move being tested is valid
      * @throws RuntimeException if an error occurs while testing
      */
-    private boolean moveIsValid(ChessMove move, ChessBoard oldBoard) throws InvalidMoveException {
+    private boolean moveIsValid(ChessMove move) throws InvalidMoveException {
+        ChessBoard oldBoard = board.clone();
         try {
             ChessPiece piece = board.getPiece(move.getStartPosition());
+            //System.out.println(board.toString());
+            //System.out.println();
             if (move.getPromotionPiece() == null) {
                 board.addPiece(move.getEndPosition(), piece); }
             else {
@@ -93,9 +95,12 @@ public class ChessGame {
             if (!isInCheck(piece.getTeamColor())) {
                 return true;
             }
-            board = oldBoard;
+
+            //this.board = oldBoard;
         } catch (Exception e) {
-            throw new InvalidMoveException("Error: Invalid Move");
+            System.out.println(e.getMessage());
+        } finally {
+            this.board = oldBoard;
         }
         return false;
     }

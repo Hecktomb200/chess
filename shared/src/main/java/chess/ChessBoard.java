@@ -22,10 +22,11 @@ public class ChessBoard implements Cloneable {
     @Override
     public ChessBoard clone() {
         ChessBoard clonedBoard = new ChessBoard();
-        try {
-            clonedBoard=(ChessBoard) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                clonedBoard.addPiece(new ChessPosition(row+1, col+1), this.getPiece(new ChessPosition(row+1, col+1)));
+            }
         }
         return clonedBoard;
     }
@@ -110,8 +111,12 @@ public class ChessBoard implements Cloneable {
 
     @Override
     public String toString() {
-        return "ChessBoard{" +
-                "squares=" + Arrays.deepToString(squares) +
-                '}';
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                System.out.print(this.getPiece(new ChessPosition(i+1, j+1)) + " ");
+            }
+            System.out.println();
+        }
+        return "";
     }
 }
