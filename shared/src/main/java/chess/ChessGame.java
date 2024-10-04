@@ -384,7 +384,25 @@ public class ChessGame {
             return false;
         }
 
-
+        int startColumn =rookPosition.getColumn();
+        int endColumn =kingPosition.getColumn();
+        if (startColumn < endColumn) {
+            for (int column = startColumn + 1; column < endColumn; column++) {
+                ChessPosition position = new ChessPosition(move.getStartPosition().getRow(), column);
+                ChessPiece piece = board.getPiece(position);
+                if (piece != null) {
+                    return false; // Enemy piece is in the way
+                }
+            }
+        } else {
+            for (int column=startColumn - 1; column > endColumn; column--) {
+                ChessPosition position=new ChessPosition(move.getStartPosition().getRow(), column);
+                ChessPiece piece=board.getPiece(position);
+                if (piece != null) {
+                    return false; // Enemy piece is in the way
+                }
+            }
+        }
 
         ChessBoard oldBoard = board.clone();
         try {
