@@ -69,17 +69,17 @@ public class ChessGame {
             }
         }
 
-        if (chessPiece.getPieceType() == ChessPiece.PieceType.KING) {
-            ChessMove leftSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() - 2), null);
-            ChessMove rightSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() + 2), null);
-            if (canDoCastling(leftSide)) {
-                validMoves.add(leftSide);
+            if (chessPiece.getPieceType() == ChessPiece.PieceType.KING) {
+                ChessMove queenSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() - 2), null);
+                ChessMove kingSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() + 2), null);
+                if (canDoCastling(queenSide)) {
+                    validMoves.add(queenSide);
+                }
+                if (canDoCastling(kingSide)) {
+                    validMoves.add(kingSide);
+                }
             }
-            if (canDoCastling(rightSide)) {
-                validMoves.add(rightSide);
-            }
-        }
-        
+
         return validMoves;
     }
 
@@ -139,6 +139,13 @@ public class ChessGame {
 
         if (piece.getTeamColor() != getTeamTurn()) {
             throw new InvalidMoveException("It's not your turn");
+        }
+
+        if (piece.getPieceType() == ChessPiece.PieceType.KING && Math.abs(move.getEndPosition().getColumn() - move.getStartPosition().getColumn()) == 2) {
+            ChessPosition rookPosition = move.getEndPosition().getColumn() < move.getStartPosition().getColumn() ? new ChessPosition(1, 1) : new ChessPosition(1, 8);
+            ChessPosition newRookPosition = move.getEndPosition().getColumn() < move.getStartPosition().getColumn() ? new ChessPosition(1, 3) : new ChessPosition(1, 6);
+            board.addPiece(newRookPosition, board.getPiece(rookPosition));
+            board.addPiece(rookPosition, null);
         }
 
         makeMoveInternal(move, piece);

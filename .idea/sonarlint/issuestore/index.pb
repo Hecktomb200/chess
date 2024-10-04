@@ -27,7 +27,3 @@ e
 5shared/src/test/java/passoff/chess/TestUtilities.java,1\4\14062c2f20526a866f3144a841b2af7bd4bb47af
 i
 9shared/src/test/java/passoff/chess/game/FullGameTest.java,3\0\304a628b79462cebf64407482375f8e693e3f5cc
-l
-<shared/src/test/java/passoff/chess/game/ValidMovesTests.java,f\f\ffd727fc5e9fd2b43cbe3581e669a4c1ed406a80
-q
-Ashared/src/test/java/passoff/chess/extracredit/CastlingTests.java,d\0\d0e9e756230ba9d1a54e832f6d7ad0a43a707b39
