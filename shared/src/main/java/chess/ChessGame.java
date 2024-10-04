@@ -68,6 +68,17 @@ public class ChessGame {
                 throw new RuntimeException(e);
             }
         }
+
+        if (chessPiece.getPieceType() == ChessPiece.PieceType.KING) {
+            ChessMove leftSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() - 2), null);
+            ChessMove rightSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() + 2), null);
+            if (canDoCastling(leftSide)) {
+                validMoves.add(leftSide);
+            }
+            if (canDoCastling(rightSide)) {
+                validMoves.add(rightSide);
+            }
+        }
         
         return validMoves;
     }
