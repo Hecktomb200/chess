@@ -296,7 +296,6 @@ public class ChessGame {
         return true;
     }
 
-
     /**
      * Determines if the given team is in stalemate, which here is defined as having
      * no valid moves
@@ -321,6 +320,19 @@ public class ChessGame {
                     }
                 }
             }
+        }
+        return true;
+    }
+
+    private boolean canDoCastling(ChessMove move) {
+        if (move.getEndPosition().getColumn() - move.getStartPosition().getColumn() != 2 &&
+                move.getEndPosition().getColumn() - move.getStartPosition().getColumn() != -2) {
+            return false;
+        }
+
+        ChessPosition kingPosition=checkKingPosition(getTeamTurn());
+        if (kingPosition.getRow() != 1 || kingPosition.getColumn() != 5) {
+            return false;
         }
         return true;
     }
