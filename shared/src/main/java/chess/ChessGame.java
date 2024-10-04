@@ -341,6 +341,20 @@ public class ChessGame {
             return false;
         }
 
+        if (isInCheck(getTeamTurn())) {
+            return false;
+        }
+
+        ChessBoard oldBoard = board.clone();
+        try {
+            makeMoveInternal(move, board.getPiece(move.getStartPosition()));
+            if (isInCheck(getTeamTurn())) {
+                return false;
+            }
+        } finally {
+            board = oldBoard;
+        }
+
         return true;
     }
 
