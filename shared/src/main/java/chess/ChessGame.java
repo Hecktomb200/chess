@@ -58,7 +58,6 @@ public class ChessGame {
         Collection<ChessMove> possibleMoves = chessPiece.pieceMoves(board,startPosition);
         ArrayList<ChessMove> validMoves = new ArrayList<>();
 
-
         for (ChessMove move : possibleMoves) {
             try {
                 if (moveIsValid(move)) {
@@ -69,16 +68,16 @@ public class ChessGame {
             }
         }
 
-            if (chessPiece.getPieceType() == ChessPiece.PieceType.KING) {
-                ChessMove queenSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() - 2), null);
-                ChessMove kingSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() + 2), null);
-                if (canDoCastling(queenSide)) {
-                    validMoves.add(queenSide);
-                }
-                if (canDoCastling(kingSide)) {
-                    validMoves.add(kingSide);
-                }
+        if (chessPiece.getPieceType() == ChessPiece.PieceType.KING) {
+            ChessMove queenSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() - 2), null);
+            ChessMove kingSide = new ChessMove(startPosition, new ChessPosition(startPosition.getRow(), startPosition.getColumn() + 2), null);
+            if (canDoCastling(queenSide)) {
+                validMoves.add(queenSide);
             }
+            if (canDoCastling(kingSide)) {
+                validMoves.add(kingSide);
+            }
+        }
 
         return validMoves;
     }
@@ -349,12 +348,30 @@ public class ChessGame {
         }
 
         ChessPosition kingPosition=checkKingPosition(getTeamTurn());
-        if (kingPosition.getRow() != 1 || kingPosition.getColumn() != 5) {
+        if (kingPosition == null) {
             return false;
         }
+        if (kingPosition.getRow() != 1 && kingPosition.getColumn() != 5) {
+            if (kingPosition.getRow() != 8 && kingPosition.getColumn() != 5) {
+                return false;
+            }
+        }
 
-        ChessPosition rookPosition = move.getEndPosition().getColumn() < move.getStartPosition().getColumn() ?
-                new ChessPosition(1, 1) : new ChessPosition(1, 8);
+        ChessPosition rookPosition;
+        if (getTeamTurn() == TeamColor.WHITE) {
+            if (move.getEndPosition().getColumn() < move.getStartPosition().getColumn()) {
+                rookPosition = new ChessPosition(1, 1); // queenSide
+            } else {
+                rookPosition = new ChessPosition(1, 8); // kingSide
+            }
+        } else {
+            if (move.getEndPosition().getColumn() < move.getStartPosition().getColumn()) {
+                rookPosition = new ChessPosition(8, 1); // queenSide
+            } else {
+                rookPosition = new ChessPosition(8, 8); // kingSide
+            }
+        }
+
         if (board.getPiece(rookPosition) == null || board.getPiece(rookPosition).getPieceType() != ChessPiece.PieceType.ROOK) {
             return false;
         }
