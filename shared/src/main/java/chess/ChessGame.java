@@ -334,6 +334,13 @@ public class ChessGame {
         if (kingPosition.getRow() != 1 || kingPosition.getColumn() != 5) {
             return false;
         }
+
+        ChessPosition rookPosition = move.getEndPosition().getColumn() < move.getStartPosition().getColumn() ?
+                new ChessPosition(1, 1) : new ChessPosition(1, 8);
+        if (board.getPiece(rookPosition) == null || board.getPiece(rookPosition).getPieceType() != ChessPiece.PieceType.ROOK) {
+            return false;
+        }
+
         return true;
     }
 
