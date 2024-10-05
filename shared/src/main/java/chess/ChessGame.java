@@ -423,11 +423,49 @@ public class ChessGame {
             if (isInCheck(piece.getTeamColor())) {
                 return false;
             }
+            if (castleInCheck(move, board)) {
+                return false;
+            }
         } finally {
             board = oldBoard;
         }
 
         return true;
+    }
+
+    private boolean castleInCheck(ChessMove move, ChessBoard board) {
+        ChessPosition rookNewPosition = move.getEndPosition().getColumn() < move.getStartPosition().getColumn() ?
+                new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn() + 1) :
+                new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn() - 1);
+
+        Collection<ChessPosition> enemyPositions = findEnemyPositions(teamColor);
+        for (ChessPosition position : enemyPositions) {
+            ChessPiece enemyPiece=board.getPiece(position);
+            Collection<ChessMove> enemyMoves=enemyPiece.pieceMoves(board, position);
+            for (ChessMove enemyMove : enemyMoves) {
+                if (enemyMove.getEndPosition().equals(rookNewPosition)) {
+                    return true;
+                }
+            }
+        }
+
+        int startColumn = Math.min(move.getStartPosition().getColumn(), move.getEndPosition().getColumn());
+        int endColumn = Math.max(move.getStartPosition().getColumn(), move.getEndPosition().getColumn());
+        for (int column = startColumn + 1; column < endColumn; column++) {
+            ChessPosition position = new ChessPosition(move.getStartPosition().getRow(), column);
+            Collection<ChessPosition> enemyPositionsThrough = findEnemyPositions(teamColor);
+            for (ChessPosition enemyPositionThrough : enemyPositionsThrough) {
+                ChessPiece enemyPieceThrough = board.getPiece(enemyPositionThrough);
+                Collection<ChessMove> enemyMovesThrough = enemyPieceThrough.pieceMoves(board, enemyPositionThrough);
+                for (ChessMove enemyMoveThrough : enemyMovesThrough) {
+                    if (enemyMoveThrough.getEndPosition().equals(position)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
