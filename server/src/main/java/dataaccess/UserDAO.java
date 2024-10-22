@@ -27,11 +27,11 @@ public class UserDAO {
     users.put(username, user);
   }
 
-  public Optional<UserData> getUser(String username) throws DataAccessException {
+  public UserData getUser(String username) throws DataAccessException {
     if (username == null || username.isEmpty()) {
       throw new DataAccessException("Username cannot be null or empty");
     }
-    return Optional.ofNullable(users.get(username));
+    return users.get(username);
   }
 
   public void clearUsers() {
