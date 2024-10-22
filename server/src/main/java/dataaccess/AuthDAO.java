@@ -1,4 +1,4 @@
-package dataAccess.AuthDAO;
+package dataaccess;
 
 import dataaccess.DataAccessException;
 import model.AuthData;
