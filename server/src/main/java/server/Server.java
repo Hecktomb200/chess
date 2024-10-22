@@ -5,6 +5,8 @@ import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import dataaccess.UserDAO;
+import model.Login.LoginRequest;
+import model.Login.LoginResult;
 import model.Register.RegisterRequest;
 import model.Register.RegisterResult;
 import service.UserService;
@@ -31,9 +33,26 @@ public class Server {
         //This line initializes the server and can be removed once you have a functioning endpoint 
         Spark.init();
         Spark.post("/user", this::registerHandler);
+        Spark.post("/session", this::loginHandler);
 
         Spark.awaitInitialization();
         return Spark.port();
+    }
+
+    private Object loginHandler(Request request, Response response) {
+        Gson gson = new Gson();
+        UserService userService = new UserService(authDAO, userDAO);
+
+        try {
+            LoginRequest req = gson.fromJson(request.body(), LoginRequest.class);
+            LoginResult res = userService.loginUser(req);
+            response.status(200);
+            return new Gson().toJson(res);
+        } catch(DataAccessException e) {
+            return handleDataAccessError(response, e);
+        } catch(Exception e) {
+            return errorResponse(response, 500, "Error: unexpected server error");
+        }
     }
 
     private Object registerHandler(Request request, Response response) {
@@ -58,6 +77,8 @@ public class Server {
                 return errorResponse(response, 403, "Error: already taken");
             case "Bad request":
                 return errorResponse(response, 400, "Error: bad request");
+            case "Unauthorized":
+                return errorResponse(response, 401, "Error: unauthorized");
             default:
                 return errorResponse(response, 500, "Error: unexpected server error");
         }
