@@ -7,6 +7,7 @@ import dataaccess.GameDAO;
 import dataaccess.UserDAO;
 import model.Login.LoginRequest;
 import model.Login.LoginResult;
+import model.Logout.LogoutRequest;
 import model.Register.RegisterRequest;
 import model.Register.RegisterResult;
 import service.UserService;
@@ -34,9 +35,24 @@ public class Server {
         Spark.init();
         Spark.post("/user", this::registerHandler);
         Spark.post("/session", this::loginHandler);
+        Spark.delete("/session", this::logoutHandler);
 
         Spark.awaitInitialization();
         return Spark.port();
+    }
+
+    private Object logoutHandler(Request request, Response response) {
+        UserService userService = new UserService(authDAO, userDAO);
+
+        try {
+            LogoutRequest req = new LogoutRequest(request.headers("authorization"));
+            userService.logoutUser(req);
+            return "";
+        } catch(DataAccessException e) {
+            return handleDataAccessError(response, e);
+        } catch(Exception e) {
+            return errorResponse(response, 500, "Error: unexpected server error");
+        }
     }
 
     private Object loginHandler(Request request, Response response) {
