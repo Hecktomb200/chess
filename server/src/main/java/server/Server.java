@@ -10,6 +10,8 @@ import model.Login.LoginResult;
 import model.Logout.LogoutRequest;
 import model.Register.RegisterRequest;
 import model.Register.RegisterResult;
+import service.ClearService;
+import service.GameService;
 import service.UserService;
 import spark.*;
 
@@ -36,9 +38,21 @@ public class Server {
         Spark.post("/user", this::registerHandler);
         Spark.post("/session", this::loginHandler);
         Spark.delete("/session", this::logoutHandler);
+        Spark.delete("/db", this::deleteHandler);
+        Spark.post("/game", this::createGameHandler);
+
 
         Spark.awaitInitialization();
         return Spark.port();
+    }
+
+    private Object createGameHandler(Request request, Response response) {
+        GameService gameService = new GameService(authDAO, gameDAO);
+
+    }
+
+    private Object deleteHandler(Request request, Response response) {
+        return "";
     }
 
     private Object logoutHandler(Request request, Response response) {

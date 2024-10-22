@@ -30,7 +30,7 @@ public class AuthDAO {
     authentication.remove(authToken);
   }
 
-  public void deleteAuthTotal() {
+  public void deleteAllAuth() {
     authentication.clear();
   }
 }
