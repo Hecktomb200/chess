@@ -33,3 +33,11 @@ l
 <shared/src/test/java/passoff/chess/game/GameStatusTests.java,3\d\3d8e6e324b6bb763d5d4a1a3f28e088c47790aa0
 l
 <shared/src/test/java/passoff/chess/game/ValidMovesTests.java,f\f\ffd727fc5e9fd2b43cbe3581e669a4c1ed406a80
+Z
+*shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
+q
+Ashared/src/test/java/passoff/chess/extracredit/CastlingTests.java,d\0\d0e9e756230ba9d1a54e832f6d7ad0a43a707b39
+Z
+*shared/src/main/java/chess/ChessBoard.java,d\f\dfc4ec84b5d57ac6e0266e9c319b728da99e0c51
+Y
+)shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
