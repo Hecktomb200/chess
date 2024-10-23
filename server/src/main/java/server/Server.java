@@ -108,6 +108,14 @@ public class Server {
     }
 
     private Object deleteHandler(Request request, Response response) {
+        ClearService clearService = new ClearService(authDAO, userDAO, gameDAO);
+
+        try {
+            clearService.removeAllServices();
+        } catch (Exception e) {
+            response.status(500);
+            return new Gson().toJson(new Error(e.toString()));
+        }
         return "";
     }
 
