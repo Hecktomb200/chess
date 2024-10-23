@@ -6,6 +6,8 @@ import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import dataaccess.UserDAO;
 import model.JoinGame.JoinGameRequest;
+import model.ListGames.ListGamesRequest;
+import model.ListGames.ListGamesResult;
 import model.Login.LoginRequest;
 import model.Login.LoginResult;
 import model.Logout.LogoutRequest;
@@ -44,11 +46,29 @@ public class Server {
         Spark.delete("/db", this::deleteHandler);
         Spark.post("/game", this::createGameHandler);
         Spark.put("/game", this::joinGameHandler);
+        Spark.get("/game", this::listGamesHandler);
 
 
 
         Spark.awaitInitialization();
         return Spark.port();
+    }
+
+    private Object listGamesHandler(Request request, Response response) {
+        Gson gson = new Gson();
+        GameService gameService = new GameService(authDAO, gameDAO);
+
+        try {
+            ListGamesRequest req = new ListGamesRequest(request.headers("authorization"));
+            ListGamesResult res = gameService.listGames(req);
+            response.status(200);
+            return new Gson().toJson(res);
+        } catch(DataAccessException e) {
+            return handleDataAccessError(response, e);
+        } catch(Exception e) {
+            response.status(500);
+            return new Gson().toJson(new Error(e.getMessage()));
+        }
     }
 
     private Object joinGameHandler(Request request, Response response) {
