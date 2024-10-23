@@ -6,6 +6,8 @@ import dataaccess.GameDAO;
 import model.AuthData;
 import model.GameData;
 import model.JoinGame.JoinGameRequest;
+import model.ListGames.ListGamesRequest;
+import model.ListGames.ListGamesResult;
 import model.createGame.CreateGameRequest;
 import model.createGame.CreateGameResult;
 
@@ -79,5 +81,15 @@ public class GameService {
     }
 
     return new GameData(game.gameID(), whiteUsername, blackUsername, game.gameName(), game.game());
+  }
+
+  public ListGamesResult listGames(ListGamesRequest listRequest) throws DataAccessException {
+    AuthData auth = authDAO.getAuth(listRequest.authToken());
+
+    if (auth == null) {
+      throw new DataAccessException("Unauthorized");
+    }
+
+    return new ListGamesResult(gameDAO.listGames());
   }
 }
