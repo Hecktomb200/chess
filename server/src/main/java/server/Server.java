@@ -10,6 +10,8 @@ import model.Login.LoginResult;
 import model.Logout.LogoutRequest;
 import model.Register.RegisterRequest;
 import model.Register.RegisterResult;
+import model.createGame.CreateGameRequest;
+import model.createGame.CreateGameResult;
 import service.ClearService;
 import service.GameService;
 import service.UserService;
@@ -47,8 +49,21 @@ public class Server {
     }
 
     private Object createGameHandler(Request request, Response response) {
+        Gson gson = new Gson();
         GameService gameService = new GameService(authDAO, gameDAO);
 
+        try {
+            String authToken = request.headers("authorization");
+            CreateGameRequest req = gson.fromJson(request.body(), CreateGameRequest.class);
+            CreateGameResult res = gameService.createGame(req, authToken);
+            response.status(200);
+            return new Gson().toJson(res);
+        } catch(DataAccessException e) {
+            return handleDataAccessError(response, e);
+        } catch(Exception e) {
+            response.status(500);
+            return new Gson().toJson(new Error(e.getMessage()));
+        }
     }
 
     private Object deleteHandler(Request request, Response response) {
