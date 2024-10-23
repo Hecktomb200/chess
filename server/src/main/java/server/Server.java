@@ -20,6 +20,7 @@ import service.GameService;
 import service.UserService;
 import spark.*;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Server {
@@ -166,10 +167,11 @@ public class Server {
     }
 
     private Object handleDataAccessError(Response response, DataAccessException e) {
+        //response.body(new Gson().toJson(Map.of("message",e.getMessage())));
         switch (e.getMessage()) {
             case "Already taken":
                 return errorResponse(response, 403, "Error: already taken");
-            case "Bad request":
+            case "Bad Request":
                 return errorResponse(response, 400, "Error: bad request");
             case "Unauthorized":
                 return errorResponse(response, 401, "Error: unauthorized");
@@ -180,7 +182,8 @@ public class Server {
 
     private Object errorResponse(Response response, int status, String message) {
         response.status(status);
-        return new Gson().toJson(new Error(message));
+        response.body(new Gson().toJson(Map.of("message", message)));
+        return new Gson().toJson(Map.of("message", message));
     }
 
     public void stop() {

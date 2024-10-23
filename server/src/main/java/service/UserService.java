@@ -25,7 +25,7 @@ public class UserService {
   public LoginResult loginUser(LoginRequest requestLogin) throws DataAccessException {
     UserData username = userDAO.getUser(requestLogin.username());
     if (username == null || !Objects.equals(username.password(), requestLogin.password())) {
-      throw new DataAccessException("Invalid");
+      throw new DataAccessException("Unauthorized");
     }
 
     String authToken = authDAO.createAuth(requestLogin.username());
@@ -36,16 +36,16 @@ public class UserService {
   public RegisterResult registerUser(RegisterRequest register) throws DataAccessException {
     UserData username = userDAO.getUser(register.username());
     if(register.username() == null || register.username().isEmpty()) {
-      throw new DataAccessException("A Username is required");
+      throw new DataAccessException("Bad Request");
     }
     if(register.password() == null || register.password().isEmpty()) {
-      throw new DataAccessException("A Password is required");
+      throw new DataAccessException("Bad Request");
     }
     if(register.email() == null || register.email().isEmpty()) {
-      throw new DataAccessException("An Email is required");
+      throw new DataAccessException("Bad Request");
     }
     if (username != null) {
-      throw new DataAccessException("Username already exists");
+      throw new DataAccessException("Already taken");
     }
 
     userDAO.createUser(register.username(), register.password(), register.email());
@@ -57,7 +57,7 @@ public class UserService {
   public void logoutUser(LogoutRequest requestLogout) throws DataAccessException {
     AuthData authData = authDAO.getAuth(requestLogout.authToken());
     if (authData == null) {
-      throw new DataAccessException("Invalid Request");
+      throw new DataAccessException("Unauthorized");
     }
 
     authDAO.deleteAuth(requestLogout.authToken());
