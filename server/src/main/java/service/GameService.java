@@ -4,6 +4,8 @@ import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.AuthData;
+import model.GameData;
+import model.JoinGame.JoinGameRequest;
 import model.createGame.CreateGameRequest;
 import model.createGame.CreateGameResult;
 
@@ -34,4 +36,48 @@ public class GameService {
     }
   }
 
+  public void joinGame(JoinGameRequest joinRequest, String authToken) throws DataAccessException {
+    AuthData auth = authDAO.getAuth(authToken);
+    GameData game = gameDAO.getGame(joinRequest.gameID());
+
+    if (auth == null) {
+      throw new DataAccessException("Unauthorized");
+    }
+    if (game == null) {
+      throw new DataAccessException("Bad Request");
+    }
+    if (joinRequest.playerColor() == null && game != null && auth != null) {
+      return;
+    }
+
+    GameData updatedGame = assignPlayerToGame(joinRequest, auth, game);
+    gameDAO.updateGame(updatedGame);
+  }
+
+  private GameData assignPlayerToGame(JoinGameRequest joinRequest, AuthData auth, GameData game) throws DataAccessException {
+    String whiteUsername = game.whiteUsername();
+    String blackUsername = game.blackUsername();
+    String requestedColor = joinRequest.playerColor().toUpperCase();
+
+    switch (requestedColor) {
+      case "WHITE":
+        if (game.whiteUsername() == null || game.whiteUsername().equals(auth.username())) {
+          whiteUsername = auth.username();
+        } else {
+          throw new DataAccessException("Color Already Taken");
+        }
+        break;
+      case "BLACK":
+        if (game.blackUsername() == null || game.blackUsername().equals(auth.username())) {
+          blackUsername = auth.username();
+        } else {
+          throw new DataAccessException("Color Already Taken");
+        }
+        break;
+      default:
+        throw new DataAccessException("Invalid Color Selection");
+    }
+
+    return new GameData(game.gameID(), whiteUsername, blackUsername, game.gameName(), game.game());
+  }
 }
