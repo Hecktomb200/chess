@@ -48,9 +48,12 @@ public class GameService {
     if (game == null) {
       throw new DataAccessException("Bad Request");
     }
-    if (joinRequest.playerColor() == null && game != null && auth != null) {
-      return;
+    if (joinRequest.playerColor() == null) {
+      throw new DataAccessException("Bad Request");
     }
+    //if (joinRequest.playerColor() == null && game != null && auth != null) {
+    //  return;
+    //}
 
     GameData updatedGame = assignPlayerToGame(joinRequest, auth, game);
     gameDAO.updateGame(updatedGame);
@@ -66,18 +69,18 @@ public class GameService {
         if (game.whiteUsername() == null || game.whiteUsername().equals(auth.username())) {
           whiteUsername = auth.username();
         } else {
-          throw new DataAccessException("Color Already Taken");
+          throw new DataAccessException("Already Taken");//"Color Already Taken"
         }
         break;
       case "BLACK":
         if (game.blackUsername() == null || game.blackUsername().equals(auth.username())) {
           blackUsername = auth.username();
         } else {
-          throw new DataAccessException("Color Already Taken");
+          throw new DataAccessException("Already Taken");
         }
         break;
       default:
-        throw new DataAccessException("Invalid Color Selection");
+        throw new DataAccessException("Bad Request");
     }
 
     return new GameData(game.gameID(), whiteUsername, blackUsername, game.gameName(), game.game());

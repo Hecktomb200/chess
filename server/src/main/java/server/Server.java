@@ -169,7 +169,7 @@ public class Server {
     private Object handleDataAccessError(Response response, DataAccessException e) {
         //response.body(new Gson().toJson(Map.of("message",e.getMessage())));
         switch (e.getMessage()) {
-            case "Already taken":
+            case "Already Taken":
                 return errorResponse(response, 403, "Error: already taken");
             case "Bad Request":
                 return errorResponse(response, 400, "Error: bad request");

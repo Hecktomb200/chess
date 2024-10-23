@@ -17,7 +17,7 @@ public class GameDAO {
     if (gameName == null || gameName.isEmpty()) {
       throw new DataAccessException("Game name cannot be null or empty");
     }
-    Integer gameID = UUID.randomUUID().hashCode();
+    Integer gameID = Math.abs(UUID.randomUUID().hashCode());
     games.put(gameID, new GameData(gameID, null, null, gameName, new ChessGame()));
     return gameID;
   }

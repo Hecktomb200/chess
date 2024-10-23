@@ -45,7 +45,7 @@ public class UserService {
       throw new DataAccessException("Bad Request");
     }
     if (username != null) {
-      throw new DataAccessException("Already taken");
+      throw new DataAccessException("Already Taken");
     }
 
     userDAO.createUser(register.username(), register.password(), register.email());
