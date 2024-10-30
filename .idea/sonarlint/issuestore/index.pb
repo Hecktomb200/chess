@@ -87,3 +87,11 @@ i
 .server/src/main/java/service/ClearService.java,0\c\0ce0fac66f556cfc363803137dc55e441cb2efcb
 \
 ,server/src/main/java/dataaccess/AuthDAO.java,3\2\32b7a2b97a8957e906a6d7e19358db18d9b6f1b5
+c
+3server/src/test/java/service/ClearServiceTests.java,9\6\966f5bdd08c528439edcbb0f9ed8b6e6677c1170
+b
+2server/src/test/java/service/GameServiceTests.java,c\b\cbbd93c03402376669a48a743c29d734c3573acf
+i
+9server/src/test/java/passoff/server/StandardAPITests.java,9\4\94f243c94f4488610888d7e06be7837a9ed55c4d
+b
+2server/src/test/java/service/UserServiceTests.java,4\0\40225ce89c71f4bd51f61940039c3dcfdc669a0b
