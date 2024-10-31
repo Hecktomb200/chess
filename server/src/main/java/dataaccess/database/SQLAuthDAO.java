@@ -45,4 +45,17 @@ public class SQLAuthDAO {
     }
     return null;
   }
+
+  public void deleteAuth(String authToken) {
+    try (var connection = DatabaseManager.getConnection()) {
+      var statement = "DELETE FROM auth WHERE authToken=?";
+      executeUpdate(statement, authToken);
+    } catch (DataAccessException | SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private void executeUpdate(String statement, Object... parameters) throws DataAccessException {
+
+  }
 }
