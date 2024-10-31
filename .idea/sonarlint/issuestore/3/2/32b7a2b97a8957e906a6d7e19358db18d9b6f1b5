@@ -1,6 +1,0 @@
-
-™
-java:S1130"wRemove the declaration of thrown exception 'dataaccess.DataAccessException', as it cannot be thrown from method's body.(ò®µ¿ùÿÿÿÿ8¡ŠÏÙ«2
-X	java:S125"<This block of commented-out lines of code should be removed.(Í©Ðš8¡ŠÏÙ«2
-q
-java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(ßª¬É8ÚÆì×«2

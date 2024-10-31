@@ -85,8 +85,6 @@ i
 -server/src/main/java/service/GameService.java,e\e\ee958dc93989023d27c9ff27f8725605e0e3ad3d
 ^
 .server/src/main/java/service/ClearService.java,0\c\0ce0fac66f556cfc363803137dc55e441cb2efcb
-\
-,server/src/main/java/dataaccess/AuthDAO.java,3\2\32b7a2b97a8957e906a6d7e19358db18d9b6f1b5
 c
 3server/src/test/java/service/ClearServiceTests.java,9\6\966f5bdd08c528439edcbb0f9ed8b6e6677c1170
 b

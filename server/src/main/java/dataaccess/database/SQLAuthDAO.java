@@ -58,6 +58,17 @@ public class SQLAuthDAO {
     }
   }
 
+  public void deleteAllAuth() {
+    try (var connection = DatabaseManager.getConnection()) {
+      var statement = "TRUNCATE auth";
+      executeUpdate(statement);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    } catch (DataAccessException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   private void executeUpdate(String statement, Object... parameters) throws DataAccessException {
     try (var connection = DatabaseManager.getConnection()) {
       try (var preparedStatement = connection.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
