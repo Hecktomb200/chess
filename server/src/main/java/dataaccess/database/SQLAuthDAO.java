@@ -8,6 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import static java.sql.Types.NULL;
+
 public class SQLAuthDAO {
 
 
@@ -56,6 +59,24 @@ public class SQLAuthDAO {
   }
 
   private void executeUpdate(String statement, Object... parameters) throws DataAccessException {
+    try (var connection = DatabaseManager.getConnection()) {
+      try (var preparedStatement = connection.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
+        for (var i = 0; i < parameters.length; i++) {
+          var param = parameters[i];
+          if (param instanceof String p) preparedStatement.setString(i + 1, p);
+          else if (param == null) preparedStatement.setNull(i + 1, NULL);
+        }
+        preparedStatement.executeUpdate();
 
+        var resultSet = preparedStatement.getGeneratedKeys();
+        if (resultSet.next()) {
+          resultSet.getInt(1);
+        }
+      }
+    } catch (SQLException e) {
+      throw new DataAccessException(e.toString());
+    } catch (DataAccessException e) {
+      throw new DataAccessException(e.toString());
+    }
   }
 }
