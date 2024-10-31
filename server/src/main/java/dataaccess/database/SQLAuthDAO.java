@@ -4,6 +4,7 @@ import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import model.AuthData;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -58,14 +59,14 @@ public class SQLAuthDAO {
     }
   }
 
-  public void deleteAllAuth() {
-    try (var connection = DatabaseManager.getConnection()) {
-      var statement = "TRUNCATE auth";
-      executeUpdate(statement);
+  public void deleteAllAuth() throws DataAccessException {
+    String truncateSQL="TRUNCATE TABLE auth";
+
+    try (Connection connection=DatabaseManager.getConnection();
+         PreparedStatement preparedStatement=connection.prepareStatement(truncateSQL)) {
+      preparedStatement.executeUpdate();
     } catch (SQLException e) {
-      throw new RuntimeException(e);
-    } catch (DataAccessException e) {
-      throw new RuntimeException(e);
+      throw new DataAccessException("Failed to truncate auth: " + e.getMessage());
     }
   }
 

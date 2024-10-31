@@ -1,15 +1,0 @@
-
-A
-java:S2676"Use the original value instead.(…îôÛıÿÿÿÿ8À‹¯Ø«2
-”
-java:S1130"wRemove the declaration of thrown exception 'dataaccess.DataAccessException', as it cannot be thrown from method's body.(ãÄ®8Â‹¯Ø«2
-Z
-java:S1854"8Remove this useless assignment to local variable "name".(´ìĞüÿÿÿÿ8Ã‹¯Ø«2
-”
-java:S1130"wRemove the declaration of thrown exception 'dataaccess.DataAccessException', as it cannot be thrown from method's body.(½éâë8Ã‹¯Ø«2
-K
-java:S1481")Remove this unused "name" local variable.(´ìĞüÿÿÿÿ8Ã‹¯Ø«2
-q
-java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(ßª¬É8Ä‹¯Ø«2
-U
-java:S1068"3Remove this unused "gameIdGenerator" private field.(ç¿«ÿÿÿÿÿ8Ä‹¯Ø«2
