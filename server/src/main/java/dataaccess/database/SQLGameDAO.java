@@ -58,4 +58,20 @@ public class SQLGameDAO {
     return null;
   }
 
+  public void updateGame(GameData game) throws DataAccessException {
+    String updateSQL = "UPDATE game SET whiteUsername=?, blackUsername=?, gameName=?, chessGame=? WHERE gameID=?";
+
+    try (Connection connection = DatabaseManager.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
+      preparedStatement.setString(1, game.whiteUsername());
+      preparedStatement.setString(2, game.blackUsername());
+      preparedStatement.setString(3, game.gameName());
+      preparedStatement.setString(4, new Gson().toJson(game.game()));
+      preparedStatement.setInt(5, game.gameID());
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      throw new DataAccessException("Failed to update game: " + e.getMessage());
+    }
+  }
+
 }
