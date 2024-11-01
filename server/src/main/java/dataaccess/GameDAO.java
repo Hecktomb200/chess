@@ -41,7 +41,7 @@ public class GameDAO {
     games.put(game.gameID(), game);
   }
 
-  public void deleteGames() {
+  public void deleteGames() throws DataAccessException {
     games.clear();
   }
 }

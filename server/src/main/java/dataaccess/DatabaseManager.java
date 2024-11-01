@@ -86,4 +86,24 @@ public class DatabaseManager {
             throw new DataAccessException("Failed to create auth table: " + e.getMessage());
         }
     }
+
+    public static void createGameTable() throws DataAccessException {
+        String createTableSQL = """
+                CREATE TABLE IF NOT EXISTS game (
+                    gameID INT NOT NULL AUTO_INCREMENT,
+                    whiteUsername VARCHAR(255) DEFAULT NULL,
+                    blackUsername VARCHAR(255) DEFAULT NULL,
+                    gameName VARCHAR(255) NOT NULL,
+                    chessGame TEXT(65000) DEFAULT NULL,
+                    PRIMARY KEY (gameID)
+                )
+                """;
+
+        try (var connection = getConnection();
+             var preparedStatement = connection.prepareStatement(createTableSQL)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to create game table: " + e.getMessage());
+        }
+    }
 }
