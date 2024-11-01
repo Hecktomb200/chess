@@ -93,7 +93,7 @@ public class SQLGameDAO extends GameDAO {
           ChessGame chessGame=new Gson().fromJson(jString, ChessGame.class);
           return new GameData(newGameID, whiteUsername, blackUsername, gameName, chessGame);
         } else {
-          throw new DataAccessException("Game not found.");
+          return null;
         }
       }
     } catch (SQLException e) {

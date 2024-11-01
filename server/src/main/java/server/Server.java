@@ -5,6 +5,9 @@ import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import dataaccess.UserDAO;
+import dataaccess.database.SQLAuthDAO;
+import dataaccess.database.SQLGameDAO;
+import dataaccess.database.SQLUserDAO;
 import model.JoinGame.JoinGameRequest;
 import model.ListGames.ListGamesRequest;
 import model.ListGames.ListGamesResult;
@@ -29,9 +32,13 @@ public class Server {
     private UserDAO userDAO;
 
     public int run(int desiredPort) {
-        authDAO = new AuthDAO();
-        gameDAO = new GameDAO();
-        userDAO = new UserDAO();
+        try {
+            authDAO = new SQLAuthDAO();
+            gameDAO = new SQLGameDAO();
+            userDAO = new SQLUserDAO();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
 
         Spark.port(desiredPort);
 
