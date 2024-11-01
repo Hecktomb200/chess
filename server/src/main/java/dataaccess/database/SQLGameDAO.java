@@ -74,4 +74,14 @@ public class SQLGameDAO {
     }
   }
 
+  public void clear() throws DataAccessException {
+    String truncateSQL = "TRUNCATE TABLE game";
+
+    try (Connection connection = DatabaseManager.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(truncateSQL)) {
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      throw new DataAccessException("Failed to clear games: " + e.getMessage());
+    }
+  }
 }
