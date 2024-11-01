@@ -4,6 +4,7 @@ import chess.ChessGame;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
+import model.GameData;
 
 import java.sql.*;
 
@@ -33,5 +34,28 @@ public class SQLGameDAO {
       throw new DataAccessException("Failed to create game: " + e.getMessage());
     }
   }
-  
+
+  public GameData getGame(int gameID) throws DataAccessException {
+    String selectSQL = "SELECT gameID, whiteUsername, blackUsername, gameName, chessGame FROM game WHERE gameID=?";
+
+    try (Connection connection = DatabaseManager.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+      preparedStatement.setInt(1, gameID);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        if (resultSet.next()) {
+          int id = resultSet.getInt("gameID");
+          String whiteUsername = resultSet.getString("whiteUsername");
+          String blackUsername = resultSet.getString("blackUsername");
+          String gameName = resultSet.getString("gameName");
+          String chessGameJson = resultSet.getString("chessGame");
+          ChessGame chessGame = new Gson().fromJson(chessGameJson, ChessGame.class);
+          return new GameData(id, whiteUsername, blackUsername, gameName, chessGame);
+        }
+      }
+    } catch (SQLException e) {
+      throw new DataAccessException("Failed to get game: " + e.getMessage());
+    }
+    return null;
+  }
+
 }
