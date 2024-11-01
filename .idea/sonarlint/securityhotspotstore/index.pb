@@ -72,15 +72,11 @@ j
 i
 9shared/src/main/java/model/ListGames/ListGamesResult.java,1\d\1df64f48e83aa9933e88fda091414bcaafc68c4f
 \
-,server/src/main/java/server/GameHandler.java,9\8\98206758c790b517346a831857a9d8e50c4a963c
-\
 ,server/src/main/java/server/AuthHandler.java,e\c\ec34fdd9b07f98fa177938bdd8fc5aed112589f3
 \
 ,server/src/main/java/server/UserHandler.java,c\9\c96ccbfe579d5b087cb01e87e3559c239e18071a
 \
 ,server/src/main/java/dataaccess/UserDAO.java,2\b\2b0eb05bbda7131c6aadd106a1b93771fe1cec00
-]
--server/src/main/java/service/GameService.java,e\e\ee958dc93989023d27c9ff27f8725605e0e3ad3d
 ^
 .server/src/main/java/service/ClearService.java,0\c\0ce0fac66f556cfc363803137dc55e441cb2efcb
 c
