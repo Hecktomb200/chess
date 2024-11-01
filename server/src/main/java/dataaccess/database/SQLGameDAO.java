@@ -7,6 +7,8 @@ import dataaccess.DatabaseManager;
 import model.GameData;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class SQLGameDAO {
 
@@ -83,5 +85,27 @@ public class SQLGameDAO {
     } catch (SQLException e) {
       throw new DataAccessException("Failed to clear games: " + e.getMessage());
     }
+  }
+
+  public Collection<GameData> listGames() throws DataAccessException {
+    Collection<GameData> games = new ArrayList<>();
+    String selectSQL = "SELECT gameID, whiteUsername, blackUsername, gameName, chessGame FROM game";
+
+    try (Connection connection = DatabaseManager.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
+      while (resultSet.next()) {
+        int gameID = resultSet.getInt("gameID");
+        String whiteUsername = resultSet.getString("whiteUsername");
+        String blackUsername = resultSet.getString("blackUsername");
+        String gameName = resultSet.getString("gameName");
+        String chessGameJson = resultSet.getString("chessGame");
+        ChessGame chessGame = new Gson().fromJson(chessGameJson, ChessGame.class);
+        games.add(new GameData(gameID, whiteUsername, blackUsername, gameName, chessGame));
+      }
+    } catch (SQLException e) {
+      throw new DataAccessException("Failed to list games: " + e.getMessage());
+    }
+    return games;
   }
 }
