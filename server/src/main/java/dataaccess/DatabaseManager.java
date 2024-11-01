@@ -36,7 +36,7 @@ public class DatabaseManager {
     /**
      * Creates the database if it does not already exist.
      */
-    static void createDatabase() throws DataAccessException {
+    public static void createDatabase() throws DataAccessException {
         try {
             var statement = "CREATE DATABASE IF NOT EXISTS " + DATABASE_NAME;
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
@@ -67,6 +67,23 @@ public class DatabaseManager {
             return conn;
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
+        }
+    }
+
+    public static void createAuthTable() throws DataAccessException {
+        String createTableSQL = """
+                CREATE TABLE IF NOT EXISTS auth (
+                    authToken VARCHAR(255) NOT NULL,
+                    username VARCHAR(255) NOT NULL,
+                    PRIMARY KEY (authToken)
+                )
+                """;
+
+        try (var connection = getConnection();
+             var preparedStatement = connection.prepareStatement(createTableSQL)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to create auth table: " + e.getMessage());
         }
     }
 }

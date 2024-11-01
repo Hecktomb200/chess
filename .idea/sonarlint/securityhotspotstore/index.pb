@@ -77,8 +77,6 @@ i
 ,server/src/main/java/server/UserHandler.java,c\9\c96ccbfe579d5b087cb01e87e3559c239e18071a
 \
 ,server/src/main/java/dataaccess/UserDAO.java,2\b\2b0eb05bbda7131c6aadd106a1b93771fe1cec00
-^
-.server/src/main/java/service/ClearService.java,0\c\0ce0fac66f556cfc363803137dc55e441cb2efcb
 c
 3server/src/test/java/service/ClearServiceTests.java,9\6\966f5bdd08c528439edcbb0f9ed8b6e6677c1170
 b

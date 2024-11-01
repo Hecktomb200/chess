@@ -26,11 +26,11 @@ public class AuthDAO {
     return authentication.get(authToken);
   }
 
-  public void deleteAuth(String authToken) {
+  public void deleteAuth(String authToken) throws DataAccessException {
     authentication.remove(authToken);
   }
 
-  public void deleteAllAuth() {
+  public void deleteAllAuth() throws DataAccessException {
     authentication.clear();
   }
 }

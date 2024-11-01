@@ -1,94 +1,90 @@
 package dataaccess.database;
 
+import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import model.AuthData;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
+public class SQLAuthDAO extends AuthDAO {
 
-public class SQLAuthDAO {
+  public SQLAuthDAO() throws DataAccessException {
+    DatabaseManager.createDatabase();
+    DatabaseManager.createAuthTable();
+  }
 
-
-
-  public AuthData createAuth(String username) throws DataAccessException {
+  @Override
+  public String createAuth(String username) throws DataAccessException {
+    if (username == null || username.isEmpty()) {
+      throw new DataAccessException("Error: unauthorized");
+    }
     String authToken = UUID.randomUUID().toString();
     String insertSQL = "INSERT INTO auth (authToken, username) VALUES (?, ?)";
 
-    try (var connection = DatabaseManager.getConnection();
+    try (Connection connection = DatabaseManager.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
       preparedStatement.setString(1, authToken);
       preparedStatement.setString(2, username);
       preparedStatement.executeUpdate();
-      return new AuthData(authToken, username);
+      return authToken;
     } catch (SQLException e) {
       throw new DataAccessException("Failed to create auth: " + e.getMessage());
     }
   }
 
-  public AuthData getAuth(String authToken) throws DataAccessException{
-    try (var connection = DatabaseManager.getConnection()) {
-      var statement = "SELECT authToken, username FROM auth WHERE authToken=?";
-      try (var preparedStatement = connection.prepareStatement(statement)) {
-        preparedStatement.setString(1, authToken);
-        try (var resultSet = preparedStatement.executeQuery()) {
-          if (resultSet.next()) {
-            var newToken = resultSet.getString(1);
-            var username = resultSet.getString(2);
-            return new AuthData(newToken, username);
-          }
+  @Override
+  public AuthData getAuth(String authToken) throws DataAccessException {
+    if (authToken == null || authToken.isEmpty()) {
+      throw new DataAccessException("Error: bad request");
+    }
+    String selectSQL = "SELECT authToken, username FROM auth WHERE authToken=?";
+
+    try (Connection connection = DatabaseManager.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+      preparedStatement.setString(1, authToken);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        if (resultSet.next()) {
+          String token = resultSet.getString("authToken");
+          String username = resultSet.getString("username");
+          return new AuthData(token, username);
         }
       }
-    } catch (Exception e) {
-      throw new DataAccessException(e.toString());
+    } catch (SQLException e) {
+      throw new DataAccessException("Failed to get auth: " + e.getMessage());
     }
     return null;
   }
 
-  public void deleteAuth(String authToken) {
-    try (var connection = DatabaseManager.getConnection()) {
-      var statement = "DELETE FROM auth WHERE authToken=?";
-      executeUpdate(statement, authToken);
-    } catch (DataAccessException | SQLException e) {
-      throw new RuntimeException(e);
+  @Override
+  public void deleteAuth(String authToken) throws DataAccessException {
+    if (authToken == null || authToken.isEmpty()) {
+      throw new DataAccessException("Error: bad request");
+    }
+    String deleteSQL = "DELETE FROM auth WHERE authToken=?";
+
+    try (Connection connection = DatabaseManager.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
+      preparedStatement.setString(1, authToken);
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      throw new DataAccessException("Failed to delete auth: " + e.getMessage());
     }
   }
 
+  @Override
   public void deleteAllAuth() throws DataAccessException {
-    String truncateSQL="TRUNCATE TABLE auth";
+    String truncateSQL = "TRUNCATE TABLE auth";
 
-    try (Connection connection=DatabaseManager.getConnection();
-         PreparedStatement preparedStatement=connection.prepareStatement(truncateSQL)) {
+    try (Connection connection = DatabaseManager.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(truncateSQL)) {
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       throw new DataAccessException("Failed to truncate auth: " + e.getMessage());
-    }
-  }
-
-  private void executeUpdate(String statement, Object... parameters) throws DataAccessException {
-    try (var connection = DatabaseManager.getConnection()) {
-      try (var preparedStatement = connection.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
-        for (var i = 0; i < parameters.length; i++) {
-          var param = parameters[i];
-          if (param instanceof String p) preparedStatement.setString(i + 1, p);
-          else if (param == null) preparedStatement.setNull(i + 1, NULL);
-        }
-        preparedStatement.executeUpdate();
-
-        var resultSet = preparedStatement.getGeneratedKeys();
-        if (resultSet.next()) {
-          resultSet.getInt(1);
-        }
-      }
-    } catch (SQLException e) {
-      throw new DataAccessException(e.toString());
-    } catch (DataAccessException e) {
-      throw new DataAccessException(e.toString());
     }
   }
 }
