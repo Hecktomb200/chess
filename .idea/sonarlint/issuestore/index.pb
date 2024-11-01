@@ -75,8 +75,6 @@ i
 ,server/src/main/java/server/AuthHandler.java,e\c\ec34fdd9b07f98fa177938bdd8fc5aed112589f3
 \
 ,server/src/main/java/server/UserHandler.java,c\9\c96ccbfe579d5b087cb01e87e3559c239e18071a
-\
-,server/src/main/java/dataaccess/UserDAO.java,2\b\2b0eb05bbda7131c6aadd106a1b93771fe1cec00
 c
 3server/src/test/java/service/ClearServiceTests.java,9\6\966f5bdd08c528439edcbb0f9ed8b6e6677c1170
 b
@@ -85,3 +83,9 @@ i
 9server/src/test/java/passoff/server/StandardAPITests.java,9\4\94f243c94f4488610888d7e06be7837a9ed55c4d
 b
 2server/src/test/java/service/UserServiceTests.java,4\0\40225ce89c71f4bd51f61940039c3dcfdc669a0b
+]
+-server/src/main/java/service/UserService.java,a\8\a8700e81e1eb2180e7427c199a2e2a92de0b6161
+]
+-server/src/main/java/service/GameService.java,e\e\ee958dc93989023d27c9ff27f8725605e0e3ad3d
+\
+,server/src/main/java/dataaccess/AuthDAO.java,3\2\32b7a2b97a8957e906a6d7e19358db18d9b6f1b5

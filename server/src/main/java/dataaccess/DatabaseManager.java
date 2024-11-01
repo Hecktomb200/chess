@@ -106,4 +106,22 @@ public class DatabaseManager {
             throw new DataAccessException("Failed to create game table: " + e.getMessage());
         }
     }
+
+    public static void createUserTable() throws DataAccessException {
+        String createTableSQL = """
+                CREATE TABLE if NOT EXISTS user (
+                                    username VARCHAR(255) NOT NULL,
+                                    password VARCHAR(255) NOT NULL,
+                                    email VARCHAR(255),
+                                    PRIMARY KEY (username)
+                                    )
+                """;
+
+        try (var connection = getConnection();
+             var preparedStatement = connection.prepareStatement(createTableSQL)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to create game table: " + e.getMessage());
+        }
+    }
 }

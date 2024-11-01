@@ -34,7 +34,7 @@ public class UserDAO {
     return users.get(username);
   }
 
-  public void clearUsers() {
+  public void clearUsers() throws DataAccessException {
     users.clear();
   }
 }
