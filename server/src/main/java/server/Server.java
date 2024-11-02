@@ -8,23 +8,22 @@ import dataaccess.UserDAO;
 import dataaccess.database.SQLAuthDAO;
 import dataaccess.database.SQLGameDAO;
 import dataaccess.database.SQLUserDAO;
-import model.JoinGame.JoinGameRequest;
-import model.ListGames.ListGamesRequest;
-import model.ListGames.ListGamesResult;
-import model.Login.LoginRequest;
-import model.Login.LoginResult;
-import model.Logout.LogoutRequest;
-import model.Register.RegisterRequest;
-import model.Register.RegisterResult;
-import model.createGame.CreateGameRequest;
-import model.createGame.CreateGameResult;
+import model.joingame.JoinGameRequest;
+import model.listgames.ListGamesRequest;
+import model.listgames.ListGamesResult;
+import model.login.LoginRequest;
+import model.login.LoginResult;
+import model.logout.LogoutRequest;
+import model.register.RegisterRequest;
+import model.register.RegisterResult;
+import model.creategame.CreateGameRequest;
+import model.creategame.CreateGameResult;
 import service.ClearService;
 import service.GameService;
 import service.UserService;
 import spark.*;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class Server {
     private AuthDAO authDAO;

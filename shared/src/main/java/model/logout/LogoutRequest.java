@@ -1,4 +1,4 @@
-package model.Logout;
+package model.logout;
 
 public record LogoutRequest(String authToken) {
 }

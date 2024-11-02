@@ -5,11 +5,11 @@ import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.AuthData;
 import model.GameData;
-import model.JoinGame.JoinGameRequest;
-import model.ListGames.ListGamesRequest;
-import model.ListGames.ListGamesResult;
-import model.createGame.CreateGameRequest;
-import model.createGame.CreateGameResult;
+import model.joingame.JoinGameRequest;
+import model.listgames.ListGamesRequest;
+import model.listgames.ListGamesResult;
+import model.creategame.CreateGameRequest;
+import model.creategame.CreateGameResult;
 
 public class GameService {
   private AuthDAO authDAO;
@@ -51,9 +51,6 @@ public class GameService {
     if (joinRequest.playerColor() == null) {
       throw new DataAccessException("Bad Request");
     }
-    //if (joinRequest.playerColor() == null && game != null && auth != null) {
-    //  return;
-    //}
 
     GameData updatedGame = assignPlayerToGame(joinRequest, auth, game);
     gameDAO.updateGame(updatedGame);

@@ -4,10 +4,10 @@ import dataaccess.*;
 import dataaccess.AuthDAO;
 import dataaccess.GameDAO;
 import model.GameData;
-import model.createGame.CreateGameRequest;
-import model.createGame.CreateGameResult;
-import model.JoinGame.JoinGameRequest;
-import model.ListGames.ListGamesRequest;
+import model.creategame.CreateGameRequest;
+import model.creategame.CreateGameResult;
+import model.joingame.JoinGameRequest;
+import model.listgames.ListGamesRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

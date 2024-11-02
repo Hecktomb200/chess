@@ -324,8 +324,8 @@ public class ChessPiece implements Cloneable{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
         ChessPiece piece=(ChessPiece) o;
         return pieceColor == piece.pieceColor && type == piece.type;
     }

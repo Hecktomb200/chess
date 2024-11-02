@@ -1,4 +1,4 @@
-package model.ListGames;
+package model.listgames;
 import model.GameData;
 import java.util.Collection;
 
