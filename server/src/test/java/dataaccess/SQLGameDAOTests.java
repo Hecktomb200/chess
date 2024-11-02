@@ -19,10 +19,9 @@ public class SQLGameDAOTests {
   @BeforeEach
   public void setup() throws DataAccessException {
     gameDAO = new SQLGameDAO();
-    gameDAO.deleteGames(); // Clear the database before each test
+    gameDAO.deleteGames();
   }
 
-  // SQL Game Tests
   @Test
   public void deleteGamesSuccess() throws DataAccessException {
     int game = gameDAO.createGame("Game");
