@@ -24,8 +24,10 @@ public class SQLGameDAOTests {
 
   // SQL Game Tests
   @Test
-  public void gameClear() throws DataAccessException {
-
+  public void deleteGamesSuccess() throws DataAccessException {
+    int game = gameDAO.createGame("Game");
+    gameDAO.deleteGames();
+    assertNull(gameDAO.getGame(game));
   }
 
   @Test
@@ -34,7 +36,6 @@ public class SQLGameDAOTests {
     GameData gameData = gameDAO.getGame(game);
     GameData newGameData = new GameData(game, null, null, "Game", new ChessGame());
     Assertions.assertEquals(newGameData, gameData);
-    gameDAO.deleteGames();
   }
 
   @Test
@@ -48,7 +49,6 @@ public class SQLGameDAOTests {
     GameData gameData = gameDAO.getGame(game);
     GameData newGameData = new GameData(game, null, null, "Game", new ChessGame());
     Assertions.assertEquals(newGameData, gameData);
-    gameDAO.deleteGames();
   }
 
   @Test
@@ -63,7 +63,6 @@ public class SQLGameDAOTests {
     gameDAO.createGame("Game3");
     Collection<GameData> gameList = gameDAO.listGames();
     Assertions.assertEquals(3, gameList.size());
-    gameDAO.deleteGames();
   }
 
   @Test
@@ -77,7 +76,6 @@ public class SQLGameDAOTests {
     GameData gameData = gameDAO.getGame(game);
 
     Assertions.assertEquals(newGameData, gameData);
-    gameDAO.deleteGames();
   }
 
   @Test
