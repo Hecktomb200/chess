@@ -69,3 +69,11 @@ c
 3server/src/test/java/service/ClearServiceTests.java,9\6\966f5bdd08c528439edcbb0f9ed8b6e6677c1170
 b
 2server/src/test/java/service/UserServiceTests.java,4\0\40225ce89c71f4bd51f61940039c3dcfdc669a0b
+h
+8server/src/main/java/dataaccess/database/SQLGameDAO.java,5\e\5e058463601ed30054955fba65632ac47a28c985
+d
+4server/src/test/java/dataaccess/SQLGameDAOTests.java,c\8\c83edfdf34fd4ed224e9a572c9e4cc4680b70a5f
+h
+8server/src/main/java/dataaccess/database/SQLAuthDAO.java,b\4\b4b92fa5838b6228400662a5af69dd582f83f90d
+d
+4server/src/test/java/dataaccess/SQLAuthDAOTests.java,1\4\14a499a8d92807e76a52b9d110869f0f6ebaabb7
