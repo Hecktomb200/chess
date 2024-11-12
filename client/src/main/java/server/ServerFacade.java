@@ -3,10 +3,14 @@ package server;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Map;
 
 public class ServerFacade {
   private final String baseUrl;
@@ -38,5 +42,19 @@ public class ServerFacade {
 
   private boolean isSuccessful(int status) {
     return status >= 200 && status < 300;
+  }
+
+  private <T> T parseResponse(HttpURLConnection connection, Class<T> responseClass) throws IOException {
+    try (InputStream inputStream = connection.getInputStream();
+         InputStreamReader reader = new InputStreamReader(inputStream)) {
+      return gson.fromJson(reader, responseClass);
+    }
+  }
+
+  private void writeRequestBody(HttpURLConnection connection, Map<String, Object> body) throws IOException {
+    try (OutputStream outputStream = connection.getOutputStream()) {
+      String jsonBody = gson.toJson(body);
+      outputStream.write(jsonBody.getBytes());
+    }
   }
 }
