@@ -77,3 +77,15 @@ h
 8server/src/main/java/dataaccess/database/SQLAuthDAO.java,b\4\b4b92fa5838b6228400662a5af69dd582f83f90d
 d
 4server/src/test/java/dataaccess/SQLAuthDAOTests.java,1\4\14a499a8d92807e76a52b9d110869f0f6ebaabb7
+b
+2server/src/test/java/service/GameServiceTests.java,c\b\cbbd93c03402376669a48a743c29d734c3573acf
+d
+4server/src/test/java/dataaccess/SQLUserDAOTests.java,1\f\1f289f365b38aab38d371b3d4658027f712ed51a
+Y
+)shared/src/main/java/chess/ChessMove.java,c\5\c52f67c55315a844e23611bb848b35269aaedb66
+\
+,server/src/main/java/dataaccess/AuthDAO.java,3\2\32b7a2b97a8957e906a6d7e19358db18d9b6f1b5
+Y
+)shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
+]
+-server/src/main/java/service/GameService.java,e\e\ee958dc93989023d27c9ff27f8725605e0e3ad3d
