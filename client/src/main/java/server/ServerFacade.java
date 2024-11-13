@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import model.register.RegisterResult;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,11 +11,16 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ServerFacade {
   private final String baseUrl;
   private final Gson gson;
+
+  private static final String USER_ENDPOINT = "/user";
+  private static final String SESSION_ENDPOINT = "/session";
+  private static final String GAME_ENDPOINT = "/game";
 
   public ServerFacade(String baseUrl) {
     this.baseUrl = baseUrl;
@@ -56,5 +62,30 @@ public class ServerFacade {
       String jsonBody = gson.toJson(body);
       outputStream.write(jsonBody.getBytes());
     }
+  }
+
+  private void validateUserInput(String username, String password, String email) {
+    if (username == null || username.isEmpty()) {
+      throw new IllegalArgumentException("Username cannot be null or empty.");
+    }
+    if (password == null || password.isEmpty()) {
+      throw new IllegalArgumentException("Password cannot be null or empty.");
+    }
+    if (email != null && email.isEmpty()) {
+      throw new IllegalArgumentException("Email cannot be empty if provided.");
+    }
+  }
+
+  public RegisterResult register(String username, String password, String email) throws IOException, URISyntaxException {
+    validateUserInput(username, password, email);
+    HttpURLConnection connection = createConnection(USER_ENDPOINT, "POST", null);
+    Map<String, Object> body = new HashMap<>();
+    body.put("username", username);
+    body.put("password", password);
+    body.put("email", email);
+
+    writeRequestBody(connection, body);
+    handleResponse(connection);
+    return parseResponse(connection, RegisterResult.class);
   }
 }
