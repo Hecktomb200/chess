@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import model.login.LoginResult;
 import model.register.RegisterResult;
 
 import java.io.IOException;
@@ -18,18 +19,18 @@ public class ServerFacade {
   private final String baseUrl;
   private final Gson gson;
 
-  private static final String USER_ENDPOINT = "/user";
-  private static final String SESSION_ENDPOINT = "/session";
-  private static final String GAME_ENDPOINT = "/game";
+  private static final String USER_ENDPOINT="/user";
+  private static final String SESSION_ENDPOINT="/session";
+  private static final String GAME_ENDPOINT="/game";
 
   public ServerFacade(String baseUrl) {
-    this.baseUrl = baseUrl;
-    this.gson = new Gson();
+    this.baseUrl=baseUrl;
+    this.gson=new Gson();
   }
 
   private HttpURLConnection createConnection(String endpoint, String method, String authToken) throws IOException, URISyntaxException {
-    URL url = (new URI(this.baseUrl + endpoint)).toURL();
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    URL url=(new URI(this.baseUrl + endpoint)).toURL();
+    HttpURLConnection connection=(HttpURLConnection) url.openConnection();
     connection.setRequestMethod(method);
     connection.setDoOutput(true);
     connection.addRequestProperty("Content-Type", "application/json");
@@ -51,15 +52,15 @@ public class ServerFacade {
   }
 
   private <T> T parseResponse(HttpURLConnection connection, Class<T> responseClass) throws IOException {
-    try (InputStream inputStream = connection.getInputStream();
-         InputStreamReader reader = new InputStreamReader(inputStream)) {
+    try (InputStream inputStream=connection.getInputStream();
+         InputStreamReader reader=new InputStreamReader(inputStream)) {
       return gson.fromJson(reader, responseClass);
     }
   }
 
   private void writeRequestBody(HttpURLConnection connection, Map<String, Object> body) throws IOException {
-    try (OutputStream outputStream = connection.getOutputStream()) {
-      String jsonBody = gson.toJson(body);
+    try (OutputStream outputStream=connection.getOutputStream()) {
+      String jsonBody=gson.toJson(body);
       outputStream.write(jsonBody.getBytes());
     }
   }
@@ -78,8 +79,8 @@ public class ServerFacade {
 
   public RegisterResult register(String username, String password, String email) throws IOException, URISyntaxException {
     validateUserInput(username, password, email);
-    HttpURLConnection connection = createConnection(USER_ENDPOINT, "POST", null);
-    Map<String, Object> body = new HashMap<>();
+    HttpURLConnection connection=createConnection(USER_ENDPOINT, "POST", null);
+    Map<String, Object> body=new HashMap<>();
     body.put("username", username);
     body.put("password", password);
     body.put("email", email);
@@ -87,5 +88,17 @@ public class ServerFacade {
     writeRequestBody(connection, body);
     handleResponse(connection);
     return parseResponse(connection, RegisterResult.class);
+  }
+
+  public LoginResult login(String username, String password) throws IOException, URISyntaxException {
+    validateUserInput(username, password, null);
+    HttpURLConnection connection=createConnection(SESSION_ENDPOINT, "POST", null);
+    Map<String, Object> body=new HashMap<>();
+    body.put("username", username);
+    body.put("password", password);
+
+    writeRequestBody(connection, body);
+    handleResponse(connection);
+    return parseResponse(connection, LoginResult.class);
   }
 }
