@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import model.creategame.CreateGameResult;
 import model.listgames.ListGamesResult;
 import model.login.LoginResult;
 import model.register.RegisterResult;
@@ -118,5 +119,18 @@ public class ServerFacade {
     HttpURLConnection connection = createConnection(GAME_ENDPOINT, "GET", authToken);
     handleResponse(connection);
     return parseResponse(connection, ListGamesResult.class);
+  }
+
+  public CreateGameResult createGame(String gameName, String authToken) throws IOException, URISyntaxException {
+    if (gameName == null || authToken == null) {
+      throw new IllegalArgumentException("Game name and authorization token cannot be null.");
+    }
+    HttpURLConnection connection = createConnection(GAME_ENDPOINT, "POST", authToken);
+    Map<String, Object> body = new HashMap<>();
+    body.put("gameName", gameName);
+
+    writeRequestBody(connection, body);
+    handleResponse(connection);
+    return parseResponse(connection, CreateGameResult.class);
   }
 }
