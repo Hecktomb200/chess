@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import model.listgames.ListGamesResult;
 import model.login.LoginResult;
 import model.register.RegisterResult;
 
@@ -108,5 +109,14 @@ public class ServerFacade {
     }
     HttpURLConnection connection = createConnection(SESSION_ENDPOINT, "DELETE", authToken);
     handleResponse(connection);
+  }
+
+  public ListGamesResult listGames(String authToken) throws IOException, URISyntaxException {
+    if (authToken == null) {
+      throw new IllegalArgumentException("Authorization token cannot be null.");
+    }
+    HttpURLConnection connection = createConnection(GAME_ENDPOINT, "GET", authToken);
+    handleResponse(connection);
+    return parseResponse(connection, ListGamesResult.class);
   }
 }
