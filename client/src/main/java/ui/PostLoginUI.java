@@ -81,8 +81,7 @@ public class PostLoginUI {
     }
     int gameID = Integer.parseInt(params[0]);
     GameData game = getGameById(gameID);
-
-    joinGame(game);
+    joinGame(game, null);
     new GameplayUI(game, sURL, authToken, username).run();
     return String.format("Chess game %s left.", params[0]);
   }
@@ -91,14 +90,23 @@ public class PostLoginUI {
     return gameList.get(gameID);
   }
 
-  private void joinGame(GameData game) throws IOException, URISyntaxException {
+  private void joinGame(GameData game, String playerColor) throws IOException, URISyntaxException {
     System.out.println("Joining game...");
-    server.joinGame(authToken, null, game.gameID());
+    server.joinGame(authToken, playerColor, game.gameID());
     list();
   }
 
-  private String join(String[] params) {
-    return null;
+  private String join(String[] params) throws IOException, URISyntaxException {
+    if (params.length != 2) {
+      throw new IOException("Expected: <ID> [WHITE | BLACK]");
+    }
+    int gameId = Integer.parseInt(params[0]);
+    String playerColor = params[1];
+
+    GameData game = getGameById(gameId);
+    joinGame(game, playerColor);
+    new GameplayUI(game, sURL, authToken, username).run();
+    return String.format("Chess game %s left.", params[0]);
   }
 
   private String create(String[] params) throws IOException, URISyntaxException {
