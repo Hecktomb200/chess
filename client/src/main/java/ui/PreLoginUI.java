@@ -2,6 +2,8 @@ package ui;
 
 import server.ServerFacade;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
@@ -22,7 +24,7 @@ public class PreLoginUI {
     try (Scanner scanner = new Scanner(System.in)) {
       String command;
       do {
-        System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[LOGGED_OUT] >>> " + SET_TEXT_COLOR_GREEN);
+        System.out.print("\n" + "[LOGGED_OUT] >>> " + SET_TEXT_COLOR_GREEN);
         command = scanner.nextLine();
         processCommand(command);
       } while (!command.equalsIgnoreCase("quit"));
@@ -34,8 +36,39 @@ public class PreLoginUI {
     System.out.println("♕ Welcome to 240 chess! Type 'help' to get started. ♕");
   }
 
-  private void processCommand(String line) {
+  private void processCommand(String input) {
+    String[] commandParts = input.toLowerCase().split(" ");
+    String command = commandParts[0];
+    String[] params = Arrays.copyOfRange(commandParts, 1, commandParts.length);
+
+    switch (command) {
+      case "login":
+        handleLogin(params);
+        break;
+      case "register":
+        handleRegister(params);
+        break;
+      case "quit":
+        System.out.println("Exiting the application. Have a good day!");
+        break;
+      default:
+        invalidCommandMessage();
+        break;
+    }
   }
+
+  private void invalidCommandMessage() {
+    System.out.println("Invalid command. Type 'help' for a list of valid commands.");
+  }
+
+  private void handleRegister(String[] params) {
+
+  }
+
+  private void handleLogin(String[] params) {
+
+  }
+
 
   private void help() {
   }
