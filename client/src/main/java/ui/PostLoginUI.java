@@ -82,8 +82,16 @@ public class PostLoginUI {
     return null;
   }
 
-  private boolean create(String[] params) {
-    return false;
+  private String create(String[] params) throws IOException, URISyntaxException {
+    if (params.length != 1) {
+      throw new IOException("Expected: <GAME NAME>");
+    }
+    createGame(params[0]);
+    return String.format("Chess game %s created.", params[0]);
+  }
+
+  private void createGame(String gameName) throws IOException, URISyntaxException {
+    server.createGame(gameName, authToken);
   }
 
   private String list() throws IOException, URISyntaxException {
