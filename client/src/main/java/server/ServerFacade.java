@@ -133,4 +133,19 @@ public class ServerFacade {
     handleResponse(connection);
     return parseResponse(connection, CreateGameResult.class);
   }
+
+  public void joinGame(String authToken, String playerColor, int gameID) throws IOException, URISyntaxException {
+    if (authToken == null) {
+      throw new IllegalArgumentException("Authorization token cannot be null.");
+    }
+    HttpURLConnection connection = createConnection(GAME_ENDPOINT, "PUT", authToken);
+    Map<String, Object> body = new HashMap<>();
+    body.put("gameID", gameID);
+    if (playerColor != null) {
+      body.put("playerColor", playerColor);
+    }
+
+    writeRequestBody(connection, body);
+    handleResponse(connection);
+  }
 }
