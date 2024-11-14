@@ -77,7 +77,7 @@ public class ServerFacade {
     }
   }
 
-  public RegisterResult register(String username, String password, String email) throws IOException, URISyntaxException {
+  public RegisterResult registerUser(String username, String password, String email) throws IOException, URISyntaxException {
     validateUserInput(username, password, email);
     HttpURLConnection connection=createConnection(USER_ENDPOINT, "POST", null);
     Map<String, Object> body=new HashMap<>();
@@ -90,7 +90,7 @@ public class ServerFacade {
     return parseResponse(connection, RegisterResult.class);
   }
 
-  public LoginResult login(String username, String password) throws IOException, URISyntaxException {
+  public LoginResult loginUser(String username, String password) throws IOException, URISyntaxException {
     validateUserInput(username, password, null);
     HttpURLConnection connection=createConnection(SESSION_ENDPOINT, "POST", null);
     Map<String, Object> body=new HashMap<>();
@@ -100,5 +100,13 @@ public class ServerFacade {
     writeRequestBody(connection, body);
     handleResponse(connection);
     return parseResponse(connection, LoginResult.class);
+  }
+
+  public void logoutUser(String authToken) throws IOException, URISyntaxException {
+    if (authToken == null) {
+      throw new IllegalArgumentException("Authorization token cannot be null.");
+    }
+    HttpURLConnection connection = createConnection(SESSION_ENDPOINT, "DELETE", authToken);
+    handleResponse(connection);
   }
 }
