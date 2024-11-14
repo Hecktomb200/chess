@@ -1,8 +1,10 @@
 package ui;
 
+import model.register.RegisterResult;
 import server.ServerFacade;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -17,7 +19,7 @@ public class PreLoginUI {
     url = serverUrl;
   }
 
-  public void run() {
+  public void run() throws IOException, URISyntaxException {
     displayWelcomeMessage();
     help();
 
@@ -36,7 +38,7 @@ public class PreLoginUI {
     System.out.println("♕ Welcome to 240 chess! Type 'help' to get started. ♕");
   }
 
-  private void processCommand(String input) {
+  private void processCommand(String input) throws IOException, URISyntaxException {
     String[] commandParts = input.toLowerCase().split(" ");
     String command = commandParts[0];
     String[] params = Arrays.copyOfRange(commandParts, 1, commandParts.length);
@@ -49,7 +51,7 @@ public class PreLoginUI {
         handleRegister(params);
         break;
       case "quit":
-        System.out.println("Exiting the application. Have a good day!");
+        System.out.println("Exiting the application.");
         break;
       default:
         invalidCommandMessage();
@@ -61,9 +63,17 @@ public class PreLoginUI {
     System.out.println("Invalid command. Type 'help' for a list of valid commands.");
   }
 
-  private void handleRegister(String[] params) {
-
-  }
+  private void handleRegister(String[] params) throws IOException, URISyntaxException {
+    if (params.length != 3) {
+      throw new IOException("Expected: <USERNAME> <PASSWORD> <EMAIL>");
+    }
+    String username = params[0];
+    String password = params[1];
+    String email = params[2];
+    RegisterResult registerData = server.registerUser(username, password, email);
+    new PostLoginUI(url, registerData.authToken(), username).run(username);
+    System.out.println("You have been logged in.");
+    }
 
   private void handleLogin(String[] params) {
 
