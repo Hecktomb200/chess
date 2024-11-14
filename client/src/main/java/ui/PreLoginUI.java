@@ -89,5 +89,10 @@ public class PreLoginUI {
 
 
   private void help() {
+    System.out.println("""
+                    - register <USERNAME> <PASSWORD> <EMAIL>
+                    - login <USERNAME> <PASSWORD>
+                    - quit
+                    """);
   }
 }
