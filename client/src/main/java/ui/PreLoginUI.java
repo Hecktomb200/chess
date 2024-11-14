@@ -1,5 +1,6 @@
 package ui;
 
+import model.login.LoginResult;
 import model.register.RegisterResult;
 import server.ServerFacade;
 
@@ -75,8 +76,15 @@ public class PreLoginUI {
     System.out.println("You have been logged in.");
     }
 
-  private void handleLogin(String[] params) {
-
+  private void handleLogin(String[] params) throws IOException, URISyntaxException {
+    if (params.length != 2) {
+      throw new IOException("Expected: <USERNAME> <PASSWORD>");
+    }
+    String username = params[0];
+    String password = params[1];
+    LoginResult loginData = server.loginUser(username, password);
+    new PostLoginUI(url, loginData.authToken(), username).run(username);
+    System.out.println("You have been logged in.");
   }
 
 
