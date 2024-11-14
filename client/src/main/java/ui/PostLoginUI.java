@@ -17,12 +17,13 @@ public class PostLoginUI {
   private final String sURL;
   private final String authToken;
   private final HashMap<Integer, GameData> gameList;
+  private final String username;
   public PostLoginUI(String url, String authToken, String username) {
     server = new ServerFacade(url);
     sURL = url;
     this.authToken = authToken;
     gameList = new HashMap<>();
-
+    this.username = username;
   }
 
   public void run(String username) {
@@ -74,8 +75,26 @@ public class PostLoginUI {
     }
   }
 
-  private String observe(String[] params) {
-    return null;
+  private String observe(String[] params) throws IOException, URISyntaxException {
+    if (params.length != 1) {
+      throw new IOException("Expected: <ID>");
+    }
+    int gameID = Integer.parseInt(params[0]);
+    GameData game = getGameById(gameID);
+
+    joinGame(game);
+    new GameplayUI(game, sURL, authToken, username).run();
+    return String.format("Chess game %s left.", params[0]);
+  }
+
+  private GameData getGameById(int gameID) {
+    return gameList.get(gameID);
+  }
+
+  private void joinGame(GameData game) throws IOException, URISyntaxException {
+    System.out.println("Joining game...");
+    server.joinGame(authToken, null, game.gameID());
+    list();
   }
 
   private String join(String[] params) {
