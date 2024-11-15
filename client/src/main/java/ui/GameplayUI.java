@@ -130,25 +130,6 @@ public class GameplayUI {
     return boardRepresentation.toString();
   }
 
-  private String createInvertedRow(int row, ChessBoard chessBoard) {
-    StringBuilder rowString = new StringBuilder();
-    boolean isBlackSquare = (row % 2 != 0);
-
-    rowString.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", row));
-
-    for (int col = 8; col >= 1; col--) {
-      rowString.append(swapColors(isBlackSquare));
-      isBlackSquare = !isBlackSquare;
-
-      ChessPiece piece = chessBoard.getPiece(new ChessPosition(row, col));
-      rowString.append(piece == null ? "   " : String.format(" %s ", getPiece(piece)));
-    }
-
-    rowString.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", row) + RESET_BG_COLOR);
-
-    return rowString.toString();
-  }
-
   public String drawWhiteBoard() {
     ChessGame currentGame = gameData.game();
     ChessBoard chessboard = currentGame.getBoard();
@@ -214,14 +195,6 @@ public class GameplayUI {
     pieceMap.put(ChessPiece.PieceType.QUEEN, "Q");
 
     return pieceMap.getOrDefault(piece.getPieceType(), "?");
-  }
-
-  private String swapColors (boolean isBlackSquare) {
-    if(isBlackSquare) {
-      return SET_BG_COLOR_BLACK;
-    } else {
-      return SET_BG_COLOR_WHITE;
-    }
   }
 
   private GameData findGameById(Collection<GameData> games, int gameId) {
