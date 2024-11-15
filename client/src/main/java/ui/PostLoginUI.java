@@ -52,27 +52,31 @@ public class PostLoginUI {
 
     switch (command) {
       case "list":
-        System.out.print(list());
+        list();
         break;
       case "create":
-        System.out.print(create(params));
+        create(params);
         break;
       case "join":
-        System.out.print(join(params));
+        join(params);
         break;
       case "observe":
-        System.out.print(observe(params));
+        observe(params);
         break;
       case "logout":
-        System.out.println("logout");
+        logout();
         break;
       case "quit":
-        System.out.println("quit");
+        System.out.println("Exiting");
         break;
       default:
-        help();
+        invalidCommandMessage();
         break;
     }
+  }
+
+  private void invalidCommandMessage() {
+    System.out.println("Invalid command. Type 'help' for a list of valid commands.");
   }
 
   private String observe(String[] params) throws IOException, URISyntaxException {
