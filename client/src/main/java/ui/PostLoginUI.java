@@ -69,6 +69,9 @@ public class PostLoginUI {
       case "quit":
         System.out.println("Exiting");
         break;
+      case "help":
+        help();
+        break;
       default:
         invalidCommandMessage();
         break;

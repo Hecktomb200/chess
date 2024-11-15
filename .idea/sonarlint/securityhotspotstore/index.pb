@@ -31,8 +31,6 @@ l
 <shared/src/test/java/passoff/chess/game/ValidMovesTests.java,f\f\ffd727fc5e9fd2b43cbe3581e669a4c1ed406a80
 q
 Ashared/src/test/java/passoff/chess/extracredit/CastlingTests.java,d\0\d0e9e756230ba9d1a54e832f6d7ad0a43a707b39
-N
-server/src/main/java/Main.java,f\4\f49eb7b67ea6fd5de7d54f4d8e080215196bedf3
 h
 8server/src/main/java/dataaccess/DataAccessException.java,2\e\2ea31417f70d86666411d348ab6c6846566a4c92
 X
@@ -62,8 +60,6 @@ j
 i
 9shared/src/main/java/model/ListGames/ListGamesResult.java,1\d\1df64f48e83aa9933e88fda091414bcaafc68c4f
 \
-,server/src/main/java/server/AuthHandler.java,e\c\ec34fdd9b07f98fa177938bdd8fc5aed112589f3
-\
 ,server/src/main/java/server/UserHandler.java,c\9\c96ccbfe579d5b087cb01e87e3559c239e18071a
 c
 3server/src/test/java/service/ClearServiceTests.java,9\6\966f5bdd08c528439edcbb0f9ed8b6e6677c1170
@@ -73,8 +69,6 @@ h
 8server/src/main/java/dataaccess/database/SQLGameDAO.java,5\e\5e058463601ed30054955fba65632ac47a28c985
 d
 4server/src/test/java/dataaccess/SQLGameDAOTests.java,c\8\c83edfdf34fd4ed224e9a572c9e4cc4680b70a5f
-h
-8server/src/main/java/dataaccess/database/SQLAuthDAO.java,b\4\b4b92fa5838b6228400662a5af69dd582f83f90d
 d
 4server/src/test/java/dataaccess/SQLAuthDAOTests.java,1\4\14a499a8d92807e76a52b9d110869f0f6ebaabb7
 b

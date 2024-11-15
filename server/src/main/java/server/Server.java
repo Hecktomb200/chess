@@ -54,6 +54,9 @@ public class Server {
         Spark.post("/game", this::createGameHandler);
         Spark.put("/game", this::joinGameHandler);
         Spark.get("/game", this::listGamesHandler);
+        Spark.exception(Exception.class, (Exception error, Request request, Response response) -> {
+            System.out.println(error);
+        });
 
 
 

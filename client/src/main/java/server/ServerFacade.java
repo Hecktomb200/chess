@@ -10,10 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +42,9 @@ public class ServerFacade {
   private void handleResponse(HttpURLConnection connection) throws IOException {
     int statusCode=connection.getResponseCode();
     if (!isSuccessful(statusCode)) {
-      throw new IOException("Error: " + statusCode + " - " + connection.getResponseMessage());
+      String sBody = new String(connection.getErrorStream().readAllBytes());
+      Map body = gson.fromJson(sBody, Map.class);
+      throw new IOException("Error: " + statusCode + " - " + body.get("message"));
     }
   }
 
@@ -147,5 +146,22 @@ public class ServerFacade {
 
     writeRequestBody(connection, body);
     handleResponse(connection);
+  }
+
+  public void delete() throws URISyntaxException, IOException {
+    HttpURLConnection connection = null;
+    try {
+      URI resourceUri = new URI(this.baseUrl + "/db");
+      URL endpoint = resourceUri.toURL();
+      connection = (HttpURLConnection) endpoint.openConnection();
+
+      connection.setRequestMethod("DELETE");
+      connection.setDoOutput(true);
+      connection.addRequestProperty("Content-Type", "application/json");
+      connection.connect();
+      handleResponse(connection);
+    } catch (Exception ex) {
+      throw new RuntimeException(ex.getMessage());
+    }
   }
 }

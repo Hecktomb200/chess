@@ -54,6 +54,9 @@ public class PreLoginUI {
       case "quit":
         System.out.println("Exiting the application.");
         break;
+      case "help":
+        help();
+        break;
       default:
         invalidCommandMessage();
         break;
