@@ -1,6 +1,7 @@
 package client;
 
 
+import model.listgames.ListGamesResult;
 import model.login.LoginResult;
 import model.register.RegisterResult;
 import org.junit.jupiter.api.*;
@@ -17,6 +18,9 @@ public class ServerFacadeTests {
     private Server server;
     private ServerFacade serverFacade;
     private String authToken;
+    private static final String USERNAME = "TestUser";
+    private static final String PASSWORD = "TestPassword123";
+    private static final String EMAIL = "Email@example.com";
 
     @BeforeAll
     void init() {
@@ -44,7 +48,7 @@ public class ServerFacadeTests {
 
     @Test
     void registerSuccess() throws Exception {
-        var authData=serverFacade.registerUser("TestUsername", "TestPassword", "Email@email.com");
+        var authData=serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
         Assertions.assertNotNull(authData);
         Assertions.assertTrue(authData.authToken().length() > 10);
         serverFacade.delete();
@@ -53,44 +57,64 @@ public class ServerFacadeTests {
     @Test
     void registerFail() throws Exception {
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> serverFacade.registerUser("TestUsername", null, "Email@email.com"));
+                () -> serverFacade.registerUser(USERNAME, null, EMAIL));
         serverFacade.delete();
     }
 
     @Test
     void loginSuccess() throws Exception {
-        serverFacade.registerUser("TestUsername", "TestPassword", "Email@email.com");
-        var loginData = serverFacade.loginUser("TestUsername", "TestPassword");
+        serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
+        var loginData = serverFacade.loginUser(USERNAME, PASSWORD);
         Assertions.assertNotNull(loginData);
         Assertions.assertTrue(loginData.authToken().length() > 10);
-        Assertions.assertEquals("TestUsername", loginData.username());
+        Assertions.assertEquals(USERNAME, loginData.username());
         serverFacade.delete();
     }
 
     @Test
     void loginFail() throws Exception {
-        serverFacade.registerUser("TestUsername", "TestPassword", "Email@email.com");
+        serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> serverFacade.loginUser(null, "TestPassword"));
+                () -> serverFacade.loginUser(null, PASSWORD));
         serverFacade.delete();
     }
 
     @Test
     void logoutSuccess() throws Exception {
-        RegisterResult registerData = serverFacade.registerUser("TestUsername", "TestPassword", "Email@email.com");
+        RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
         serverFacade.logoutUser(registerData.authToken());
-        LoginResult loginData = serverFacade.loginUser("TestUsername", "TestPassword");
+        LoginResult loginData = serverFacade.loginUser(USERNAME, PASSWORD);
         Assertions.assertNotNull(loginData.authToken());
         Assertions.assertNotEquals(registerData.authToken(), loginData.authToken());
-        Assertions.assertEquals("TestUsername", loginData.username());
+        Assertions.assertEquals(USERNAME, loginData.username());
         serverFacade.delete();
     }
 
     @Test
     void logoutFail() throws Exception {
-        serverFacade.registerUser("TestUsername", "TestPassword", "EmailO@email.com");
+        serverFacade.registerUser(USERNAME, PASSWORD, "EmailO@email.com");
         Assertions.assertThrows(IOException.class,
                 () -> serverFacade.logoutUser(UUID.randomUUID().toString()));
+        serverFacade.delete();
+    }
+
+    @Test
+    void listGamesSuccess() throws Exception {
+        RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
+        serverFacade.createGame("Game", registerData.authToken());
+        serverFacade.createGame("Game1", registerData.authToken());
+        ListGamesResult listGamesData = serverFacade.listGames(registerData.authToken());
+        Assertions.assertNotNull(listGamesData.games().size());
+        Assertions.assertEquals(2, listGamesData.games().size());
+        serverFacade.delete();
+    }
+
+    @Test
+    void listGamesFail() throws Exception {
+        RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
+        serverFacade.createGame("Game", registerData.authToken());
+        serverFacade.createGame("Game1", registerData.authToken());
+        Assertions.assertThrows(IOException.class, () -> serverFacade.listGames(UUID.randomUUID().toString()));
         serverFacade.delete();
     }
 
