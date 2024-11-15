@@ -44,6 +44,7 @@ public class GameplayUI {
   }
 
   public void processCommand(String input) throws IOException, URISyntaxException {
+    try {
       String[] integers=input.toLowerCase().split(" ");
       String command=(integers.length > 0) ? integers[0] : "help";
       String[] params=Arrays.copyOfRange(integers, 1, integers.length);
@@ -61,6 +62,10 @@ public class GameplayUI {
           invalidCommandMessage();
           break;
       }
+    } catch (Exception e) {
+      System.out.println("An error occurred: " + e.getMessage());
+      System.out.println("Please try again.");
+    }
   }
 
   private void help() {
@@ -83,26 +88,46 @@ public class GameplayUI {
   }
 
   private String draw() {
-    if(Objects.equals(gameData.whiteUsername(), username)) {
-      return drawWhiteBoard();
+    if(Objects.equals(gameData.blackUsername(), username)) {
+      return drawBlackBoard();
     }
-    return drawBlackBoard();
+    return drawWhiteBoard();
   }
 
   public String drawBlackBoard() {
     ChessGame currentGame = gameData.game();
-    ChessBoard chessBoard = currentGame.getBoard();
-    StringBuilder display = new StringBuilder();
+    ChessBoard chessboard = currentGame.getBoard();
+    StringBuilder boardRepresentation = new StringBuilder();
+    boardRepresentation.append(SET_BG_COLOR_WHITE)
+            .append(SET_TEXT_COLOR_BLACK)
+            .append("    H  G  F  E  D  C  B  A    ")
+            .append(RESET_BG_COLOR)
+            .append("\n");
 
-    display.append(createHeaderRow()).append("\n");
+    boolean isSquareBlack = true;
 
-    for (int row = 8; row >= 1; row--) {
-      display.append(createInvertedRow(row, chessBoard)).append("\n");
+    for (int rank = 8; rank >= 1; rank--) {
+      StringBuilder row = new StringBuilder(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", rank));
+
+      for (int file = 8; file >= 1; file--) {
+        row.append(getSquareColor(isSquareBlack));
+        isSquareBlack = !isSquareBlack;
+
+        ChessPiece chessPiece = chessboard.getPiece(new ChessPosition(rank, file));
+        if (chessPiece == null) {
+          row.append("   ");
+        } else {
+          row.append(String.format(" %s ", getPieceRepresentation(chessPiece)));
+        }
+      }
+
+      isSquareBlack = !isSquareBlack;
+      row.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", rank) + RESET_BG_COLOR).append("\n");
+      boardRepresentation.insert(0, row.toString());
     }
 
-    display.append(createHeaderRow());
-
-    return display.toString();
+    boardRepresentation.insert(0, SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    H  G  F  E  D  C  B  A    " + RESET_BG_COLOR + "\n");
+    return boardRepresentation.toString();
   }
 
   private String createInvertedRow(int row, ChessBoard chessBoard) {
@@ -111,7 +136,7 @@ public class GameplayUI {
 
     rowString.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", row));
 
-    for (int col = 1; col <= 8; col++) {
+    for (int col = 8; col >= 1; col--) {
       rowString.append(swapColors(isBlackSquare));
       isBlackSquare = !isBlackSquare;
 
@@ -126,45 +151,46 @@ public class GameplayUI {
 
   public String drawWhiteBoard() {
     ChessGame currentGame = gameData.game();
-    ChessBoard chessBoard = currentGame.getBoard();
-    StringBuilder display = new StringBuilder();
+    ChessBoard chessboard = currentGame.getBoard();
+    StringBuilder boardRepresentation = new StringBuilder();
+    boardRepresentation.append(SET_BG_COLOR_WHITE)
+            .append(SET_TEXT_COLOR_BLACK)
+            .append("    A  B  C  D  E  F  G  H    ")
+            .append(RESET_BG_COLOR)
+            .append("\n");
 
-    display.append(createHeaderRow()).append("\n");
+    boolean isSquareBlack = true;
 
-    for (int row = 1; row <= 8; row++) {
-      display.append(createRow(row, chessBoard)).append("\n");
+    for (int rank = 1; rank <= 8; rank++) {
+      StringBuilder row = new StringBuilder(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", rank));
+
+      for (int file = 1; file <= 8; file++) {
+        row.append(getSquareColor(isSquareBlack));
+        isSquareBlack = !isSquareBlack;
+
+        ChessPiece chessPiece = chessboard.getPiece(new ChessPosition(rank, file));
+        if (chessPiece == null) {
+          row.append("   ");
+        } else {
+          row.append(String.format(" %s ", getPieceRepresentation(chessPiece)));
+        }
+      }
+
+      isSquareBlack = !isSquareBlack;
+      row.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", rank) + RESET_BG_COLOR).append("\n");
+      boardRepresentation.insert(0, row.toString());
     }
 
-    display.append(createHeaderRow());
-
-    return display.toString();
+    boardRepresentation.insert(0, SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n");
+    return boardRepresentation.toString();
   }
 
-  private String createHeaderRow() {
-    return SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR;
+  private String getSquareColor(boolean isBlack) {
+    return isBlack ? SET_BG_COLOR_BLACK : SET_BG_COLOR_WHITE;
   }
 
-  private String createInvertedHeaderRow() {
-    return SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    H  G  F  E  D  C  B  A    " + RESET_BG_COLOR;
-  }
-
-  private String createRow(int row, ChessBoard chessBoard) {
-    StringBuilder rowString = new StringBuilder();
-    boolean isBlackSquare = (row % 2 == 0);
-
-    rowString.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", row));
-
-    for (int col = 1; col <= 8; col++) {
-      rowString.append(swapColors(isBlackSquare));
-      isBlackSquare = !isBlackSquare;
-
-      ChessPiece piece = chessBoard.getPiece(new ChessPosition(row, col));
-      rowString.append(piece == null ? "   " : String.format(" %s ", getPiece(piece)));
-    }
-
-    rowString.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", row) + RESET_BG_COLOR);
-
-    return rowString.toString();
+  private String getPieceRepresentation(ChessPiece piece) {
+    return getPiece(piece);
   }
 
   private String getPiece(ChessPiece piece) {

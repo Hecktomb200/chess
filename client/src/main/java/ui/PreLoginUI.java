@@ -43,26 +43,31 @@ public class PreLoginUI {
   }
 
   private void processCommand(String input) throws IOException, URISyntaxException {
-    String[] commandParts = input.toLowerCase().split(" ");
-    String command = commandParts[0];
-    String[] params = Arrays.copyOfRange(commandParts, 1, commandParts.length);
+    try {
+      String[] commandParts=input.toLowerCase().split(" ");
+      String command=commandParts[0];
+      String[] params=Arrays.copyOfRange(commandParts, 1, commandParts.length);
 
-    switch (command) {
-      case "login":
-        login(params);
-        break;
-      case "register":
-        register(params);
-        break;
-      case "quit":
-        System.out.println("Exiting the application.");
-        break;
-      case "help":
-        help();
-        break;
-      default:
-        invalidCommandMessage();
-        break;
+      switch (command) {
+        case "login":
+          login(params);
+          break;
+        case "register":
+          register(params);
+          break;
+        case "quit":
+          System.out.println("Exiting the application.");
+          break;
+        case "help":
+          help();
+          break;
+        default:
+          invalidCommandMessage();
+          break;
+      }
+    } catch (Exception e) {
+      System.out.println("An error occurred: " + e.getMessage());
+      System.out.println("Please try again.");
     }
   }
 
@@ -79,7 +84,6 @@ public class PreLoginUI {
     String email = params[2];
     RegisterResult registerData = server.registerUser(username, password, email);
     new PostLoginUI(url, registerData.authToken(), username).run(username);
-    System.out.println("You have been logged in.");
     }
 
   private void login(String[] params) throws IOException, URISyntaxException {

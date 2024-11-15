@@ -43,35 +43,40 @@ public class PostLoginUI {
   }
 
   private void processCommand(String input) throws IOException, URISyntaxException {
-    var integers=input.toLowerCase().split(" ");
-    var command=(integers.length > 0) ? integers[0] : "help";
-    var params=Arrays.copyOfRange(integers, 1, integers.length);
+    try {
+      var integers=input.toLowerCase().split(" ");
+      var command=(integers.length > 0) ? integers[0] : "help";
+      var params=Arrays.copyOfRange(integers, 1, integers.length);
 
-    switch (command) {
-      case "list":
-        System.out.println(list());
-        break;
-      case "create":
-        create(params);
-        break;
-      case "join":
-        join(params);
-        break;
-      case "observe":
-        observe(params);
-        break;
-      case "logout":
-        logout();
-        break;
-      case "quit":
-        System.out.println("Exiting");
-        break;
-      case "help":
-        help();
-        break;
-      default:
-        invalidCommandMessage();
-        break;
+      switch (command) {
+        case "list":
+          System.out.println(list());
+          break;
+        case "create":
+          create(params);
+          break;
+        case "join":
+          join(params);
+          break;
+        case "observe":
+          observe(params);
+          break;
+        case "logout":
+          logout();
+          break;
+        case "quit":
+          System.out.println("Exiting");
+          break;
+        case "help":
+          help();
+          break;
+        default:
+          invalidCommandMessage();
+          break;
+      }
+    } catch (Exception e) {
+      System.out.println("An error occurred: " + e.getMessage());
+      System.out.println("Please try again.");
     }
   }
 
