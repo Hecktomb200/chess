@@ -1,16 +1,19 @@
 package ui;
 
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessPiece;
+import chess.ChessPosition;
 import model.GameData;
 import model.listgames.ListGamesResult;
 import server.ServerFacade;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
+import static chess.ChessGame.TeamColor.BLACK;
+import static chess.ChessGame.TeamColor.WHITE;
 import static ui.EscapeSequences.*;
 
 public class GameplayUI {
@@ -87,12 +90,107 @@ public class GameplayUI {
     return drawBlackBoard();
   }
 
-  private String drawBlackBoard() {
-    return null;
+  public String drawBlackBoard() {
+    ChessGame currentGame = gameData.game();
+    ChessBoard chessBoard = currentGame.getBoard();
+    StringBuilder display = new StringBuilder();
+
+    display.append(createHeaderRow()).append("\n");
+
+    for (int row = 8; row >= 1; row--) {
+      display.append(createInvertedRow(row, chessBoard)).append("\n");
+    }
+
+    display.append(createHeaderRow());
+
+    return display.toString();
   }
 
-  private String drawWhiteBoard() {
-    return null;
+  private String createInvertedRow(int row, ChessBoard chessBoard) {
+    StringBuilder rowString = new StringBuilder();
+    boolean isBlackSquare = (row % 2 != 0);
+
+    rowString.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", row));
+
+    for (int col = 1; col <= 8; col++) {
+      rowString.append(swapColors(isBlackSquare));
+      isBlackSquare = !isBlackSquare; // Alternate square color
+
+      ChessPiece piece = chessBoard.getPiece(new ChessPosition(row, col));
+      rowString.append(piece == null ? "   " : String.format(" %s ", getPiece(piece)));
+    }
+
+    rowString.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", row) + RESET_BG_COLOR);
+
+    return rowString.toString();
+  }
+
+  public String drawWhiteBoard() {
+    ChessGame currentGame = gameData.game();
+    ChessBoard chessBoard = currentGame.getBoard();
+    StringBuilder display = new StringBuilder();
+
+    display.append(createHeaderRow()).append("\n");
+
+    for (int row = 1; row <= 8; row++) {
+      display.append(createRow(row, chessBoard)).append("\n");
+    }
+
+    display.append(createHeaderRow());
+
+    return display.toString();
+  }
+
+  private String createHeaderRow() {
+    return SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR;
+  }
+
+  private String createRow(int row, ChessBoard chessBoard) {
+    StringBuilder rowString = new StringBuilder();
+    boolean isBlackSquare = (row % 2 == 0);
+
+    rowString.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", row));
+
+    for (int col = 1; col <= 8; col++) {
+      rowString.append(swapColors(isBlackSquare));
+      isBlackSquare = !isBlackSquare;
+
+      ChessPiece piece = chessBoard.getPiece(new ChessPosition(row, col));
+      rowString.append(piece == null ? "   " : String.format(" %s ", getPiece(piece)));
+    }
+
+    rowString.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", row) + RESET_BG_COLOR);
+
+    return rowString.toString();
+  }
+
+  private String getPiece(ChessPiece piece) {
+    if(piece.getTeamColor() == WHITE) {
+      return SET_TEXT_COLOR_RED + pieceLetter(piece);
+    } else if(piece.getTeamColor() == BLACK) {
+      return SET_TEXT_COLOR_BLUE + pieceLetter(piece);
+    }
+    else return "   ";
+  }
+
+  private String pieceLetter(ChessPiece piece) {
+    Map<ChessPiece.PieceType, String> pieceMap = new HashMap<>();
+    pieceMap.put(ChessPiece.PieceType.PAWN, "P");
+    pieceMap.put(ChessPiece.PieceType.ROOK, "R");
+    pieceMap.put(ChessPiece.PieceType.KNIGHT, "N");
+    pieceMap.put(ChessPiece.PieceType.BISHOP, "B");
+    pieceMap.put(ChessPiece.PieceType.KING, "K");
+    pieceMap.put(ChessPiece.PieceType.QUEEN, "Q");
+
+    return pieceMap.getOrDefault(piece.getPieceType(), "?");
+  }
+
+  private String swapColors (boolean isBlackSquare) {
+    if(isBlackSquare) {
+      return SET_BG_COLOR_BLACK;
+    } else {
+      return SET_BG_COLOR_WHITE;
+    }
   }
 
   private GameData findGameById(Collection<GameData> games, int gameId) {
