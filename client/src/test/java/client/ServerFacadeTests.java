@@ -1,6 +1,7 @@
 package client;
 
 
+import model.creategame.CreateGameResult;
 import model.listgames.ListGamesResult;
 import model.login.LoginResult;
 import model.register.RegisterResult;
@@ -21,6 +22,7 @@ public class ServerFacadeTests {
     private static final String USERNAME = "TestUser";
     private static final String PASSWORD = "TestPassword123";
     private static final String EMAIL = "Email@example.com";
+    private static final String GAMENAME = "Game";
 
     @BeforeAll
     void init() {
@@ -101,7 +103,7 @@ public class ServerFacadeTests {
     @Test
     void listGamesSuccess() throws Exception {
         RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
-        serverFacade.createGame("Game", registerData.authToken());
+        serverFacade.createGame(GAMENAME, registerData.authToken());
         serverFacade.createGame("Game1", registerData.authToken());
         ListGamesResult listGamesData = serverFacade.listGames(registerData.authToken());
         Assertions.assertNotNull(listGamesData.games().size());
@@ -112,9 +114,25 @@ public class ServerFacadeTests {
     @Test
     void listGamesFail() throws Exception {
         RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
-        serverFacade.createGame("Game", registerData.authToken());
+        serverFacade.createGame(GAMENAME, registerData.authToken());
         serverFacade.createGame("Game1", registerData.authToken());
         Assertions.assertThrows(IOException.class, () -> serverFacade.listGames(UUID.randomUUID().toString()));
+        serverFacade.delete();
+    }
+
+    @Test
+    void createGameSuccess() throws Exception {
+        RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
+        CreateGameResult createGameData = serverFacade.createGame(GAMENAME, registerData.authToken());
+        Assertions.assertTrue(createGameData.gameID() > 0);
+        Assertions.assertNotNull(createGameData.gameID());
+        serverFacade.delete();
+    }
+
+    @Test
+    void createGameFail() throws Exception {
+        RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> serverFacade.createGame(null, registerData.authToken()));
         serverFacade.delete();
     }
 
