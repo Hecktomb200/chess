@@ -1,6 +1,7 @@
 package client;
 
 
+import model.GameData;
 import model.creategame.CreateGameResult;
 import model.listgames.ListGamesResult;
 import model.login.LoginResult;
@@ -11,6 +12,7 @@ import server.ServerFacade;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.UUID;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -133,6 +135,28 @@ public class ServerFacadeTests {
     void createGameFail() throws Exception {
         RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
         Assertions.assertThrows(IllegalArgumentException.class, () -> serverFacade.createGame(null, registerData.authToken()));
+        serverFacade.delete();
+    }
+
+    @Test
+    void joinGameSuccess() throws Exception {
+        RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
+        CreateGameResult createGameData = serverFacade.createGame(GAMENAME, registerData.authToken());
+        serverFacade.joinGame(registerData.authToken(), "white", createGameData.gameID());
+        ListGamesResult listGamesData = serverFacade.listGames(registerData.authToken());
+        Collection<GameData> games = listGamesData.games();
+        for(GameData game : games) {
+            Assertions.assertEquals(USERNAME, game.whiteUsername());
+        }
+        serverFacade.delete();
+    }
+
+    @Test
+    void joinGameFail() throws Exception {
+        RegisterResult registerData = serverFacade.registerUser(USERNAME, PASSWORD, EMAIL);
+        CreateGameResult createGameData = serverFacade.createGame(GAMENAME, registerData.authToken());
+        Assertions.assertThrows(IOException.class, () -> serverFacade.joinGame(UUID.randomUUID().toString(),
+                "WHITE", createGameData.gameID()));
         serverFacade.delete();
     }
 
