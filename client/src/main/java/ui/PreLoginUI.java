@@ -46,10 +46,10 @@ public class PreLoginUI {
 
     switch (command) {
       case "login":
-        handleLogin(params);
+        login(params);
         break;
       case "register":
-        handleRegister(params);
+        register(params);
         break;
       case "quit":
         System.out.println("Exiting the application.");
@@ -64,7 +64,7 @@ public class PreLoginUI {
     System.out.println("Invalid command. Type 'help' for a list of valid commands.");
   }
 
-  private void handleRegister(String[] params) throws IOException, URISyntaxException {
+  private void register(String[] params) throws IOException, URISyntaxException {
     if (params.length != 3) {
       throw new IOException("Expected: <USERNAME> <PASSWORD> <EMAIL>");
     }
@@ -76,7 +76,7 @@ public class PreLoginUI {
     System.out.println("You have been logged in.");
     }
 
-  private void handleLogin(String[] params) throws IOException, URISyntaxException {
+  private void login(String[] params) throws IOException, URISyntaxException {
     if (params.length != 2) {
       throw new IOException("Expected: <USERNAME> <PASSWORD>");
     }

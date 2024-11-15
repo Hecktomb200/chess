@@ -1,16 +1,29 @@
 package ui;
 
 import model.GameData;
+import model.listgames.ListGamesResult;
+import server.ServerFacade;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
 public class GameplayUI {
-  public GameplayUI(GameData game, String sURL, String authToken, String username) {
+  private final ServerFacade serverFacade;
+  private final String username;
 
+  private final String authToken;
+  private GameData gameData;
+  public GameplayUI(GameData game, String sURL, String authToken, String username) {
+    serverFacade = new ServerFacade(sURL);
+    this.authToken = authToken;
+    gameData = game;
+    this.username = username;
   }
 
   public void run() {
@@ -28,7 +41,7 @@ public class GameplayUI {
     }
   }
 
-  public void processCommand(String input) {
+  public void processCommand(String input) throws IOException, URISyntaxException {
       String[] integers=input.toLowerCase().split(" ");
       String command=(integers.length > 0) ? integers[0] : "help";
       String[] params=Arrays.copyOfRange(integers, 1, integers.length);
@@ -39,33 +52,59 @@ public class GameplayUI {
         case "leave":
           System.out.println("Leaving game");
           break;
-        case "move":
-          makeMove(params);
-        case "resign":
-          resignGame();
-        case "highlight":
-          highlightMoves(params);
+        case "help":
+          help();
+          break;
         default:
           invalidCommandMessage();
           break;
       }
   }
 
-  private void highlightMoves(String[] params) {
-
+  private void help() {
+    System.out.println("""
+                - redraw
+                - leave
+                """);
   }
 
-  private void resignGame() {
+  public String redraw() throws IOException, URISyntaxException {
+    ListGamesResult gamesResult = serverFacade.listGames(authToken);
+    GameData updatedGame = findGameById(gamesResult.games(), gameData.gameID());
 
+    if (updatedGame != null) {
+      gameData = updatedGame;
+      return "\n" + draw();
+    } else {
+      throw new IOException("No game found.");
+    }
   }
 
-  private void makeMove(String[] params) {
-
+  private String draw() {
+    if(Objects.equals(gameData.whiteUsername(), username)) {
+      return drawWhiteBoard();
+    }
+    return drawBlackBoard();
   }
 
-  private void redraw() {
-
+  private String drawBlackBoard() {
+    return null;
   }
+
+  private String drawWhiteBoard() {
+    return null;
+  }
+
+  private GameData findGameById(Collection<GameData> games, int gameId) {
+    for (GameData game : games) {
+      if (game.gameID() == gameId) {
+        return game;
+      }
+    }
+    return null;
+  }
+
+
 
   private void invalidCommandMessage() {
     System.out.println("Invalid command. Type 'help' for a list of valid commands.");
