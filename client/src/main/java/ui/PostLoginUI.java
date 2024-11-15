@@ -64,9 +64,6 @@ public class PostLoginUI {
         case "logout":
           logout();
           break;
-        case "quit":
-          System.out.println("Exiting");
-          break;
         case "help":
           help();
           break;
@@ -86,7 +83,7 @@ public class PostLoginUI {
 
   private String observe(String[] params) throws IOException, URISyntaxException {
     if (params.length != 1) {
-      throw new IOException("Expected: <ID>");
+      throw new IOException("Expected: <GAME#>");
     }
     int gameID = Integer.parseInt(params[0]);
     GameData game = getGameById(gameID);
@@ -107,7 +104,7 @@ public class PostLoginUI {
 
   private String join(String[] params) throws IOException, URISyntaxException {
     if (params.length != 2) {
-      throw new IOException("Expected: <ID> [WHITE | BLACK]");
+      throw new IOException("Expected: <GAME#> [WHITE | BLACK]");
     }
     int gameId = Integer.parseInt(params[0]);
     String playerColor = params[1];
@@ -145,7 +142,7 @@ public class PostLoginUI {
   private String buildGamesList(ListGamesResult gamesListed) {
     StringBuilder formattedList = new StringBuilder();
     var games = gamesListed.games();
-    int index = 0;
+    int index = 1;
     for (GameData game : games) {
       formattedList.append(formatGameEntry(index, game));
       gameList.put(index, game);
@@ -163,8 +160,8 @@ public class PostLoginUI {
     System.out.println("""
                 - list
                 - create <GAME NAME>
-                - join <ID> [WHITE | BLACK]
-                - observe <ID>
+                - join <GAME#> [WHITE | BLACK]
+                - observe <GAME#>
                 - logout
                 - quit
                 - help
