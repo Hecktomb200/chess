@@ -39,7 +39,6 @@ public class PostLoginUI {
         System.out.print(SET_TEXT_COLOR_YELLOW + command);
       } while (!command.equals("logout"));
       System.out.println();
-      logout();
     } catch (Throwable e) {
       System.out.print(e.toString());
     }

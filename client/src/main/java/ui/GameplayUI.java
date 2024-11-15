@@ -170,7 +170,9 @@ public class GameplayUI {
     } else if(piece.getTeamColor() == BLACK) {
       return SET_TEXT_COLOR_BLUE + pieceLetter(piece);
     }
-    else return "   ";
+    else {
+      return "   ";
+    }
   }
 
   private String pieceLetter(ChessPiece piece) {
