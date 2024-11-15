@@ -22,26 +22,25 @@ public class GameplayUI {
 
   private final String authToken;
   private GameData gameData;
+  private final Scanner scanner;
   public GameplayUI(GameData game, String sURL, String authToken, String username) {
     serverFacade = new ServerFacade(sURL);
     this.authToken = authToken;
     gameData = game;
     this.username = username;
+    this.scanner = new Scanner(System.in);
   }
 
-  public void run() {
-    try (Scanner scanner=new Scanner(System.in)) {
-      String command=" ";
-      do {
-        System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[IN_GAME] >>> " + SET_TEXT_COLOR_GREEN);
-        command=scanner.nextLine();
-        processCommand(command);
-        System.out.print(SET_TEXT_COLOR_YELLOW + command);
-      } while (!command.equals("leave"));
-      System.out.println();
-    } catch (Throwable e) {
-      System.out.print(e.toString());
-    }
+  public void run() throws IOException, URISyntaxException {
+    help();
+    String command=" ";
+    do {
+      System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[IN_GAME] >>> " + SET_TEXT_COLOR_GREEN);
+      command=scanner.nextLine();
+      processCommand(command);
+      System.out.print(SET_TEXT_COLOR_YELLOW + command);
+    } while (!command.equals("leave"));
+    System.out.println();
   }
 
   public void processCommand(String input) throws IOException, URISyntaxException {
@@ -50,7 +49,7 @@ public class GameplayUI {
       String[] params=Arrays.copyOfRange(integers, 1, integers.length);
       switch (command) {
         case "redraw":
-          redraw();
+          System.out.println(redraw());
           break;
         case "leave":
           System.out.println("Leaving game");
@@ -114,7 +113,7 @@ public class GameplayUI {
 
     for (int col = 1; col <= 8; col++) {
       rowString.append(swapColors(isBlackSquare));
-      isBlackSquare = !isBlackSquare; // Alternate square color
+      isBlackSquare = !isBlackSquare;
 
       ChessPiece piece = chessBoard.getPiece(new ChessPosition(row, col));
       rowString.append(piece == null ? "   " : String.format(" %s ", getPiece(piece)));
@@ -143,6 +142,10 @@ public class GameplayUI {
 
   private String createHeaderRow() {
     return SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR;
+  }
+
+  private String createInvertedHeaderRow() {
+    return SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    H  G  F  E  D  C  B  A    " + RESET_BG_COLOR;
   }
 
   private String createRow(int row, ChessBoard chessBoard) {

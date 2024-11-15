@@ -89,7 +89,6 @@ public class PreLoginUI {
     String username = params[0];
     String password = params[1];
     LoginResult loginData = server.loginUser(username, password);
-    System.out.println("You have been logged in.");
     new PostLoginUI(url, loginData.authToken(), username).run(username);
   }
 

@@ -49,7 +49,7 @@ public class PostLoginUI {
 
     switch (command) {
       case "list":
-        list();
+        System.out.println(list());
         break;
       case "create":
         create(params);
@@ -118,11 +118,14 @@ public class PostLoginUI {
       throw new IOException("Expected: <GAME NAME>");
     }
     createGame(params[0]);
+    list();
     return String.format("Chess game %s created.", params[0]);
   }
 
   private void createGame(String gameName) throws IOException, URISyntaxException {
     server.createGame(gameName, authToken);
+    ListGamesResult gamesListed = getGames();
+    buildGamesList(gamesListed);
   }
 
   private String list() throws IOException, URISyntaxException {
