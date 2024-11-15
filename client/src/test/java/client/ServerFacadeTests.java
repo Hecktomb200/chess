@@ -1,10 +1,6 @@
 package client;
 
 
-import model.AuthData;
-import model.GameData;
-import model.creategame.CreateGameResult;
-import model.listgames.ListGamesResult;
 import model.login.LoginResult;
 import model.register.RegisterResult;
 import org.junit.jupiter.api.*;
@@ -13,7 +9,6 @@ import server.ServerFacade;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.UUID;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -69,6 +64,33 @@ public class ServerFacadeTests {
         Assertions.assertNotNull(loginData);
         Assertions.assertTrue(loginData.authToken().length() > 10);
         Assertions.assertEquals("TestUsername", loginData.username());
+        serverFacade.delete();
+    }
+
+    @Test
+    void loginFail() throws Exception {
+        serverFacade.registerUser("TestUsername", "TestPassword", "Email@email.com");
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> serverFacade.loginUser(null, "TestPassword"));
+        serverFacade.delete();
+    }
+
+    @Test
+    void logoutSuccess() throws Exception {
+        RegisterResult registerData = serverFacade.registerUser("TestUsername", "TestPassword", "Email@email.com");
+        serverFacade.logoutUser(registerData.authToken());
+        LoginResult loginData = serverFacade.loginUser("TestUsername", "TestPassword");
+        Assertions.assertNotNull(loginData.authToken());
+        Assertions.assertNotEquals(registerData.authToken(), loginData.authToken());
+        Assertions.assertEquals("TestUsername", loginData.username());
+        serverFacade.delete();
+    }
+
+    @Test
+    void logoutFail() throws Exception {
+        serverFacade.registerUser("TestUsername", "TestPassword", "EmailO@email.com");
+        Assertions.assertThrows(IOException.class,
+                () -> serverFacade.logoutUser(UUID.randomUUID().toString()));
         serverFacade.delete();
     }
 
