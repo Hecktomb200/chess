@@ -18,30 +18,28 @@ public class PostLoginUI {
   private final String authToken;
   private final HashMap<Integer, GameData> gameList;
   private final String username;
+  private final Scanner scanner;
   public PostLoginUI(String url, String authToken, String username) {
     server = new ServerFacade(url);
     sURL = url;
     this.authToken = authToken;
     gameList = new HashMap<>();
     this.username = username;
+    this.scanner = new Scanner(System.in);
   }
 
-  public void run(String username) {
+  public void run(String username) throws IOException, URISyntaxException {
     System.out.println("Logged in as " + username + ".");
     help();
 
-    try (Scanner scanner = new Scanner(System.in)) {
-      String command = " ";
-      do {
-        System.out.print("\n" + SET_TEXT_COLOR_GREEN + "[LOGGED_IN] >>> " + SET_TEXT_COLOR_BLUE);
-        command = scanner.nextLine();
-        processCommand(command);
-        System.out.print(SET_TEXT_COLOR_YELLOW + command);
-      } while (!command.equals("logout"));
-      System.out.println();
-    } catch (Throwable e) {
-      System.out.print(e.toString());
-    }
+    String command = " ";
+    do {
+      System.out.print("\n" + SET_TEXT_COLOR_GREEN + "[LOGGED_IN] >>> " + SET_TEXT_COLOR_BLUE);
+      command = scanner.nextLine();
+      processCommand(command);
+      System.out.print(SET_TEXT_COLOR_YELLOW + command);
+    } while (!command.equals("logout"));
+    System.out.println();
   }
 
   private void processCommand(String input) throws IOException, URISyntaxException {
@@ -128,7 +126,6 @@ public class PostLoginUI {
   }
 
   private String list() throws IOException, URISyntaxException {
-    gameList.clear();
     ListGamesResult gamesListed = getGames();
     return buildGamesList(gamesListed);
   }

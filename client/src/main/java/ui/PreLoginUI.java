@@ -24,13 +24,16 @@ public class PreLoginUI {
     displayWelcomeMessage();
     help();
 
-    try (Scanner scanner = new Scanner(System.in)) {
-      String command;
+    try {
+      Scanner scan = new Scanner(System.in);
+      String command = " ";
       do {
         System.out.print("\n" + "[LOGGED_OUT] >>> " + SET_TEXT_COLOR_GREEN);
-        command = scanner.nextLine();
+        command = scan.nextLine();
         processCommand(command);
       } while (!command.equalsIgnoreCase("quit"));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
     System.out.println();
   }
