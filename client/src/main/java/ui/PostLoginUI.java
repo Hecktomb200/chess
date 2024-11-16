@@ -72,8 +72,8 @@ public class PostLoginUI {
           break;
       }
     } catch (Exception e) {
-      System.out.println("An error occurred: " + e.getMessage());
-      System.out.println("Please try again.");
+      System.out.println(e.getMessage());
+      System.out.println("You are still logged in. Try again.");
     }
   }
 

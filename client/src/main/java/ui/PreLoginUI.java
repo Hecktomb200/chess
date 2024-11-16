@@ -62,16 +62,16 @@ public class PreLoginUI {
           help();
           break;
         default:
-          invalidCommandMessage();
+          badCommandMessage();
           break;
       }
     } catch (Exception e) {
-      System.out.println("An error occurred: " + e.getMessage());
-      System.out.println("Please try again.");
+      System.out.println(e.getMessage());
+      System.out.println("You are not yet logged in. Try again.");
     }
   }
 
-  private void invalidCommandMessage() {
+  private void badCommandMessage() {
     System.out.println("Invalid command. Type 'help' for a list of valid commands.");
   }
 

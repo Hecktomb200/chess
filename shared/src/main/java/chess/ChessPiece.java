@@ -125,20 +125,23 @@ public class ChessPiece implements Cloneable{
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 && j == 0) {
-                    continue;
+                    continue; // Skip the current position
                 }
 
                 int newRow = row + i;
                 int newCol = col + j;
+                addValidMove(validMoves, board, myPosition, newRow, newCol);
+            }
+        }
+    }
 
-                if (newRow >= 1 && newRow <= 8 && newCol >= 1 && newCol <= 8) {
-                    ChessPosition newPosition = new ChessPosition(newRow, newCol);
-                    ChessPiece piece = board.getPiece(newPosition);
+    private void addValidMove(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition, int newRow, int newCol) {
+        if (newRow >= 1 && newRow <= 8 && newCol >= 1 && newCol <= 8) {
+            ChessPosition newPosition = new ChessPosition(newRow, newCol);
+            ChessPiece piece = board.getPiece(newPosition);
 
-                    if (piece == null || piece.getTeamColor() != getTeamColor()) {
-                        validMoves.add(new ChessMove(myPosition, newPosition, null));
-                    }
-                }
+            if (piece == null || piece.getTeamColor() != getTeamColor()) {
+                validMoves.add(new ChessMove(myPosition, newPosition, null));
             }
         }
     }
@@ -200,15 +203,7 @@ public class ChessPiece implements Cloneable{
         for (int i = 0; i < 8; i++) {
             int newRow = row + rows[i];
             int newCol = col + cols[i];
-
-            if (newRow >= 1 && newRow <= 8 && newCol >= 1 && newCol <= 8) {
-                ChessPosition newPosition = new ChessPosition(newRow, newCol);
-                ChessPiece piece = board.getPiece(newPosition);
-
-                if (piece == null || piece.getTeamColor() != getTeamColor()) {
-                    validMoves.add(new ChessMove(myPosition, newPosition, null));
-                }
-            }
+            addValidMove(validMoves, board, myPosition, newRow, newCol);
         }
     }
 
