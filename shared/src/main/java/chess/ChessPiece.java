@@ -219,11 +219,9 @@ public class ChessPiece implements Cloneable{
         if (getTeamColor() == ChessGame.TeamColor.WHITE) {
             if (row == 2) {
                 ChessPosition newPosition = new ChessPosition(row + 2, col);
-                if (board.getPiece(newPosition) == null) {
-                    ChessPosition confirmPosition = new ChessPosition(row + 1, col);
-                    if (board.getPiece(confirmPosition) == null) {
-                        validMoves.add(new ChessMove(myPosition, newPosition, null));
-                    }
+                ChessPosition confirmPosition = new ChessPosition(row + 1, col);
+                if (board.getPiece(confirmPosition) == null && board.getPiece(newPosition) == null) {
+                    validMoves.add(new ChessMove(myPosition, newPosition, null));
                 }
             }
 
@@ -231,8 +229,6 @@ public class ChessPiece implements Cloneable{
             if (isValidPosition(newPosition, board)) {
                 if (board.getPiece(newPosition) == null) {
                     addPawnPromotionMoves(validMoves, myPosition, newPosition);
-                } else {
-                    validMoves.add(new ChessMove(myPosition, newPosition, null));
                 }
             }
 
@@ -241,11 +237,9 @@ public class ChessPiece implements Cloneable{
         } else {
             if (row == 7) {
                 ChessPosition newPosition = new ChessPosition(row - 2, col);
-                if (board.getPiece(newPosition) == null) {
-                    ChessPosition confirmPosition = new ChessPosition(row - 1, col);
-                    if (board.getPiece(confirmPosition) == null) {
-                        validMoves.add(new ChessMove(myPosition, newPosition, null));
-                    }
+                ChessPosition confirmPosition = new ChessPosition(row - 1, col);
+                if (board.getPiece(confirmPosition) == null && board.getPiece(newPosition) == null) {
+                    validMoves.add(new ChessMove(myPosition, newPosition, null));
                 }
             }
 
@@ -253,8 +247,6 @@ public class ChessPiece implements Cloneable{
             if (isValidPosition(newPosition, board)) {
                 if (board.getPiece(newPosition) == null) {
                     addPawnPromotionMoves(validMoves, myPosition, newPosition);
-                } else {
-                    validMoves.add(new ChessMove(myPosition, newPosition, null));
                 }
             }
 

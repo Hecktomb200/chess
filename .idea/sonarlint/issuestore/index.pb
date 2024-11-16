@@ -13,8 +13,6 @@ f
 6shared/src/test/java/passoff/chess/ChessMoveTests.java,d\0\d0976cffcef29072b835886c43fd62174459be03
 j
 :shared/src/test/java/passoff/chess/ChessPositionTests.java,0\c\0cdc26a7fcc196ec68a5ed8d48a21c75493b79ef
-k
-;shared/src/test/java/passoff/chess/piece/PawnMoveTests.java,f\5\f5f303eb20d0409e171fe16f357212147605d4a8
 j
 :shared/src/test/java/passoff/chess/game/MakeMoveTests.java,9\1\9175234a3f303bad2cdae147fbe2e704f0f9016d
 d
