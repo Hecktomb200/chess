@@ -47,6 +47,8 @@ public class SQLGameDAOTests {
     int game = gameDAO.createGame("Game");
     GameData gameData = gameDAO.getGame(game);
     GameData newGameData = new GameData(game, null, null, "Game", new ChessGame());
+    Assertions.assertNotNull(gameData);
+    Assertions.assertNotNull(newGameData);
     Assertions.assertEquals(newGameData, gameData);
   }
 

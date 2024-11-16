@@ -95,57 +95,38 @@ public class GameplayUI {
   }
 
   public String drawBlackBoard() {
-    ChessGame currentGame = gameData.game();
-    ChessBoard chessboard = currentGame.getBoard();
-    StringBuilder boardRepresentation = new StringBuilder();
-    boardRepresentation.append(SET_BG_COLOR_WHITE)
-            .append(SET_TEXT_COLOR_BLACK)
-            .append("    H  G  F  E  D  C  B  A    ")
-            .append(RESET_BG_COLOR)
-            .append("\n");
-
-    boolean isSquareBlack = true;
-
-    for (int rank = 8; rank >= 1; rank--) {
-      StringBuilder row = new StringBuilder(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", rank));
-
-      for (int file = 8; file >= 1; file--) {
-        row.append(getSquareColor(isSquareBlack));
-        isSquareBlack = !isSquareBlack;
-
-        ChessPiece chessPiece = chessboard.getPiece(new ChessPosition(rank, file));
-        if (chessPiece == null) {
-          row.append("   ");
-        } else {
-          row.append(String.format(" %s ", getPieceRepresentation(chessPiece)));
-        }
-      }
-
-      isSquareBlack = !isSquareBlack;
-      row.append(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", rank) + RESET_BG_COLOR).append("\n");
-      boardRepresentation.insert(0, row.toString());
-    }
-
-    boardRepresentation.insert(0, SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    H  G  F  E  D  C  B  A    " + RESET_BG_COLOR + "\n");
-    return boardRepresentation.toString();
+    return drawBoard(true);
   }
 
   public String drawWhiteBoard() {
+    return drawBoard(false);
+  }
+
+  private String drawBoard(boolean isBlack) {
     ChessGame currentGame = gameData.game();
     ChessBoard chessboard = currentGame.getBoard();
     StringBuilder boardRepresentation = new StringBuilder();
-    boardRepresentation.append(SET_BG_COLOR_WHITE)
-            .append(SET_TEXT_COLOR_BLACK)
-            .append("    A  B  C  D  E  F  G  H    ")
-            .append(RESET_BG_COLOR)
-            .append("\n");
+
+    if (isBlack) {
+      boardRepresentation.append(SET_BG_COLOR_WHITE)
+              .append(SET_TEXT_COLOR_BLACK)
+              .append("    H  G  F  E  D  C  B  A    ")
+              .append(RESET_BG_COLOR)
+              .append("\n");
+    } else {
+      boardRepresentation.append(SET_BG_COLOR_WHITE)
+              .append(SET_TEXT_COLOR_BLACK)
+              .append("    A  B  C  D  E  F  G  H    ")
+              .append(RESET_BG_COLOR)
+              .append("\n");
+    }
 
     boolean isSquareBlack = true;
 
-    for (int rank = 1; rank <= 8; rank++) {
+    for (int rank = isBlack ? 8 : 1; isBlack ? rank >= 1 : rank <= 8; rank += isBlack ? -1 : 1) {
       StringBuilder row = new StringBuilder(SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + String.format(" %s ", rank));
 
-      for (int file = 1; file <= 8; file++) {
+      for (int file = isBlack ? 8 : 1; isBlack ? file >= 1 : file <= 8; file += isBlack ? -1 : 1) {
         row.append(getSquareColor(isSquareBlack));
         isSquareBlack = !isSquareBlack;
 
@@ -162,7 +143,12 @@ public class GameplayUI {
       boardRepresentation.insert(0, row.toString());
     }
 
-    boardRepresentation.insert(0, SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n");
+    if (isBlack) {
+      boardRepresentation.insert(0, SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    H  G  F  E  D  C  B  A    " + RESET_BG_COLOR + "\n");
+    } else {
+      boardRepresentation.insert(0, SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n");
+    }
+
     return boardRepresentation.toString();
   }
 

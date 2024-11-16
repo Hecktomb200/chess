@@ -40,6 +40,8 @@ public class SQLUserDAOTests {
     userDAO.createUser ("User", "Password", "Email");
 
     UserData newUser  = userDAO.getUser ("User");
+    Assertions.assertNotNull(newUser);
+    Assertions.assertNotNull(testUser);
     Assertions.assertEquals(testUser, newUser);
   }
 

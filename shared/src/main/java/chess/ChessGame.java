@@ -74,12 +74,6 @@ public class ChessGame {
                     startPosition.getColumn() - 2), null);
             ChessMove kingSide=new ChessMove(startPosition, new ChessPosition(startPosition.getRow(),
                     startPosition.getColumn() + 2), null);
-            if (canDoCastling(queenSide)) {
-                validMoves.add(queenSide);
-            }
-            if (canDoCastling(kingSide)) {
-                validMoves.add(kingSide);
-            }
         }
 
         return validMoves;
@@ -362,119 +356,6 @@ public class ChessGame {
             }
         }
         return true;
-    }
-
-    private boolean canDoCastling(ChessMove move) {
-        if (move.getEndPosition().getColumn() - move.getStartPosition().getColumn() != 2 &&
-                move.getEndPosition().getColumn() - move.getStartPosition().getColumn() != -2) {
-            return false;
-        }
-
-        ChessPiece piece = board.getPiece(move.getStartPosition());
-        ChessPosition kingPosition=checkKingPosition(piece.getTeamColor());
-        if (kingPosition == null) {
-            return false;
-        }
-        if (kingPosition.getRow() != 1 && kingPosition.getColumn() != 5) {
-            if (kingPosition.getRow() != 8 && kingPosition.getColumn() != 5) {
-                return false;
-            }
-        }
-
-        ChessPosition rookPosition;
-        if (piece.getTeamColor() == TeamColor.WHITE) {
-            if (move.getEndPosition().getColumn() < move.getStartPosition().getColumn()) {
-                rookPosition = new ChessPosition(1, 1); // queenSide
-            } else {
-                rookPosition = new ChessPosition(1, 8); // kingSide
-            }
-        } else {
-            if (move.getEndPosition().getColumn() < move.getStartPosition().getColumn()) {
-                rookPosition = new ChessPosition(8, 1); // queenSide
-            } else {
-                rookPosition = new ChessPosition(8, 8); // kingSide
-            }
-        }
-
-        if (board.getPiece(rookPosition) == null ||
-                board.getPiece(rookPosition).getPieceType() != ChessPiece.PieceType.ROOK) {
-            return false;
-        }
-
-        if (isInCheck(getTeamTurn())) {
-            return false;
-        }
-
-        int startColumn =rookPosition.getColumn();
-        int endColumn =kingPosition.getColumn();
-        if (startColumn < endColumn) {
-            for (int column = startColumn + 1; column < endColumn; column++) {
-                ChessPosition position = new ChessPosition(move.getStartPosition().getRow(), column);
-                piece = board.getPiece(position);
-                if (piece != null) {
-                    return false; // Enemy piece is in the way
-                }
-            }
-        } else {
-            for (int column=startColumn - 1; column > endColumn; column--) {
-                ChessPosition position=new ChessPosition(move.getStartPosition().getRow(), column);
-                piece=board.getPiece(position);
-                if (piece != null) {
-                    return false; // Enemy piece is in the way
-                }
-            }
-        }
-
-        ChessBoard oldBoard = board.clone();
-        piece = board.getPiece(move.getStartPosition());
-        try {
-            makeMoveInternal(move, board.getPiece(move.getStartPosition()));
-            if (isInCheck(piece.getTeamColor())) {
-                return false;
-            }
-            if (castleInCheck(move, board)) {
-                return false;
-            }
-        } finally {
-            board = oldBoard;
-        }
-
-        return true;
-    }
-
-    private boolean castleInCheck(ChessMove move, ChessBoard board) {
-        ChessPosition rookNewPosition = move.getEndPosition().getColumn() < move.getStartPosition().getColumn() ?
-                new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn() + 1) :
-                new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn() - 1);
-
-        Collection<ChessPosition> enemyPositions = findEnemyPositions(teamColor);
-        for (ChessPosition position : enemyPositions) {
-            ChessPiece enemyPiece=board.getPiece(position);
-            Collection<ChessMove> enemyMoves=enemyPiece.pieceMoves(board, position);
-            for (ChessMove enemyMove : enemyMoves) {
-                if (enemyMove.getEndPosition().equals(rookNewPosition)) {
-                    return true;
-                }
-            }
-        }
-
-        int startColumn = Math.min(move.getStartPosition().getColumn(), move.getEndPosition().getColumn());
-        int endColumn = Math.max(move.getStartPosition().getColumn(), move.getEndPosition().getColumn());
-        for (int column = startColumn + 1; column < endColumn; column++) {
-            ChessPosition position = new ChessPosition(move.getStartPosition().getRow(), column);
-            Collection<ChessPosition> enemyPositionsThrough = findEnemyPositions(teamColor);
-            for (ChessPosition enemyPositionThrough : enemyPositionsThrough) {
-                ChessPiece enemyPieceThrough = board.getPiece(enemyPositionThrough);
-                Collection<ChessMove> enemyMovesThrough = enemyPieceThrough.pieceMoves(board, enemyPositionThrough);
-                for (ChessMove enemyMoveThrough : enemyMovesThrough) {
-                    if (enemyMoveThrough.getEndPosition().equals(position)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
     @Override
