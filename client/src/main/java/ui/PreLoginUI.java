@@ -76,14 +76,14 @@ public class PreLoginUI {
   }
 
   private String getMessage(Exception e) {
-    if (e instanceof IOException) {
-      return "There was an issue with the input provided. Please try again.";
+    if (e.getMessage().equals("Username is already taken.")) {
+      return "Username already taken. Please try again.";
     } else if (e instanceof IllegalArgumentException) {
       return "Invalid argument provided. Please check your input.";
     } else if (e instanceof NumberFormatException) {
       return "Please enter a valid number. It seems you entered something that isn't a number.";
     } else {
-      return "An unexpected error occurred: " + e.getMessage() + ". Please try again.";
+      return e.getMessage();
     }
   }
 
@@ -91,11 +91,17 @@ public class PreLoginUI {
     if (params.length != 3) {
       throw new IOException("Expected: <USERNAME> <PASSWORD> <EMAIL>");
     }
-    String username = params[0];
-    String password = params[1];
-    String email = params[2];
-    RegisterResult registerData = server.registerUser(username, password, email);
-    new PostLoginUI(url, registerData.authToken(), username).run(username);
+      String username=params[0];
+      String password=params[1];
+      String email=params[2];
+      try {
+        RegisterResult registerData=server.registerUser(username, password, email);
+        new PostLoginUI(url, registerData.authToken(), username).run(username);
+      } catch (IOException e) {
+          if (e.getMessage().equals("Username is already taken.")) {
+            System.out.println("Error: " + e.getMessage());
+          }
+        }
     }
 
   private void login(String[] params) throws IOException, URISyntaxException {
@@ -113,6 +119,7 @@ public class PreLoginUI {
     System.out.println("""
                     - register <USERNAME> <PASSWORD> <EMAIL>
                     - login <USERNAME> <PASSWORD>
+                    - help
                     - quit
                     """);
   }

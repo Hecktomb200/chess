@@ -1,0 +1,17 @@
+
+g	java:S1126"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8‘÷ü’³2
+z	java:S135e"YReduce the total number of break and continue statements in this loop to use at most one.(ÜëŞ÷ûÿÿÿÿ8’÷ü’³2
+{	java:S135"YReduce the total number of break and continue statements in this loop to use at most one.(§Ì‹Şúÿÿÿÿ8’÷ü’³2
+v	java:S135²"YReduce the total number of break and continue statements in this loop to use at most one.(œ§¼8’÷ü’³2
+R
+java:S1066á"/Merge this if statement with the enclosing one.(åÔ·¾úÿÿÿÿ8Æ’Ü“³2
+R
+java:S1066ó"/Merge this if statement with the enclosing one.(åÔ·¾úÿÿÿÿ8Æ’Ü“³2
+u
+java:S29752"SRemove this "clone" implementation; use a copy constructor or copy factory instead.(Ÿöİøÿÿÿÿ8ùü’³2
+u
+java:S3776•"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ü£úñúÿÿÿÿ8¡ùü’³2
+u
+java:S3776Ò"RRefactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.(íÉšÉúÿÿÿÿ8£ùü’³2
+J
+java:S1172“",Remove this unused method parameter "board".(°ÄŞô8¨”Ü“³2

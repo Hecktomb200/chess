@@ -91,3 +91,7 @@ d
 4server/src/test/java/dataaccess/SQLGameDAOTests.java,c\8\c83edfdf34fd4ed224e9a572c9e4cc4680b70a5f
 Y
 )shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
+Z
+*shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
+k
+;shared/src/test/java/passoff/chess/piece/PawnMoveTests.java,f\5\f5f303eb20d0409e171fe16f357212147605d4a8

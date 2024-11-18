@@ -44,6 +44,10 @@ public class ServerFacade {
     if (!isSuccessful(statusCode)) {
       String sBody = new String(connection.getErrorStream().readAllBytes());
       Map body = gson.fromJson(sBody, Map.class);
+      String message = (String) body.get("message");
+      if (statusCode == 403 && "Error: already taken".equals(message)) {
+        throw new IOException("Username is already taken.");
+      }
       throw new IOException("Error: " + statusCode + " - " + body.get("message"));
     }
   }

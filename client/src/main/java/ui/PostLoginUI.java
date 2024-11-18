@@ -89,7 +89,7 @@ public class PostLoginUI {
     try {
       int gameID=Integer.parseInt(params[0]);
       GameData game=getGameById(gameID);
-      joinGame(game, null);
+      //joinGame(game, null); // just jump to GameplayUI and print board immediately
       new GameplayUI(game, sURL, authToken, username).run();
       return String.format("Chess game %s left.", params[0]);
     } catch (NumberFormatException e) {

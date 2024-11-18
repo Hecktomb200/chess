@@ -32,6 +32,7 @@ public class GameplayUI {
   }
 
   public void run() throws IOException, URISyntaxException {
+    System.out.println(draw());
     help();
     String command=" ";
     do {
@@ -69,7 +70,7 @@ public class GameplayUI {
   }
 
   private void help() {
-    System.out.println("""
+    System.out.println(SET_TEXT_COLOR_GREEN + """
                 - redraw
                 - leave
                 """);
