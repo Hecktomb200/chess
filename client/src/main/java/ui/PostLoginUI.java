@@ -107,6 +107,14 @@ public class PostLoginUI {
       if (game == null) {
         throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
       }
+      if (game.whiteUsername() != null && game.blackUsername() != null) {
+        throw new IOException("Game is already full. You cannot join.");
+      }
+      if ("white".equalsIgnoreCase(playerColor) && game.whiteUsername() != null) {
+        throw new IOException("The white team is already taken. Please choose black.");
+      } else if ("black".equalsIgnoreCase(playerColor) && game.blackUsername() != null) {
+        throw new IOException("The black team is already taken. Please choose white.");
+      }
       server.joinGame(authToken, playerColor, game.gameID());
       list();
     } catch (NumberFormatException e) {
