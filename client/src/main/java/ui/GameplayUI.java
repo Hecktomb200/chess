@@ -23,16 +23,18 @@ public class GameplayUI {
   private final String authToken;
   private GameData gameData;
   private final Scanner scanner;
-  public GameplayUI(GameData game, String sURL, String authToken, String username) {
+  private final Boolean observer;
+  public GameplayUI(GameData game, String sURL, String authToken, String username, boolean observer) {
     serverFacade = new ServerFacade(sURL);
     this.authToken = authToken;
     gameData = game;
     this.username = username;
     this.scanner = new Scanner(System.in);
+    this.observer = observer;
   }
 
   public void run() throws IOException, URISyntaxException {
-    System.out.println(draw());
+    System.out.println(redraw());
     help();
     String command=" ";
     do {
@@ -90,6 +92,9 @@ public class GameplayUI {
 
   private String draw() {
     if(Objects.equals(gameData.blackUsername(), username)) {
+      if (observer) {
+        return drawWhiteBoard();
+      }
       return drawBlackBoard();
     }
     return drawWhiteBoard();

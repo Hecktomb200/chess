@@ -48,6 +48,9 @@ public class ServerFacade {
       if (statusCode == 403 && "Error: already taken".equals(message)) {
         throw new IOException("Username is already taken.");
       }
+      if (statusCode == 401 && "Error: unauthorized".equals(message)) {
+        throw new IOException("Incorrect password.");
+      }
       throw new IOException("Error: " + statusCode + " - " + body.get("message"));
     }
   }

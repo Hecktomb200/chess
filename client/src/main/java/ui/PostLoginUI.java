@@ -89,8 +89,12 @@ public class PostLoginUI {
     try {
       int gameID=Integer.parseInt(params[0]);
       GameData game=getGameById(gameID);
+      boolean observer = true;
+      if (game == null) {
+        throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
+      }
       //joinGame(game, null); // just jump to GameplayUI and print board immediately
-      new GameplayUI(game, sURL, authToken, username).run();
+      new GameplayUI(game, sURL, authToken, username, observer).run();
       return String.format("Chess game %s left.", params[0]);
     } catch (NumberFormatException e) {
       throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
@@ -135,7 +139,8 @@ public class PostLoginUI {
 
       GameData game = getGameById(gameId);
       joinGame(game, playerColor);
-      new GameplayUI(game, sURL, authToken, username).run();
+      boolean observer = false;
+      new GameplayUI(game, sURL, authToken, username, observer).run();
       return String.format("Chess game %s left.", params[0]);
     } catch (NumberFormatException e) {
       throw new IOException(INVALID_GAME_NUMBER_MESSAGE);

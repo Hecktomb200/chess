@@ -78,6 +78,8 @@ public class PreLoginUI {
   private String getMessage(Exception e) {
     if (e.getMessage().equals("Username is already taken.")) {
       return "Username already taken. Please try again.";
+    } else if (e.getMessage().equals("Error: unauthorized")) {
+      return "Invalid username or password. Please try again.";
     } else if (e instanceof IllegalArgumentException) {
       return "Invalid argument provided. Please check your input.";
     } else if (e instanceof NumberFormatException) {
