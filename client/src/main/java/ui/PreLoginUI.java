@@ -66,13 +66,25 @@ public class PreLoginUI {
           break;
       }
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      System.out.println(getMessage(e));
       System.out.println("You are not yet logged in. Try again.");
     }
   }
 
   private void badCommandMessage() {
     System.out.println("Invalid command. Type 'help' for a list of valid commands.");
+  }
+
+  private String getMessage(Exception e) {
+    if (e instanceof IOException) {
+      return "There was an issue with the input provided. Please try again.";
+    } else if (e instanceof IllegalArgumentException) {
+      return "Invalid argument provided. Please check your input.";
+    } else if (e instanceof NumberFormatException) {
+      return "Please enter a valid number. It seems you entered something that isn't a number.";
+    } else {
+      return "An unexpected error occurred: " + e.getMessage() + ". Please try again.";
+    }
   }
 
   private void register(String[] params) throws IOException, URISyntaxException {

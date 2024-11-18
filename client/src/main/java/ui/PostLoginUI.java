@@ -19,6 +19,7 @@ public class PostLoginUI {
   private final HashMap<Integer, GameData> gameList;
   private final String username;
   private final Scanner scanner;
+  private static final String INVALID_GAME_NUMBER_MESSAGE = "Invalid game number. Please enter a valid number for the game.";
   public PostLoginUI(String url, String authToken, String username) {
     server = new ServerFacade(url);
     sURL = url;
@@ -85,11 +86,15 @@ public class PostLoginUI {
     if (params.length != 1) {
       throw new IOException("Expected: <GAME#>");
     }
-    int gameID = Integer.parseInt(params[0]);
-    GameData game = getGameById(gameID);
-    joinGame(game, null);
-    new GameplayUI(game, sURL, authToken, username).run();
-    return String.format("Chess game %s left.", params[0]);
+    try {
+      int gameID=Integer.parseInt(params[0]);
+      GameData game=getGameById(gameID);
+      joinGame(game, null);
+      new GameplayUI(game, sURL, authToken, username).run();
+      return String.format("Chess game %s left.", params[0]);
+    } catch (NumberFormatException e) {
+      throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
+    }
   }
 
   private GameData getGameById(int gameID) {
@@ -97,22 +102,36 @@ public class PostLoginUI {
   }
 
   private void joinGame(GameData game, String playerColor) throws IOException, URISyntaxException {
-    System.out.println("Joining game...");
-    server.joinGame(authToken, playerColor, game.gameID());
-    list();
+    try {
+      System.out.println("Attempting to join game...");
+      if (game == null) {
+        throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
+      }
+      server.joinGame(authToken, playerColor, game.gameID());
+      list();
+    } catch (NumberFormatException e) {
+      throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
+    }
   }
 
   private String join(String[] params) throws IOException, URISyntaxException {
     if (params.length != 2) {
       throw new IOException("Expected: <GAME#> [WHITE | BLACK]");
     }
-    int gameId = Integer.parseInt(params[0]);
-    String playerColor = params[1];
+    try {
+      int gameId = Integer.parseInt(params[0]);
+      String playerColor = params[1];
+      if (gameId <= 0) {
+        throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
+      }
 
-    GameData game = getGameById(gameId);
-    joinGame(game, playerColor);
-    new GameplayUI(game, sURL, authToken, username).run();
-    return String.format("Chess game %s left.", params[0]);
+      GameData game = getGameById(gameId);
+      joinGame(game, playerColor);
+      new GameplayUI(game, sURL, authToken, username).run();
+      return String.format("Chess game %s left.", params[0]);
+    } catch (NumberFormatException e) {
+      throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
+    }
   }
 
   private String create(String[] params) throws IOException, URISyntaxException {
@@ -163,7 +182,6 @@ public class PostLoginUI {
                 - join <GAME#> [WHITE | BLACK]
                 - observe <GAME#>
                 - logout
-                - quit
                 - help
                 """);
   }

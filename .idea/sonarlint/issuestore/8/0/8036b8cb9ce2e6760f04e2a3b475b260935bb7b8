@@ -1,0 +1,16 @@
+
+g	java:S112'"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8æÈô‰³2
+k
+java:S1192H"NDefine a constant instead of duplicating this literal "authorization" 4 times.(º¡¿8çÈô‰³2
+h
+java:S11926"FDefine a constant instead of duplicating this literal "/game" 3 times.(ğŠ£ÿÿÿÿÿ8èÈô‰³2
+}
+java:S1192"_Define a constant instead of duplicating this literal "Error: unexpected server error" 4 times.(§Ï€´8èÈô‰³2
+I
+java:S16029",Remove useless curly braces around statement(µ¨áÚ8Ó´ø‰³2
+Z	java:S106:"9Replace this use of System.out or System.err by a logger.(ÆÎ±Üûÿÿÿÿ8Ó´ø‰³2
+U
+java:S1854D"8Remove this useless assignment to local variable "gson".(şëŒ8‘Éô‰³2
+F
+java:S1481D")Remove this unused "gson" local variable.(şëŒ8“Éô‰³2
+Y	java:S125³"<This block of commented-out lines of code should be removed.(‚Ø‡¬8¤Éô‰³2

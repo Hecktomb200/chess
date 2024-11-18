@@ -1,0 +1,9 @@
+
+q
+java:S14884"[Immediately return this expression instead of assigning it to the temporary variable "pos".(ªÆşé
+n
+java:S2975"SRemove this "clone" implementation; use a copy constructor or copy factory instead.(ÖãÒìşÿÿÿÿ
+c
+java:S1182"HUse super.clone() to create and seed the cloned instance to be returned.(ÖãÒìşÿÿÿÿ
+N	java:S106t"9Replace this use of System.out or System.err by a logger.(‹à®ó
+S	java:S106v"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ

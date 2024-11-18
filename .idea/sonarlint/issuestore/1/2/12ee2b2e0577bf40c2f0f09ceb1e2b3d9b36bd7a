@@ -1,0 +1,23 @@
+
+g	java:S112D"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¨öÏÕ®2
+R
+java:S1066à"/Merge this if statement with the enclosing one.(‚£÷õûÿÿÿÿ8©öÏÕ®2
+Y
+java:S1854K"<Remove this useless assignment to local variable "kingSide".(¡‘ÿƒ8®Ô¶“³2
+Z
+java:S1854I"=Remove this useless assignment to local variable "queenSide".(‚›ÉÒ8®Ô¶“³2
+H
+java:S11689"+Return an empty collection instead of null.(¥¹ï8ùÏÕ®2
+K
+java:S1481I".Remove this unused "queenSide" local variable.(‚›ÉÒ8¯Ô¶“³2
+J
+java:S1481K"-Remove this unused "kingSide" local variable.(¡‘ÿƒ8¯Ô¶“³2
+•
+java:S1130Y"sRemove the declaration of thrown exception 'chess.InvalidMoveException', as it cannot be thrown from method's body.(ø¢¶ûüÿÿÿÿ8‘ùÏÕ®2
+]	java:S125]"<This block of commented-out lines of code should be removed.(›îûŸıÿÿÿÿ8’ùÏÕ®2
+]	java:S125j"<This block of commented-out lines of code should be removed.(†é©âşÿÿÿÿ8“ùÏÕ®2
+Z	java:S106l"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ8“ùÏÕ®2
+
+java:S1130¶"sRemove the declaration of thrown exception 'chess.InvalidMoveException', as it cannot be thrown from method's body.(×ùÖ|8—ùÏÕ®2
+d
+java:S1126Ç"AReplace this if-then-else statement by a single return statement.(›àµŒùÿÿÿÿ8¡ùÏÕ®2
