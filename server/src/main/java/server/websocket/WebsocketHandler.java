@@ -52,7 +52,14 @@ public class WebsocketHandler {
     }
   }
 
-  private void handleLeaveGame(LeaveCommand fromJson, Session session) {
+  private void handleLeaveGame(LeaveCommand leaveCommand, Session session) throws DataAccessException, IOException {
+    String response = gameService.leave(leaveCommand);
+    removeSessionFromGame(leaveCommand.getGameID(), leaveCommand.getAuthString(), session);
+    String notificationMessage = String.format("%s has left the game", response);
+    notifyAllPlayers(leaveCommand.getGameID(), new NotificationMessage(notificationMessage), leaveCommand.getAuthString());
+  }
+
+  private void removeSessionFromGame(Integer gameID, String authToken, Session session) {
 
   }
 
@@ -93,7 +100,7 @@ public class WebsocketHandler {
   }
 
   private void addSessionToGame(Integer gameID, String authToken, Session session) {
-
+    sessionRegistry.computeIfAbsent(gameID, k -> new ConcurrentHashMap<>()).put(authToken, session);
   }
 
   private void sendResponse(ServerMessage message, Session session) throws IOException {
