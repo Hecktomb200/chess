@@ -20,9 +20,15 @@ import websocket.messages.ServerMessage;
 import websocket.messages.Error;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 @WebSocket
 public class WebsocketHandler {
+  private final ConcurrentHashMap<Integer, ConcurrentHashMap<String, Session>> sessionRegistry = new ConcurrentHashMap<>();
+  private final ArrayList<Integer> resignedGameIDs = new ArrayList<>();
   private final ConnectionManager connectionManager;
   private final AuthDAO authDAO;
   private final GameDAO gameDAO;
@@ -77,8 +83,13 @@ public class WebsocketHandler {
     notifyAllPlayers(command.getGameID(), new NotificationMessage(notificationMessage), command.getAuthToken());
   }
 
-  private void notifyAllPlayers(Integer gameID, NotificationMessage notificationMessage, String authToken) {
-
+  private void notifyAllPlayers(Integer gameID, ServerMessage message, String exceptThisAuthToken) throws IOException {
+    ConcurrentHashMap<String, Session> gameSessions = sessionRegistry.get(gameID);
+    for (Map.Entry<String, Session> entry : gameSessions.entrySet()) {
+      if (!Objects.equals(entry.getKey(), exceptThisAuthToken) && entry.getValue().isOpen()) {
+        entry.getValue().getRemote().sendString(new Gson().toJson(message));
+      }
+    }
   }
 
   private void addSessionToGame(Integer gameID, String authToken, Session session) {

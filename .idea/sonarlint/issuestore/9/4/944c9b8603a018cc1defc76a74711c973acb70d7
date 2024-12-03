@@ -1,0 +1,23 @@
+
+C
+java:S5411_"(Use a primitive boolean expression here.(Œˆ§âûÿÿÿÿ
+;
+java:S1640µ"Convert this Map to an EnumMap.(™–¯ªøÿÿÿÿ
+Q
+java:S1854'";Remove this useless assignment to local variable "command".(ˆÃùÊ
+S	java:S106%"9Replace this use of System.out or System.err by a logger.(±ñ´üÿÿÿÿ
+N	java:S106)"9Replace this use of System.out or System.err by a logger.(×›æ€
+S	java:S106,"9Replace this use of System.out or System.err by a logger.(ÈØûœøÿÿÿÿ
+S	java:S106."9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ
+P
+java:S18545":Remove this useless assignment to local variable "params".(ôí¹÷
+A
+java:S14815"+Remove this unused "params" local variable.(ôí¹÷
+S	java:S1068"9Replace this use of System.out or System.err by a logger.(±ñ´üÿÿÿÿ
+S	java:S106;"9Replace this use of System.out or System.err by a logger.(Óªİêÿÿÿÿÿ
+N	java:S106E"9Replace this use of System.out or System.err by a logger.(Ú†ê‚
+S	java:S106F"9Replace this use of System.out or System.err by a logger.(‘‘ğüÿÿÿÿ
+S	java:S106K"9Replace this use of System.out or System.err by a logger.(°ã¾ıÿÿÿÿ
+h
+java:S3776o"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(ÃŞŒî
+T	java:S106Ì"9Replace this use of System.out or System.err by a logger.(°¶Ãûÿÿÿÿ
