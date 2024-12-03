@@ -1,0 +1,13 @@
+
+Q
+java:S1854$";Remove this useless assignment to local variable "command".(ˆÃùÊ
+S	java:S106!"9Replace this use of System.out or System.err by a logger.(Àø…âøÿÿÿÿ
+N	java:S106&"9Replace this use of System.out or System.err by a logger.(½™å
+S	java:S106)"9Replace this use of System.out or System.err by a logger.(ÈØûœøÿÿÿÿ
+S	java:S106+"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ
+S	java:S1066"9Replace this use of System.out or System.err by a logger.(²õİıÿÿÿÿ
+S	java:S106L"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ
+M	java:S106M"9Replace this use of System.out or System.err by a logger.(ºä™Q
+S	java:S106R"9Replace this use of System.out or System.err by a logger.(°¶Ãûÿÿÿÿ
+N	java:S106n"9Replace this use of System.out or System.err by a logger.(ğòì°
+O	java:S106À"9Replace this use of System.out or System.err by a logger.(Îñë

@@ -71,8 +71,6 @@ Y
 )shared/src/main/java/chess/ChessMove.java,c\5\c52f67c55315a844e23611bb848b35269aaedb66
 \
 ,server/src/main/java/dataaccess/AuthDAO.java,3\2\32b7a2b97a8957e906a6d7e19358db18d9b6f1b5
-]
--server/src/main/java/service/GameService.java,e\e\ee958dc93989023d27c9ff27f8725605e0e3ad3d
 Z
 *shared/src/main/java/chess/ChessBoard.java,d\f\dfc4ec84b5d57ac6e0266e9c319b728da99e0c51
 \
@@ -95,3 +93,15 @@ Z
 *shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
 k
 ;shared/src/test/java/passoff/chess/piece/PawnMoveTests.java,f\5\f5f303eb20d0409e171fe16f357212147605d4a8
+N
+server/src/main/java/Main.java,f\4\f49eb7b67ea6fd5de7d54f4d8e080215196bedf3
+]
+-client/src/main/java/server/ServerFacade.java,0\a\0a9e107423acbbcbe25180a8b2278db7b0963e04
+W
+'client/src/main/java/ui/PreLoginUI.java,2\e\2eedaf1f360af900713e3782ea74b5553a51e5b3
+X
+(client/src/main/java/ui/PostLoginUI.java,e\5\e53f4478716203b0ec6d8110171d927f1b7442b8
+N
+client/src/main/java/Main.java,e\c\ecb7a1924b25558f5bedb6f53e4d6092557bd541
+d
+4server/src/test/java/passoff/server/TestFactory.java,f\1\f17bfe7598740b202a9c5b15dbbfbefe62f23921

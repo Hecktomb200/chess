@@ -10,6 +10,7 @@ import model.listgames.ListGamesRequest;
 import model.listgames.ListGamesResult;
 import model.creategame.CreateGameRequest;
 import model.creategame.CreateGameResult;
+import websocket.commands.UserGameCommand;
 
 public class GameService {
   private AuthDAO authDAO;
@@ -91,5 +92,9 @@ public class GameService {
     }
 
     return new ListGamesResult(gameDAO.listGames());
+  }
+
+  public String leave(UserGameCommand command) {
+    return null;
   }
 }
