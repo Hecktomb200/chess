@@ -99,9 +99,15 @@ N
 -client/src/main/java/server/ServerFacade.java,0\a\0a9e107423acbbcbe25180a8b2278db7b0963e04
 W
 'client/src/main/java/ui/PreLoginUI.java,2\e\2eedaf1f360af900713e3782ea74b5553a51e5b3
-X
-(client/src/main/java/ui/PostLoginUI.java,e\5\e53f4478716203b0ec6d8110171d927f1b7442b8
 N
 client/src/main/java/Main.java,e\c\ecb7a1924b25558f5bedb6f53e4d6092557bd541
 d
 4server/src/test/java/passoff/server/TestFactory.java,f\1\f17bfe7598740b202a9c5b15dbbfbefe62f23921
+h
+8shared/src/main/java/websocket/commands/MoveCommand.java,f\7\f71475286bdfa66d8a53c18b260d7a4259dfe1f1
+i
+9shared/src/main/java/websocket/commands/LeaveCommand.java,e\b\ebfcec35676c73c4bc23fbbce4cf8415d7da42c6
+j
+:shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
+k
+;shared/src/main/java/websocket/commands/ConnectCommand.java,0\6\06537295408171a344f416b3cf1d1db629647416
