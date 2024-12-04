@@ -60,7 +60,10 @@ public class WebsocketHandler {
   }
 
   private void removeSessionFromGame(Integer gameID, String authToken, Session session) {
-
+    ConcurrentHashMap<String, Session> authMap = sessionRegistry.get(gameID);
+    if (authMap != null) {
+      authMap.remove(authToken, session);
+    }
   }
 
   private void handleResignPlayer(ResignCommand fromJson, Session session) {
