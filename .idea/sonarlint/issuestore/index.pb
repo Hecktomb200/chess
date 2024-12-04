@@ -105,8 +105,6 @@ d
 4server/src/test/java/passoff/server/TestFactory.java,f\1\f17bfe7598740b202a9c5b15dbbfbefe62f23921
 h
 8shared/src/main/java/websocket/commands/MoveCommand.java,f\7\f71475286bdfa66d8a53c18b260d7a4259dfe1f1
-j
-:shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
 k
 ;shared/src/main/java/websocket/commands/ConnectCommand.java,0\6\06537295408171a344f416b3cf1d1db629647416
 X
@@ -119,7 +117,5 @@ i
 9shared/src/main/java/model/listgames/ListGamesResult.java,0\3\03fa024ff871e14bbc53a4f3c18e3ae95dd0d423
 b
 2shared/src/main/java/model/login/LoginRequest.java,7\3\73559a907584b8f521a32102b22430e40c25469d
-]
--server/src/main/java/service/GameService.java,e\e\ee958dc93989023d27c9ff27f8725605e0e3ad3d
 h
 8shared/src/main/java/model/joingame/JoinGameRequest.java,5\3\531dae995628ad809b72bde3fff62665fbad5642

@@ -47,7 +47,7 @@ public class WebsocketHandler {
     switch (command.getCommandType()) {
       case CONNECT -> handleConnect(command, session);
       case MAKE_MOVE -> handleMakeMove(new Gson().fromJson(message, MoveCommand.class), session);
-      case RESIGN -> handleResignPlayer(new Gson().fromJson(message, ResignCommand.class), session);
+      case RESIGN -> handleResign(new Gson().fromJson(message, ResignCommand.class), session);
       case LEAVE -> handleLeaveGame(new Gson().fromJson(message, LeaveCommand.class), session);
     }
   }
@@ -66,8 +66,27 @@ public class WebsocketHandler {
     }
   }
 
-  private void handleResignPlayer(ResignCommand fromJson, Session session) {
+  private void handleResign(ResignCommand resignCommand, Session session) throws DataAccessException, IOException {
+    String result = gameService.resign(resignCommand);
+    if (result.contains("Error")) {
+      sendResponse(new Error(result), session);
+      return;
+    }
+    if (isGameResigned(resignCommand.getGameID())) {
+      sendResponse(new Error("Another player has already resigned"), session);
+      return;
+    }
+    markGameAsResigned(resignCommand.getGameID());
+    String notificationMessage = String.format("%s has resigned", result);
+    notifyAllPlayers(resignCommand.getGameID(), new NotificationMessage(notificationMessage), null);
+  }
 
+  private boolean isGameResigned(Integer gameID) {
+    return resignedGameIDs.contains(gameID);
+  }
+
+  private void markGameAsResigned(Integer gameID) {
+    resignedGameIDs.add(gameID);
   }
 
   private void handleMakeMove(MoveCommand fromJson, Session session) {

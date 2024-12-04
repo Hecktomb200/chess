@@ -10,6 +10,7 @@ import model.listgames.ListGamesRequest;
 import model.listgames.ListGamesResult;
 import model.creategame.CreateGameRequest;
 import model.creategame.CreateGameResult;
+import websocket.commands.ResignCommand;
 import websocket.commands.UserGameCommand;
 
 public class GameService {
@@ -95,6 +96,11 @@ public class GameService {
   }
 
   public String leave(UserGameCommand command) {
+    return null;
+  }
+
+  //TODO Make sure to fill this out!
+  public String resign(ResignCommand resignCommand) {
     return null;
   }
 }
