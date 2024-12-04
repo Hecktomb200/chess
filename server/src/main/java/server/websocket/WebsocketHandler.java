@@ -89,8 +89,28 @@ public class WebsocketHandler {
     resignedGameIDs.add(gameID);
   }
 
-  private void handleMakeMove(MoveCommand fromJson, Session session) {
+  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException, DataAccessException {
+    if (isGameResigned(moveCommand.getGameID())) {
+      sendResponse(new Error("A player has already resigned"), session);
+      return;
+    }
+    String response = gameService.makeMove(moveCommand);
+    if (response.contains("Error")) {
+      sendResponse(new Error(response), session);
+      return;
+    }
+    sendResponse(new LoadMessage(moveCommand.getGameID()), session);
+    notifyAllPlayers(moveCommand.getGameID(), new LoadMessage(moveCommand.getGameID()), moveCommand.getAuthString());
 
+    String[] responseParts = response.split(",");
+    if (Objects.equals(responseParts[1], "checkmate")) {
+      notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(String.format("%s is in checkmate! Game over!", responseParts[2])), "null");
+    } else if (Objects.equals(responseParts[1], "check")) {
+      notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(String.format("%s is in check!", responseParts[2])), "null");
+    }
+    String moveNotification = String.format("%s moved the piece from %s to %s", responseParts[0],
+            moveCommand.getMove().getStartPosition().toString(), moveCommand.getMove().getEndPosition().toString());
+    notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(moveNotification), moveCommand.getAuthString());
   }
 
   private void handleConnect(UserGameCommand command, Session session) throws IOException, DataAccessException {
