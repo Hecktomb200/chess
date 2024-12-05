@@ -1,5 +1,6 @@
 package service;
 
+import chess.ChessGame;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
@@ -10,9 +11,9 @@ import model.listgames.ListGamesRequest;
 import model.listgames.ListGamesResult;
 import model.creategame.CreateGameRequest;
 import model.creategame.CreateGameResult;
-import websocket.commands.MoveCommand;
-import websocket.commands.ResignCommand;
-import websocket.commands.UserGameCommand;
+import websocket.commands.*;
+
+import java.util.Objects;
 
 public class GameService {
   private AuthDAO authDAO;
@@ -96,7 +97,51 @@ public class GameService {
     return new ListGamesResult(gameDAO.listGames());
   }
 
-  public String leave(UserGameCommand command) {
+  public String connect(ConnectCommand command) throws DataAccessException {
+    AuthData authData = authDAO.getAuth(command.getAuthToken());
+    GameData gameData = gameDAO.getGame(command.getGameID());
+
+    if (authData == null) {
+      return "Error: bad auth token";
+    }
+
+    if (gameData == null) {
+      return "Error: incorrect gameID";
+    }
+
+    if (command.isObserver()) {
+      return authData.username();
+    } else {
+      return handleJoinPlayer(command, authData, gameData);
+    }
+  }
+
+  private String handleJoinPlayer(ConnectCommand command, AuthData authData, GameData gameData) {
+    if (isGameEmpty(command.getPlayerColor(), gameData)) {
+      return "Error: game empty";
+    }
+
+    if (isColorTaken(command.getPlayerColor(), authData.username(), gameData)) {
+      return "Error: spot already taken";
+    }
+
+    //TODO
+    // Additional logic to update game with player's information might be necessary.
+
+    return "";
+  }
+
+  private boolean isGameEmpty(ChessGame.TeamColor playerColor, GameData gameData) {
+    return (playerColor == ChessGame.TeamColor.WHITE && gameData.whiteUsername() == null) ||
+            (playerColor == ChessGame.TeamColor.BLACK && gameData.blackUsername() == null);
+  }
+
+  private boolean isColorTaken(ChessGame.TeamColor playerColor, String username, GameData gameData) {
+    return (playerColor == ChessGame.TeamColor.WHITE && Objects.equals(username, gameData.blackUsername())) ||
+            (playerColor == ChessGame.TeamColor.BLACK && Objects.equals(username, gameData.whiteUsername()));
+  }
+
+  public String leave(LeaveCommand leaveCommand) {
     return null;
   }
 
