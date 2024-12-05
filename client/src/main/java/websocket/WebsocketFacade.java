@@ -1,5 +1,9 @@
 package websocket;
 
+import chess.ChessGame;
+import com.google.gson.Gson;
+import dataaccess.DataAccessException;
+import websocket.commands.UserGameCommand;
 import websocket.messages.LoadMessage;
 import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;
@@ -9,6 +13,7 @@ import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WebsocketFacade extends Endpoint{
@@ -55,6 +60,24 @@ public class WebsocketFacade extends Endpoint{
   private void handleError(String errorMessage) {
     logger.severe("Error: " + errorMessage);
   }
+
+  public void connect(String authToken, Integer gameID) throws IOException {
+    sendCommand(UserGameCommand.CommandType.CONNECT, authToken, gameID);
+  }
+  private void sendCommand(UserGameCommand.CommandType commandType, String authToken, Integer gameID) throws IOException {
+    try {
+      UserGameCommand command = new UserGameCommand(commandType, authToken, gameID);
+      this.session.getBasicRemote().sendText(new Gson().toJson(command));
+    } catch (IOException ex) {
+      handleException(ex);
+    }
+  }
+
+  private void handleException(IOException ex) throws IOException {
+    logger.log(Level.SEVERE, "IOException occurred: " + ex.getMessage(), ex);
+    throw new IOException("Error during WebSocket operation: " + ex.getMessage(), ex);
+  }
+
 
   private ServerMessage parseServerMessage(String message) {
     return null;
