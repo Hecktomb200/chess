@@ -1,5 +1,7 @@
 package websocket;
 
+import websocket.messages.ServerMessage;
+
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
@@ -21,5 +23,21 @@ public class WebsocketFacade extends Endpoint{
   @Override
   public void onOpen(Session session, EndpointConfig endpointConfig) {
 
+  }
+
+  @OnMessage
+  public void onMessage(String message) {
+    ServerMessage serverMessage = parseServerMessage(message);
+    if (serverMessage != null) {
+      handleServerMessage(serverMessage);
+    }
+  }
+
+  private void handleServerMessage(ServerMessage serverMessage) {
+
+  }
+
+  private ServerMessage parseServerMessage(String message) {
+    return null;
   }
 }
