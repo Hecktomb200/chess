@@ -4,6 +4,7 @@ import chess.ChessGame;
 import chess.ChessMove;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dataaccess.DataAccessException;
 import websocket.commands.UserGameCommand;
 import websocket.commands.UserGameCommandParams;
@@ -104,7 +105,14 @@ public class WebsocketFacade extends Endpoint{
   }
 
 
-  private ServerMessage parseServerMessage(String message) {
-    return null;
+  private ServerMessage parseServerMessage(String jsonMessage) {
+    JsonObject jsonObject = JsonParser.parseString(jsonMessage).getAsJsonObject();
+    String type = jsonObject.get("serverMessageType").getAsString();
+    return switch (type) {
+      case "LOAD_GAME" -> new Gson().fromJson(jsonMessage, LoadMessage.class);
+      case "NOTIFICATION" -> new Gson().fromJson(jsonMessage, NotificationMessage.class);
+      case "ERROR" -> new Gson().fromJson(jsonMessage, Error.class);
+      default -> null;
+    };
   }
 }
