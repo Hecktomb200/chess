@@ -89,6 +89,10 @@ public class WebsocketHandler {
     resignedGameIDs.add(gameID);
   }
 
+  public void clearResigned() {
+    resignedGameIDs.clear();
+  }
+
   private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException, DataAccessException {
     if (isGameResigned(moveCommand.getGameID())) {
       sendResponse(new Error("A player has already resigned"), session);
