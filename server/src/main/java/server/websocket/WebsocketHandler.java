@@ -42,7 +42,7 @@ public class WebsocketHandler {
   }
 
   @OnWebSocketMessage
-  public void onMessage(Session session, String message) throws IOException, DataAccessException {
+  public void onMessage(Session session, String message) throws IOException {
     UserGameCommand command=new Gson().fromJson(message, UserGameCommand.class);
     switch (command.getCommandType()) {
       case CONNECT -> handleConnect(command, session);
@@ -52,7 +52,7 @@ public class WebsocketHandler {
     }
   }
 
-  private void handleLeaveGame(LeaveCommand leaveCommand, Session session) throws DataAccessException, IOException {
+  private void handleLeaveGame(LeaveCommand leaveCommand, Session session) throws IOException {
     String response = gameService.leave(leaveCommand);
     removeSessionFromGame(leaveCommand.getGameID(), leaveCommand.getAuthString(), session);
     String notificationMessage = String.format("%s has left the game", response);
@@ -66,7 +66,7 @@ public class WebsocketHandler {
     }
   }
 
-  private void handleResign(ResignCommand resignCommand, Session session) throws DataAccessException, IOException {
+  private void handleResign(ResignCommand resignCommand, Session session) throws IOException {
     String result = gameService.resign(resignCommand);
     if (result.contains("Error")) {
       sendResponse(new Error(result), session);
@@ -93,7 +93,7 @@ public class WebsocketHandler {
     resignedGameIDs.clear();
   }
 
-  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException, DataAccessException {
+  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException {
     if (isGameResigned(moveCommand.getGameID())) {
       sendResponse(new Error("A player has already resigned"), session);
       return;
@@ -117,7 +117,7 @@ public class WebsocketHandler {
     notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(moveNotification), moveCommand.getAuthString());
   }
 
-  private void handleConnect(UserGameCommand command, Session session) throws IOException, DataAccessException {
+  private void handleConnect(UserGameCommand command, Session session) throws IOException {
     String role = command.getAuthToken();
     String playerColor = role.equals("player") ? "WHITE" : "BLACK";
 

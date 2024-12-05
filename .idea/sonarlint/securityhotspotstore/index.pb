@@ -115,3 +115,13 @@ b
 2shared/src/main/java/model/login/LoginRequest.java,7\3\73559a907584b8f521a32102b22430e40c25469d
 h
 8shared/src/main/java/model/joingame/JoinGameRequest.java,5\3\531dae995628ad809b72bde3fff62665fbad5642
+l
+<server/src/main/java/server/websocket/ConnectionManager.java,a\e\ae1bfb65e9ab25be5225484affcae15659f7cee0
+b
+2shared/src/main/java/websocket/messages/Error.java,6\0\6071e7fbb9e5cf8006918f1f2c8ec6edceb694ff
+h
+8shared/src/main/java/websocket/messages/LoadMessage.java,e\4\e4c6ddf435f818b55925b2c76535f52b9b3f9254
+j
+:shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
+j
+:shared/src/main/java/websocket/messages/ServerMessage.java,f\e\fe32700f7e09df25841d54d884adfd3e6253f49f
