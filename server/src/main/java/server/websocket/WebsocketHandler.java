@@ -42,7 +42,7 @@ public class WebsocketHandler {
   }
 
   @OnWebSocketMessage
-  public void onMessage(Session session, String message) throws IOException {
+  public void onMessage(Session session, String message) throws IOException, DataAccessException {
     UserGameCommand command=new Gson().fromJson(message, UserGameCommand.class);
     switch (command.getCommandType()) {
       case CONNECT -> handleConnect(command, session);
@@ -52,11 +52,22 @@ public class WebsocketHandler {
     }
   }
 
-  private void handleLeaveGame(LeaveCommand leaveCommand, Session session) throws IOException {
+  private void handleLeaveGame(LeaveCommand leaveCommand, Session session) throws IOException, DataAccessException {
     String response = gameService.leave(leaveCommand);
+    if (handleError(response, session)) {
+      return;
+    }
     removeSessionFromGame(leaveCommand.getGameID(), leaveCommand.getAuthString(), session);
-    String notificationMessage = String.format("%s has left the game", response);
+    String notificationMessage = String.format("%s has left the game.", response);
     notifyAllPlayers(leaveCommand.getGameID(), new NotificationMessage(notificationMessage), leaveCommand.getAuthString());
+  }
+
+  private boolean handleError(String result, Session session) throws IOException {
+    if (result.contains("Error")) {
+      sendResponse(new Error(result), session);
+      return true;
+    }
+    return false;
   }
 
   private void removeSessionFromGame(Integer gameID, String authToken, Session session) {
@@ -68,8 +79,7 @@ public class WebsocketHandler {
 
   private void handleResign(ResignCommand resignCommand, Session session) throws IOException {
     String result = gameService.resign(resignCommand);
-    if (result.contains("Error")) {
-      sendResponse(new Error(result), session);
+    if (handleError(result, session)) {
       return;
     }
     if (isGameResigned(resignCommand.getGameID())) {
@@ -124,6 +134,7 @@ public class WebsocketHandler {
     JoinGameRequest joinRequest = new JoinGameRequest(playerColor, command.getGameID());
 
     try {
+      //TODO Should this use joinGame or connect?
       gameService.joinGame(joinRequest, command.getAuthToken());
     } catch (DataAccessException e) {
       sendResponse(new Error(e.getMessage()), session);

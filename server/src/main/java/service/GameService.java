@@ -141,8 +141,35 @@ public class GameService {
             (playerColor == ChessGame.TeamColor.BLACK && Objects.equals(username, gameData.whiteUsername()));
   }
 
-  public String leave(LeaveCommand leaveCommand) {
-    return null;
+  private String doCheck(GameData gameData, ChessGame currentGame) {
+    if (currentGame.isInCheckmate(ChessGame.TeamColor.WHITE)) {
+      return "checkmate," + gameData.whiteUsername();
+    } else if (currentGame.isInCheckmate(ChessGame.TeamColor.BLACK)) {
+      return "checkmate," + gameData.blackUsername();
+    } else if (currentGame.isInCheck(ChessGame.TeamColor.WHITE)) {
+      return "check," + gameData.whiteUsername();
+    } else if (currentGame.isInCheck(ChessGame.TeamColor.BLACK)) {
+      return "check," + gameData.blackUsername();
+    }
+    return "null";
+  }
+
+  public String leave(LeaveCommand command) throws DataAccessException {
+    String authToken = command.getAuthToken();
+    Integer gameID = command.getGameID();
+
+    AuthData authData = authDAO.getAuth(authToken);
+    GameData gameData = gameDAO.getGame(gameID);
+
+    if (authData == null) {
+      return "Error: bad auth token";
+    }
+
+    if (gameData == null) {
+      return "Error: incorrect gameID";
+    }
+
+    return authData.username() + "left the game successfully.";
   }
 
   //TODO Make sure to fill this out!
