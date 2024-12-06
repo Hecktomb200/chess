@@ -122,6 +122,4 @@ b
 h
 8shared/src/main/java/websocket/messages/LoadMessage.java,e\4\e4c6ddf435f818b55925b2c76535f52b9b3f9254
 j
-:shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
-j
 :shared/src/main/java/websocket/messages/ServerMessage.java,f\e\fe32700f7e09df25841d54d884adfd3e6253f49f

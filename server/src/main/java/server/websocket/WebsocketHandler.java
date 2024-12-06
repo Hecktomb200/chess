@@ -77,7 +77,7 @@ public class WebsocketHandler {
     }
   }
 
-  private void handleResign(ResignCommand resignCommand, Session session) throws IOException {
+  private void handleResign(ResignCommand resignCommand, Session session) throws IOException, DataAccessException {
     String result = gameService.resign(resignCommand);
     if (handleError(result, session)) {
       return;

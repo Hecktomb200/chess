@@ -155,12 +155,39 @@ public class GameService {
   }
 
   public String leave(LeaveCommand command) throws DataAccessException {
-    String authToken = command.getAuthToken();
-    Integer gameID = command.getGameID();
+    AuthData authData = authDAO.getAuth(command.getAuthString());
+    GameData gameData = gameDAO.getGame(command.getGameID());
 
-    AuthData authData = authDAO.getAuth(authToken);
-    GameData gameData = gameDAO.getGame(gameID);
+    var result = validateAuth(authData, gameData);
+    if (result.contains("Error")) {
+      return result;
+    }
 
+
+    return authData.username() + "left the game successfully.";
+  }
+
+  public String resign(ResignCommand command) throws DataAccessException {
+    AuthData authData = authDAO.getAuth(command.getAuthString());
+    GameData gameData = gameDAO.getGame(command.getGameID());
+
+    var result = validateAuth(authData, gameData);
+    if (result.contains("Error")) {
+      return result;
+    }
+
+    if (!isPlayerInGame(authData.username(), gameData)) {
+      return "Error: player not in game";
+    }
+
+    return authData.username() + "resigned the game successfully.";
+  }
+
+  private boolean isPlayerInGame(String username, GameData gameData) {
+    return Objects.equals(username, gameData.whiteUsername()) || Objects.equals(username, gameData.blackUsername());
+  }
+
+  private String validateAuth(AuthData authData, GameData gameData) throws DataAccessException {
     if (authData == null) {
       return "Error: bad auth token";
     }
@@ -169,11 +196,6 @@ public class GameService {
       return "Error: incorrect gameID";
     }
 
-    return authData.username() + "left the game successfully.";
-  }
-
-  //TODO Make sure to fill this out!
-  public String resign(ResignCommand resignCommand) {
     return null;
   }
 
