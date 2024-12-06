@@ -31,8 +31,6 @@ h
 8server/src/main/java/dataaccess/DataAccessException.java,2\e\2ea31417f70d86666411d348ab6c6846566a4c92
 X
 (shared/src/main/java/model/AuthData.java,f\7\f7739bee04cb37ee6899e6476894792bc648a47e
-X
-(shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
 a
 1shared/src/main/java/model/Login/LoginResult.java,c\e\ce7a018fc33b828797469f7353b2acfd74903b20
 X
@@ -87,8 +85,6 @@ d
 4server/src/test/java/dataaccess/SQLUserDAOTests.java,1\f\1f289f365b38aab38d371b3d4658027f712ed51a
 d
 4server/src/test/java/dataaccess/SQLGameDAOTests.java,c\8\c83edfdf34fd4ed224e9a572c9e4cc4680b70a5f
-Y
-)shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
 Z
 *shared/src/main/java/chess/ChessPiece.java,c\0\c02b93065e1c720b0a958f6a9aa91f709ca1cca9
 k

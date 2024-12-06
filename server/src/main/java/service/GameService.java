@@ -1,6 +1,7 @@
 package service;
 
 import chess.ChessGame;
+import chess.InvalidMoveException;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
@@ -141,15 +142,15 @@ public class GameService {
             (playerColor == ChessGame.TeamColor.BLACK && Objects.equals(username, gameData.whiteUsername()));
   }
 
-  private String doCheck(GameData gameData, ChessGame currentGame) {
-    if (currentGame.isInCheckmate(ChessGame.TeamColor.WHITE)) {
-      return "checkmate," + gameData.whiteUsername();
-    } else if (currentGame.isInCheckmate(ChessGame.TeamColor.BLACK)) {
-      return "checkmate," + gameData.blackUsername();
-    } else if (currentGame.isInCheck(ChessGame.TeamColor.WHITE)) {
-      return "check," + gameData.whiteUsername();
-    } else if (currentGame.isInCheck(ChessGame.TeamColor.BLACK)) {
-      return "check," + gameData.blackUsername();
+  private String doCheck(GameData gameData, ChessGame game) {
+    if (game.isInCheckmate(ChessGame.TeamColor.WHITE)) {
+      return "checkmate, " + gameData.whiteUsername();
+    } else if (game.isInCheckmate(ChessGame.TeamColor.BLACK)) {
+      return "checkmate, " + gameData.blackUsername();
+    } else if (game.isInCheck(ChessGame.TeamColor.WHITE)) {
+      return "check, " + gameData.whiteUsername();
+    } else if (game.isInCheck(ChessGame.TeamColor.BLACK)) {
+      return "check, " + gameData.blackUsername();
     }
     return "null";
   }
@@ -199,9 +200,39 @@ public class GameService {
     return null;
   }
 
+  public String makeMove(MoveCommand command) throws DataAccessException {
+    AuthData authData = authDAO.getAuth(command.getAuthString());
+    GameData gameData = gameDAO.getGame(command.getGameID());
 
-  //TODO This one to fill out also!
-  public String makeMove(MoveCommand moveCommand) {
-    return null;
+    var result = validateAuth(authData, gameData);
+    if (result.contains("Error")) {
+      return result;
+    }
+
+    ChessGame game = gameData.game();
+    if (!checkTurn(authData, gameData, game)) {
+      return "Error: It's not your turn.";
+    }
+
+    try {
+      game.makeMove(command.getMove());
+    } catch (InvalidMoveException e) {
+      return "Error: Invalid move.";
+    }
+
+    makeUpdate(gameData, game);
+
+    return authData.username() + ", " + doCheck(gameData, game);
+  }
+
+  private void makeUpdate(GameData gameData, ChessGame game) throws DataAccessException {
+    GameData newGame = new GameData(gameData.gameID(), gameData.whiteUsername(),
+            gameData.blackUsername(), gameData.gameName(), game);
+    gameDAO.updateGame(newGame);
+  }
+
+  private boolean checkTurn(AuthData authData, GameData gameData, ChessGame game) {
+    return ((game.getTeamTurn() == ChessGame.TeamColor.WHITE && !authData.username().equals(gameData.whiteUsername())) ||
+            (game.getTeamTurn() == ChessGame.TeamColor.BLACK && !authData.username().equals(gameData.blackUsername())));
   }
 }

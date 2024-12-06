@@ -1,6 +1,7 @@
 package server.websocket;
 
 import chess.ChessGame;
+import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
@@ -42,7 +43,7 @@ public class WebsocketHandler {
   }
 
   @OnWebSocketMessage
-  public void onMessage(Session session, String message) throws IOException, DataAccessException {
+  public void onMessage(Session session, String message) throws IOException, DataAccessException, InvalidMoveException {
     UserGameCommand command=new Gson().fromJson(message, UserGameCommand.class);
     switch (command.getCommandType()) {
       case CONNECT -> handleConnect(command, session);
@@ -103,7 +104,7 @@ public class WebsocketHandler {
     resignedGameIDs.clear();
   }
 
-  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException {
+  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException, DataAccessException, InvalidMoveException {
     if (isGameResigned(moveCommand.getGameID())) {
       sendResponse(new Error("A player has already resigned"), session);
       return;
