@@ -1,12 +1,11 @@
 package ui;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessPiece;
-import chess.ChessPosition;
+import chess.*;
 import model.GameData;
 import model.listgames.ListGamesResult;
 import server.ServerFacade;
+import ui.ChessFile;
+import websocket.WebsocketFacade;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -24,13 +23,15 @@ public class GameplayUI {
   private GameData gameData;
   private final Scanner scanner;
   private final Boolean observer;
-  public GameplayUI(GameData game, String sURL, String authToken, String username, boolean observer) {
+  private final WebsocketFacade webSocketFacade;
+  public GameplayUI(GameData game, String sURL, String authToken, String username, boolean observer) throws IOException {
     serverFacade = new ServerFacade(sURL);
     this.authToken = authToken;
     gameData = game;
     this.username = username;
     this.scanner = new Scanner(System.in);
     this.observer = observer;
+    webSocketFacade = new WebsocketFacade(sURL);
   }
 
   public void run() throws IOException, URISyntaxException {
@@ -61,6 +62,15 @@ public class GameplayUI {
         case "help":
           help();
           break;
+        case "move":
+          makeMove(params);
+          break;
+        case "resign":
+          handleResign();
+          break;
+        case "highlight":
+          handleHighlight(params);
+          break;
         default:
           invalidCommandMessage();
           break;
@@ -68,6 +78,45 @@ public class GameplayUI {
     } catch (Exception e) {
       System.out.println("An error occurred: " + e.getMessage());
       System.out.println("Please try again.");
+    }
+  }
+
+  private void handleHighlight(String[] params) {
+
+  }
+
+  private String handleResign() throws IOException {
+    webSocketFacade.resign(authToken, gameData.gameID());
+    return "";
+  }
+
+  private String makeMove(String[] params) throws IOException {
+    if (params.length != 2) {
+      throw new IllegalArgumentException("Expected [ROW],[COLUMN] [ROW],[COLUMN]");
+    }
+
+    String[] pre = params[0].split(",");
+    String[] post = params[1].split(",");
+    if (pre.length != 2 || post.length != 2) {
+      throw new IllegalArgumentException("Invalid format. Expected: [ROW],[COLUMN] for both positions.");
+    }
+
+    ChessPosition startPos = new ChessPosition(
+            Integer.parseInt(pre[0]),
+            ChessFile.letterToNumber(post[1])
+    );
+    ChessPosition endPos = new ChessPosition(
+            Integer.parseInt(post[0]),
+            ChessFile.letterToNumber(post[1])
+    );
+
+    try {
+      ChessMove chessMove=new ChessMove(startPos, endPos, null);
+      webSocketFacade.makeMove(authToken, gameData.gameID(), chessMove);
+
+      return "";
+    } catch (IllegalArgumentException e) {
+      return "Error: " + e.getMessage();
     }
   }
 

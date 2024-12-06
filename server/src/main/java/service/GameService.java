@@ -188,7 +188,7 @@ public class GameService {
     return Objects.equals(username, gameData.whiteUsername()) || Objects.equals(username, gameData.blackUsername());
   }
 
-  private String validateAuth(AuthData authData, GameData gameData) throws DataAccessException {
+  private String validateAuth(AuthData authData, GameData gameData) {
     if (authData == null) {
       return "Error: bad auth token";
     }
@@ -197,7 +197,7 @@ public class GameService {
       return "Error: incorrect gameID";
     }
 
-    return null;
+    return "";
   }
 
   public String makeMove(MoveCommand command) throws DataAccessException {

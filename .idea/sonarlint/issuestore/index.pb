@@ -101,8 +101,6 @@ d
 4server/src/test/java/passoff/server/TestFactory.java,f\1\f17bfe7598740b202a9c5b15dbbfbefe62f23921
 X
 (client/src/main/java/ui/PostLoginUI.java,e\5\e53f4478716203b0ec6d8110171d927f1b7442b8
-W
-'client/src/main/java/ui/GameplayUI.java,9\4\944c9b8603a018cc1defc76a74711c973acb70d7
 j
 :shared/src/main/java/model/listgames/ListGamesRequest.java,e\9\e914b65fd539493a519a4d02a08029213921a5dd
 i
