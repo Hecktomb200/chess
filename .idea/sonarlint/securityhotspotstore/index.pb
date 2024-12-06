@@ -117,3 +117,17 @@ h
 8shared/src/main/java/websocket/messages/LoadMessage.java,e\4\e4c6ddf435f818b55925b2c76535f52b9b3f9254
 j
 :shared/src/main/java/websocket/messages/ServerMessage.java,f\e\fe32700f7e09df25841d54d884adfd3e6253f49f
+h
+8shared/src/main/java/websocket/commands/MoveCommand.java,f\7\f71475286bdfa66d8a53c18b260d7a4259dfe1f1
+r
+Bshared/src/main/java/websocket/commands/UserGameCommandParams.java,2\c\2c34a200e5045142dba747ac0e32f40d99aee0c9
+i
+9shared/src/main/java/websocket/commands/LeaveCommand.java,e\b\ebfcec35676c73c4bc23fbbce4cf8415d7da42c6
+j
+:shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
+X
+(shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
+Y
+)shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
+\
+,server/src/main/java/dataaccess/GameDAO.java,2\f\2f91df5495b3b24343ce6793d5a278799d552304

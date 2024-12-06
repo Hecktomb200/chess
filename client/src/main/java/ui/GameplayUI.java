@@ -81,8 +81,56 @@ public class GameplayUI {
     }
   }
 
-  private void handleHighlight(String[] params) {
+  private String handleHighlight(String[] params) {
+    if (params.length != 1) {
+      throw new IllegalArgumentException("Expected: highlight [ROW],[COLUMN]");
+    }
 
+    ChessGame chessGame = gameData.game();
+    String[] positionArray = params[0].split(",");
+    ChessPosition piecePosition = new ChessPosition(
+            Integer.parseInt(positionArray[0]),
+            ChessFile.letterToNumber(positionArray[1])
+    );
+
+    Collection<ChessMove> validMoves = chessGame.validMoves(piecePosition);
+    return displayHighlightedGame(validMoves, piecePosition);
+  }
+
+  private String displayHighlightedGame(Collection<ChessMove> validMoves, ChessPosition piecePosition) {
+    ChessGame currentGame = gameData.game();
+    ChessBoard chessboard = currentGame.getBoard();
+    StringBuilder boardRepresentation = new StringBuilder();
+
+    boolean isBlack = Objects.equals(gameData.blackUsername(), username);
+    String header = getBoardHeader(isBlack);
+    boardRepresentation.append(header);
+
+    boolean isSquareBlack = true;
+
+    for (int rank = isBlack ? 8 : 1; isBlack ? rank >= 1 : rank <= 8; rank += isBlack ? -1 : 1) {
+      StringBuilder row = new StringBuilder(SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + String.format(" %s ", rank));
+      for (int file = isBlack ? 8 : 1; isBlack ? file >= 1 : file <= 8; file += isBlack ? -1 : 1) {
+        ChessPosition targetPosition = new ChessPosition(rank, file);
+        row.append(getSquareDisplay(isSquareBlack, validMoves, piecePosition, targetPosition));
+        isSquareBlack = !isSquareBlack;
+      }
+      row.append(SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + String.format(" %s ", rank) + RESET_BG_COLOR + "\n");
+      boardRepresentation.insert(0, row.toString());
+    }
+
+    boardRepresentation.append(header);
+    return boardRepresentation.toString();
+  }
+
+  private String getSquareDisplay(boolean isSquareBlack, Collection<ChessMove> validMoves, ChessPosition piecePosition, ChessPosition targetPosition) {
+    String squareColor = isSquareBlack ? SET_BG_COLOR_BLACK : SET_BG_COLOR_WHITE;
+    String highlight = validMoves.contains(new ChessMove(piecePosition, targetPosition, null)) ? SET_BG_COLOR_YELLOW : "";
+    return squareColor + highlight + "   " + RESET_BG_COLOR;
+  }
+
+  private String getBoardHeader(boolean isBlack) {
+    return SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + (isBlack ? "    H  G  F  E  D  C  B  A    " : "    A  B  C  D  E  F  G  H    ") + RESET_BG_COLOR + "\n";
   }
 
   private String handleResign() throws IOException {
