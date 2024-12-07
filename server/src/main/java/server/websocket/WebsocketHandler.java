@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 @WebSocket
 public class WebsocketHandler {
@@ -34,7 +35,7 @@ public class WebsocketHandler {
   private final AuthDAO authDAO;
   private final GameDAO gameDAO;
   private final GameService gameService;
-
+  private static final Logger logger = Logger.getLogger(WebsocketHandler.class.getName());
   public WebsocketHandler(ConnectionManager connectionManager, GameService gameService, AuthDAO authDAO, GameDAO gameDAO) {
     this.connectionManager=connectionManager;
     this.gameService=gameService;
@@ -44,6 +45,7 @@ public class WebsocketHandler {
 
   @OnWebSocketMessage
   public void onMessage(Session session, String message) throws IOException, DataAccessException, InvalidMoveException {
+    logger.info("Received message: " + message);
     UserGameCommand command=new Gson().fromJson(message, UserGameCommand.class);
     switch (command.getCommandType()) {
       case CONNECT -> handleConnect(new Gson().fromJson(message, ConnectCommand.class), session);
@@ -111,7 +113,7 @@ public class WebsocketHandler {
     }
     String response = gameService.makeMove(moveCommand);
     if (response.contains("Error")) {
-      sendResponse(new Error(response), session);
+      sendResponse(new Error(response), session); //TODO THIS ALSO ISN'T WORKING
       return;
     }
     sendResponse(new LoadMessage(moveCommand.getGameID()), session);

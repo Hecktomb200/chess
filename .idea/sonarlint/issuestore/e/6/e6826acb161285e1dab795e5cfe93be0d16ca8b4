@@ -1,0 +1,11 @@
+
+;
+java:S57861"Remove this 'public' modifier.(âµâ†8áµÕ‹³2
+:
+java:S5786"Remove this 'public' modifier.(×Òå\8áµÕ‹³2
+g
+java:S5845o"JChange the assertion arguments to not compare a primitive value with null.(°Áíª8âµÕ‹³2
+m
+java:S5845‚"JChange the assertion arguments to not compare a primitive value with null.(ğã´Õøÿÿÿÿ8ãµÕ‹³2
+…
+java:S5778‰"bRefactor the code of the lambda to have only one invocation possibly throwing a runtime exception.(Šæğ»ıÿÿÿÿ8ÉÛ‹³2

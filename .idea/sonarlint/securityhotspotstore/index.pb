@@ -115,7 +115,13 @@ j
 :shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
 X
 (shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
-Y
-)shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a
 \
 ,server/src/main/java/dataaccess/GameDAO.java,2\f\2f91df5495b3b24343ce6793d5a278799d552304
+b
+2client/src/test/java/client/ServerFacadeTests.java,e\6\e6826acb161285e1dab795e5cfe93be0d16ca8b4
+V
+&client/src/main/java/ui/ChessFile.java,2\f\2fc5975eb245ccece73b28a86b459b0b625934b1
+k
+;shared/src/main/java/websocket/commands/ConnectCommand.java,0\6\06537295408171a344f416b3cf1d1db629647416
+l
+<shared/src/main/java/websocket/commands/UserGameCommand.java,f\9\f96f36bc77280a61997004d435062b4a33b2286d

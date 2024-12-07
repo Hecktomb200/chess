@@ -94,10 +94,21 @@ public class WebsocketFacade extends Endpoint{
       jsonObject.addProperty("gameID", command.getGameID());
 
       if (commandType == UserGameCommand.CommandType.MAKE_MOVE && move != null) {
-        jsonObject.addProperty("move", move.toString());
+        JsonObject moveJson = new JsonObject();
+        moveJson.addProperty("startRow", move.getStartPosition().getRow());
+        moveJson.addProperty("startColumn", move.getStartPosition().getColumn());
+        moveJson.addProperty("endRow", move.getEndPosition().getRow());
+        moveJson.addProperty("endColumn", move.getEndPosition().getColumn());
+        jsonObject.add("move", moveJson);
       }
 
-      this.session.getBasicRemote().sendText(new Gson().toJson(jsonObject));
+      String messageToSend = new Gson().toJson(jsonObject);
+      logger.info("Sending message: " + messageToSend);
+      if (this.session.isOpen()) {
+        this.session.getBasicRemote().sendText(new Gson().toJson(jsonObject));
+      } else {
+        logger.severe("WebSocket session is not open.");
+      }
     } catch (IOException ex) {
       handleException(ex);
     }

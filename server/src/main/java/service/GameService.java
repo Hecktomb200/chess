@@ -240,6 +240,7 @@ public class GameService {
   }
 
   private boolean checkTurn(AuthData authData, GameData gameData, ChessGame game) {
+    //TODO THIS HERE IS THE PROBLEM CHILD
     return ((game.getTeamTurn() == ChessGame.TeamColor.WHITE && !authData.username().equals(gameData.whiteUsername())) ||
             (game.getTeamTurn() == ChessGame.TeamColor.BLACK && !authData.username().equals(gameData.blackUsername())));
   }
