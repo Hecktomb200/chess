@@ -28,8 +28,20 @@ public class WebsocketFacade extends Endpoint{
   public WebsocketFacade(String url) throws IOException {
     try {
       URI socketURI=new URI(url.replace("http", "ws") + "/ws");
+
       WebSocketContainer container=ContainerProvider.getWebSocketContainer();
       this.session=container.connectToServer(this, socketURI);
+
+      this.session.addMessageHandler(new MessageHandler.Whole<String>() {
+        @Override
+        public void onMessage (String message){
+        logger.info("Received message: " + message);
+        ServerMessage serverMessage=parseServerMessage(message);
+        if (serverMessage != null) {
+          handleServerMessage(serverMessage);
+        }
+      }
+      });
     } catch (DeploymentException | IOException | URISyntaxException ex) {
       throw new IOException(ex.getMessage(), ex);
     }
@@ -38,14 +50,6 @@ public class WebsocketFacade extends Endpoint{
   @Override
   public void onOpen(Session session, EndpointConfig endpointConfig) {
     logger.info("WebSocket connection opened.");
-  }
-
-  @OnMessage
-  public void onMessage(String message) {
-    ServerMessage serverMessage = parseServerMessage(message);
-    if (serverMessage != null) {
-      handleServerMessage(serverMessage);
-    }
   }
 
   private void handleServerMessage(ServerMessage serverMessage) {
@@ -65,7 +69,7 @@ public class WebsocketFacade extends Endpoint{
   }
 
   private void handleError(String errorMessage) {
-    logger.severe("Error: " + errorMessage);
+    logger.info(errorMessage);
   }
 
   public void connect(String authToken, Integer gameID) throws IOException {

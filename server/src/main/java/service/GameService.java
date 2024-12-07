@@ -219,7 +219,7 @@ public class GameService {
 
     ChessGame game = gameData.game();
     if (!checkTurn(authData, gameData, game)) {
-      return "Error: It's not your turn.";
+      return "Error: Its not your turn.";
     }
 
     try {

@@ -106,14 +106,14 @@ public class WebsocketHandler {
     resignedGameIDs.clear();
   }
 
-  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException, DataAccessException, InvalidMoveException {
+  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException, DataAccessException {
     if (isGameResigned(moveCommand.getGameID())) {
       sendResponse(new Error("A player has already resigned"), session);
       return;
     }
     String response = gameService.makeMove(moveCommand);
     if (response.contains("Error")) {
-      sendResponse(new Error(response), session); //TODO THIS ALSO ISN'T WORKING
+      sendResponse(new Error(response), session);
       return;
     }
     sendResponse(new LoadMessage(moveCommand.getGameID()), session);
@@ -165,7 +165,9 @@ public class WebsocketHandler {
 
   private void sendResponse(ServerMessage message, Session session) throws IOException {
     if (session.isOpen()) {
-      session.getRemote().sendString(new Gson().toJson(message));
+      String jsonMessage = new Gson().toJson(message);
+      logger.info("Sending message: " + jsonMessage);
+      session.getRemote().sendString(jsonMessage);
     }
   }
 
