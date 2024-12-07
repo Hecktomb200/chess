@@ -59,14 +59,10 @@ c
 3server/src/test/java/service/ClearServiceTests.java,9\6\966f5bdd08c528439edcbb0f9ed8b6e6677c1170
 b
 2server/src/test/java/service/UserServiceTests.java,4\0\40225ce89c71f4bd51f61940039c3dcfdc669a0b
-h
-8server/src/main/java/dataaccess/database/SQLGameDAO.java,5\e\5e058463601ed30054955fba65632ac47a28c985
 d
 4server/src/test/java/dataaccess/SQLAuthDAOTests.java,1\4\14a499a8d92807e76a52b9d110869f0f6ebaabb7
 b
 2server/src/test/java/service/GameServiceTests.java,c\b\cbbd93c03402376669a48a743c29d734c3573acf
-Y
-)shared/src/main/java/chess/ChessMove.java,c\5\c52f67c55315a844e23611bb848b35269aaedb66
 \
 ,server/src/main/java/dataaccess/AuthDAO.java,3\2\32b7a2b97a8957e906a6d7e19358db18d9b6f1b5
 Z
@@ -109,8 +105,6 @@ j
 :shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
 X
 (shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
-\
-,server/src/main/java/dataaccess/GameDAO.java,2\f\2f91df5495b3b24343ce6793d5a278799d552304
 b
 2client/src/test/java/client/ServerFacadeTests.java,e\6\e6826acb161285e1dab795e5cfe93be0d16ca8b4
 V
@@ -125,9 +119,5 @@ g
 7server/src/test/java/passoff/server/WebSocketTests.java,a\2\a289ce880b9b814b771ad551c85542d0cccba3a8
 W
 'client/src/main/java/ui/PreLoginUI.java,2\e\2eedaf1f360af900713e3782ea74b5553a51e5b3
-h
-8shared/src/main/java/websocket/commands/MoveCommand.java,f\7\f71475286bdfa66d8a53c18b260d7a4259dfe1f1
 W
 'server/src/main/java/server/Server.java,8\0\8036b8cb9ce2e6760f04e2a3b475b260935bb7b8
-Y
-)shared/src/main/java/chess/ChessGame.java,1\2\12ee2b2e0577bf40c2f0f09ceb1e2b3d9b36bd7a

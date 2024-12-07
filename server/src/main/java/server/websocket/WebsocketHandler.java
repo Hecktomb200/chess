@@ -1,11 +1,12 @@
 package server.websocket;
 
-import chess.ChessGame;
-import chess.InvalidMoveException;
+import chess.*;
 import com.google.gson.Gson;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
+import model.AuthData;
+import model.GameData;
 import model.joingame.JoinGameRequest;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
@@ -35,10 +36,12 @@ public class WebsocketHandler {
   private final AuthDAO authDAO;
   private final GameDAO gameDAO;
   private final GameService gameService;
+  private final ChessGame chessGame;
   private static final Logger logger = Logger.getLogger(WebsocketHandler.class.getName());
   public WebsocketHandler(ConnectionManager connectionManager, GameService gameService, AuthDAO authDAO, GameDAO gameDAO) {
     this.connectionManager=connectionManager;
     this.gameService=gameService;
+    this.chessGame = new ChessGame();
     this.authDAO = authDAO;
     this.gameDAO = gameDAO;
   }
@@ -106,28 +109,77 @@ public class WebsocketHandler {
     resignedGameIDs.clear();
   }
 
-  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException, DataAccessException {
+  @Override
+  public String toString() {
+    return super.toString();
+  }
+
+  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException, DataAccessException, InvalidMoveException {
     if (isGameResigned(moveCommand.getGameID())) {
       sendResponse(new Error("A player has already resigned"), session);
       return;
     }
-    String response = gameService.makeMove(moveCommand);
-    if (response.contains("Error")) {
-      sendResponse(new Error(response), session);
+
+    ChessPosition startPosition = moveCommand.getMove().getStartPosition();
+    ChessPosition endPosition = moveCommand.getMove().getEndPosition();
+    ChessPiece.PieceType promotionPiece = moveCommand.getMove().getPromotionPiece();
+
+    try {
+      AuthData authData = authDAO.getAuth(moveCommand.getAuthString());
+      GameData gameData = gameDAO.getGame(moveCommand.getGameID());
+
+      validateAuth(authData, gameData);
+
+      ChessMove chessMove = new ChessMove(startPosition, endPosition, promotionPiece);
+      chessGame.makeMove(chessMove);
+      ChessGame game = gameData.game();
+      GameData newGame = new GameData(gameData.gameID(), gameData.whiteUsername(),
+              gameData.blackUsername(), gameData.gameName(), game);
+      gameDAO.updateGame(newGame);
+
+      String checkResponse = doCheck(newGame, chessGame);
+      if (!checkResponse.equals("null")) {
+        String[] responseParts = checkResponse.split(",");
+        if (Objects.equals(responseParts[0], "checkmate")) {
+          notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(String.format("%s is in checkmate! Game over!", responseParts[1])), "null");
+        } else if (Objects.equals(responseParts[0], "check")) {
+          notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(String.format("%s is in check!", responseParts[1])), "null");
+        }
+      }
+
+      String moveNotification = String.format("%s moved the piece from %s to %s", moveCommand.getAuthString(),
+              startPosition.toString(), endPosition.toString());
+      notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(moveNotification), moveCommand.getAuthString());
+
+    } catch (InvalidMoveException e) {
+      sendResponse(new Error(e.getMessage()), session);
       return;
     }
     sendResponse(new LoadMessage(moveCommand.getGameID()), session);
     notifyAllPlayers(moveCommand.getGameID(), new LoadMessage(moveCommand.getGameID()), moveCommand.getAuthString());
+  }
 
-    String[] responseParts = response.split(",");
-    if (Objects.equals(responseParts[1], "checkmate")) {
-      notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(String.format("%s is in checkmate! Game over!", responseParts[2])), "null");
-    } else if (Objects.equals(responseParts[1], "check")) {
-      notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(String.format("%s is in check!", responseParts[2])), "null");
+  private String doCheck(GameData gameData, ChessGame game) {
+    if (game.isInCheckmate(ChessGame.TeamColor.WHITE)) {
+      return "checkmate, " + gameData.whiteUsername();
+    } else if (game.isInCheckmate(ChessGame.TeamColor.BLACK)) {
+      return "checkmate, " + gameData.blackUsername();
+    } else if (game.isInCheck(ChessGame.TeamColor.WHITE)) {
+      return "check, " + gameData.whiteUsername();
+    } else if (game.isInCheck(ChessGame.TeamColor.BLACK)) {
+      return "check, " + gameData.blackUsername();
     }
-    String moveNotification = String.format("%s moved the piece from %s to %s", responseParts[0],
-            moveCommand.getMove().getStartPosition().toString(), moveCommand.getMove().getEndPosition().toString());
-    notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(moveNotification), moveCommand.getAuthString());
+    return "null";
+  }
+
+  private void validateAuth(AuthData authData, GameData gameData) throws DataAccessException {
+    if (authData == null) {
+      throw new DataAccessException("Error: bad auth token");
+    }
+
+    if (gameData == null) {
+      throw new DataAccessException("Error: incorrect gameID");
+    }
   }
 
   private void handleConnect(ConnectCommand command, Session session) throws IOException {

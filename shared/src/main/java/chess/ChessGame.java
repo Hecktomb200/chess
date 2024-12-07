@@ -130,11 +130,11 @@ public class ChessGame {
         }
 
         if (!isValidMove(move)) {
-            throw new InvalidMoveException("Invalid move");
+            throw new InvalidMoveException("Error: Invalid move");
         }
 
         if (piece.getTeamColor() != getTeamTurn()) {
-            throw new InvalidMoveException("It's not your turn");
+            throw new InvalidMoveException("Error: It's not your turn");
         }
 
         makeMoveInternal(move, piece);
