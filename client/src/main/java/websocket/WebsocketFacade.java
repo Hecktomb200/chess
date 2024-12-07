@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dataaccess.DataAccessException;
+import websocket.commands.MoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.commands.UserGameCommandParams;
 import websocket.messages.LoadMessage;
@@ -26,7 +27,7 @@ public class WebsocketFacade extends Endpoint{
 
   public WebsocketFacade(String url) throws IOException {
     try {
-      URI socketURI=new URI(url.replace("http", "ws") + "/connect");
+      URI socketURI=new URI(url.replace("http", "ws") + "/ws");
       WebSocketContainer container=ContainerProvider.getWebSocketContainer();
       this.session=container.connectToServer(this, socketURI);
     } catch (DeploymentException | IOException | URISyntaxException ex) {
@@ -35,7 +36,9 @@ public class WebsocketFacade extends Endpoint{
   }
 
   @Override
-  public void onOpen(Session session, EndpointConfig endpointConfig) {}
+  public void onOpen(Session session, EndpointConfig endpointConfig) {
+    logger.info("WebSocket connection opened.");
+  }
 
   @OnMessage
   public void onMessage(String message) {
@@ -69,8 +72,8 @@ public class WebsocketFacade extends Endpoint{
     sendCommand(UserGameCommand.CommandType.CONNECT, authToken, gameID, null);
   }
 
-  public void makeMove(String authToken, Integer gameID, ChessMove move) throws IOException {
-    sendCommand(UserGameCommand.CommandType.MAKE_MOVE, authToken, gameID, move);
+  public void makeMove(String authToken, Integer gameID, ChessMove move) throws IOException, DataAccessException {
+    sendCommand(UserGameCommand.CommandType.MAKE_MOVE, authToken,gameID,move);
   }
 
   public void leave(String authToken, Integer gameID) throws IOException {
@@ -80,6 +83,7 @@ public class WebsocketFacade extends Endpoint{
   public void resign(String authToken, Integer gameID) throws IOException {
     sendCommand(UserGameCommand.CommandType.RESIGN, authToken, gameID, null);
   }
+
   private void sendCommand(UserGameCommand.CommandType commandType, String authToken, Integer gameID, ChessMove move) throws IOException {
     try {
       UserGameCommand command = new UserGameCommand(commandType, authToken, gameID);

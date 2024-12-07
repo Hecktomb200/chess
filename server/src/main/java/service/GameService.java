@@ -113,11 +113,22 @@ public class GameService {
     if (command.isObserver()) {
       return authData.username();
     } else {
-      return handleJoinPlayer(command, authData, gameData);
+      return handleJoinPlayer(command);
     }
   }
 
-  private String handleJoinPlayer(ConnectCommand command, AuthData authData, GameData gameData) {
+  private String handleJoinPlayer(ConnectCommand command) throws DataAccessException {
+    AuthData authData = authDAO.getAuth(command.getAuthToken());
+    GameData gameData = gameDAO.getGame(command.getGameID());
+
+    if(authData == null) {
+      return "Error: bad auth token";
+    }
+
+    if(gameData == null) {
+      return "Error: incorrect gameID";
+    }
+
     if (isGameEmpty(command.getPlayerColor(), gameData)) {
       return "Error: game empty";
     }
@@ -125,9 +136,6 @@ public class GameService {
     if (isColorTaken(command.getPlayerColor(), authData.username(), gameData)) {
       return "Error: spot already taken";
     }
-
-    //TODO
-    // Additional logic to update game with player's information might be necessary.
 
     return "";
   }

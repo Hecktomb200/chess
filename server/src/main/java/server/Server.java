@@ -18,6 +18,8 @@ import model.register.RegisterRequest;
 import model.register.RegisterResult;
 import model.creategame.CreateGameRequest;
 import model.creategame.CreateGameResult;
+import server.websocket.ConnectionManager;
+import server.websocket.WebsocketHandler;
 import service.ClearService;
 import service.GameService;
 import service.UserService;
@@ -29,6 +31,8 @@ public class Server {
     private AuthDAO authDAO;
     private GameDAO gameDAO;
     private UserDAO userDAO;
+    private WebsocketHandler websocketHandler;
+    private ConnectionManager connectionManager;
 
     public int run(int desiredPort) {
         try {
@@ -38,6 +42,9 @@ public class Server {
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
+        connectionManager = new ConnectionManager();
+        websocketHandler = new WebsocketHandler(connectionManager, new GameService(authDAO, gameDAO), authDAO, gameDAO);
+
 
         Spark.port(desiredPort);
 
@@ -46,7 +53,8 @@ public class Server {
         // Register your endpoints and handle exceptions here.
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
-        Spark.init();
+        //Spark.init();
+        Spark.webSocket("/ws",websocketHandler);
         Spark.post("/user", this::registerHandler);
         Spark.post("/session", this::loginHandler);
         Spark.delete("/session", this::logoutHandler);
@@ -56,6 +64,8 @@ public class Server {
         Spark.get("/game", this::listGamesHandler);
         Spark.exception(Exception.class, (Exception error, Request request, Response response) -> {
             System.out.println(error);
+            response.status(500);
+            response.body("an unexpected error has occurred.");
         });
 
 

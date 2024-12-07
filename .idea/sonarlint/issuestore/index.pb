@@ -77,10 +77,6 @@ h
 8server/src/main/java/dataaccess/database/SQLAuthDAO.java,b\4\b4b92fa5838b6228400662a5af69dd582f83f90d
 h
 8server/src/main/java/dataaccess/database/SQLUserDAO.java,6\b\6bc458d102d748532d3128f731b5c49bddb91520
-W
-'server/src/main/java/server/Server.java,8\0\8036b8cb9ce2e6760f04e2a3b475b260935bb7b8
-b
-2client/src/test/java/client/ServerFacadeTests.java,e\6\e6826acb161285e1dab795e5cfe93be0d16ca8b4
 d
 4server/src/test/java/dataaccess/SQLUserDAOTests.java,1\f\1f289f365b38aab38d371b3d4658027f712ed51a
 d
@@ -91,16 +87,10 @@ k
 ;shared/src/test/java/passoff/chess/piece/PawnMoveTests.java,f\5\f5f303eb20d0409e171fe16f357212147605d4a8
 N
 server/src/main/java/Main.java,f\4\f49eb7b67ea6fd5de7d54f4d8e080215196bedf3
-]
--client/src/main/java/server/ServerFacade.java,0\a\0a9e107423acbbcbe25180a8b2278db7b0963e04
-W
-'client/src/main/java/ui/PreLoginUI.java,2\e\2eedaf1f360af900713e3782ea74b5553a51e5b3
 N
 client/src/main/java/Main.java,e\c\ecb7a1924b25558f5bedb6f53e4d6092557bd541
 d
 4server/src/test/java/passoff/server/TestFactory.java,f\1\f17bfe7598740b202a9c5b15dbbfbefe62f23921
-X
-(client/src/main/java/ui/PostLoginUI.java,e\5\e53f4478716203b0ec6d8110171d927f1b7442b8
 j
 :shared/src/main/java/model/listgames/ListGamesRequest.java,e\9\e914b65fd539493a519a4d02a08029213921a5dd
 i
@@ -121,8 +111,6 @@ r
 Bshared/src/main/java/websocket/commands/UserGameCommandParams.java,2\c\2c34a200e5045142dba747ac0e32f40d99aee0c9
 i
 9shared/src/main/java/websocket/commands/LeaveCommand.java,e\b\ebfcec35676c73c4bc23fbbce4cf8415d7da42c6
-h
-8shared/src/main/java/websocket/commands/MoveCommand.java,f\7\f71475286bdfa66d8a53c18b260d7a4259dfe1f1
 j
 :shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
 X

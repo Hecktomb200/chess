@@ -46,7 +46,7 @@ public class WebsocketHandler {
   public void onMessage(Session session, String message) throws IOException, DataAccessException, InvalidMoveException {
     UserGameCommand command=new Gson().fromJson(message, UserGameCommand.class);
     switch (command.getCommandType()) {
-      case CONNECT -> handleConnect(command, session);
+      case CONNECT -> handleConnect(new Gson().fromJson(message, ConnectCommand.class), session);
       case MAKE_MOVE -> handleMakeMove(new Gson().fromJson(message, MoveCommand.class), session);
       case RESIGN -> handleResign(new Gson().fromJson(message, ResignCommand.class), session);
       case LEAVE -> handleLeaveGame(new Gson().fromJson(message, LeaveCommand.class), session);
@@ -128,23 +128,23 @@ public class WebsocketHandler {
     notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(moveNotification), moveCommand.getAuthString());
   }
 
-  private void handleConnect(UserGameCommand command, Session session) throws IOException {
-    String role = command.getAuthToken();
-    String playerColor = role.equals("player") ? "WHITE" : "BLACK";
-
-    JoinGameRequest joinRequest = new JoinGameRequest(playerColor, command.getGameID());
+  private void handleConnect(ConnectCommand command, Session session) throws IOException {
 
     try {
-      //TODO Should this use joinGame or connect?
-      gameService.joinGame(joinRequest, command.getAuthToken());
+      gameService.connect(command);
     } catch (DataAccessException e) {
       sendResponse(new Error(e.getMessage()), session);
       return;
     }
 
+    var playerColor = command.getPlayerColor().toString();
+    if (playerColor == null) {
+      playerColor = "observer";
+    }
+
     addSessionToGame(command.getGameID(), command.getAuthToken(), session);
     sendResponse(new LoadMessage(command.getGameID()), session);
-    String notificationMessage = String.format("%s joined as a %s", command.getAuthToken(), role);
+    String notificationMessage = String.format("%s joined as %s", command.getPlayerName(), command.getPlayerColor());
     notifyAllPlayers(command.getGameID(), new NotificationMessage(notificationMessage), command.getAuthToken());
   }
 

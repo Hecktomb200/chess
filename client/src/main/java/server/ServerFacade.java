@@ -39,12 +39,18 @@ public class ServerFacade {
     return connection;
   }
 
-  private void handleResponse(HttpURLConnection connection) throws IOException {
+  private void handleResponse(HttpURLConnection connection) throws Exception {
     int statusCode=connection.getResponseCode();
     if (!isSuccessful(statusCode)) {
       String sBody = new String(connection.getErrorStream().readAllBytes());
-      Map body = gson.fromJson(sBody, Map.class);
-      String message = (String) body.get("message");
+      String message = "";
+      Map body = null;
+     try {
+        body=gson.fromJson(sBody, Map.class);
+        message=(String) body.get("message");
+      } catch (Exception e) {
+       throw new Exception("Received unrecognized response from server: " + sBody);
+     }
       if (statusCode == 403 && "Error: already taken".equals(message)) {
         throw new IOException("Username is already taken.");
       }
@@ -85,7 +91,7 @@ public class ServerFacade {
     }
   }
 
-  public RegisterResult registerUser(String username, String password, String email) throws IOException, URISyntaxException {
+  public RegisterResult registerUser(String username, String password, String email) throws Exception {
     validateUserInput(username, password, email);
     HttpURLConnection connection=createConnection(USER_ENDPOINT, "POST", null);
     Map<String, Object> body=new HashMap<>();
@@ -98,7 +104,7 @@ public class ServerFacade {
     return parseResponse(connection, RegisterResult.class);
   }
 
-  public LoginResult loginUser(String username, String password) throws IOException, URISyntaxException {
+  public LoginResult loginUser(String username, String password) throws Exception {
     validateUserInput(username, password, null);
     HttpURLConnection connection=createConnection(SESSION_ENDPOINT, "POST", null);
     Map<String, Object> body=new HashMap<>();
@@ -110,7 +116,7 @@ public class ServerFacade {
     return parseResponse(connection, LoginResult.class);
   }
 
-  public void logoutUser(String authToken) throws IOException, URISyntaxException {
+  public void logoutUser(String authToken) throws Exception {
     if (authToken == null) {
       throw new IllegalArgumentException("Authorization token cannot be null.");
     }
@@ -118,7 +124,7 @@ public class ServerFacade {
     handleResponse(connection);
   }
 
-  public ListGamesResult listGames(String authToken) throws IOException, URISyntaxException {
+  public ListGamesResult listGames(String authToken) throws Exception {
     if (authToken == null) {
       throw new IllegalArgumentException("Authorization token cannot be null.");
     }
@@ -127,7 +133,7 @@ public class ServerFacade {
     return parseResponse(connection, ListGamesResult.class);
   }
 
-  public CreateGameResult createGame(String gameName, String authToken) throws IOException, URISyntaxException {
+  public CreateGameResult createGame(String gameName, String authToken) throws Exception {
     if (gameName == null || authToken == null) {
       throw new IllegalArgumentException("Game name and authorization token cannot be null.");
     }
@@ -140,7 +146,7 @@ public class ServerFacade {
     return parseResponse(connection, CreateGameResult.class);
   }
 
-  public void joinGame(String authToken, String playerColor, int gameID) throws IOException, URISyntaxException {
+  public void joinGame(String authToken, String playerColor, int gameID) throws Exception {
     if (authToken == null) {
       throw new IllegalArgumentException("Authorization token cannot be null.");
     }

@@ -382,7 +382,7 @@ public class WebSocketTests {
             }
         } catch(AssertionError e) {
             Assertions.fail("Expected message types matching %s for %s, got %s"
-                    .formatted(Arrays.toString(expectedTypes), username, messages.reversed()), e);
+                    .formatted(Arrays.toString(expectedTypes), username, messages), e);
         }
     }
 

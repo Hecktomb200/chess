@@ -1,6 +1,7 @@
 package ui;
 
 import chess.*;
+import dataaccess.DataAccessException;
 import model.GameData;
 import model.listgames.ListGamesResult;
 import server.ServerFacade;
@@ -34,7 +35,7 @@ public class GameplayUI {
     webSocketFacade = new WebsocketFacade(sURL);
   }
 
-  public void run() throws IOException, URISyntaxException {
+  public void run() throws Exception {
     System.out.println(redraw());
     help();
     String command=" ";
@@ -138,7 +139,7 @@ public class GameplayUI {
     return "";
   }
 
-  private String makeMove(String[] params) throws IOException {
+  private String makeMove(String[] params) throws IOException, DataAccessException {
     if (params.length != 2) {
       throw new IllegalArgumentException("Expected [ROW],[COLUMN] [ROW],[COLUMN]");
     }
@@ -151,7 +152,7 @@ public class GameplayUI {
 
     ChessPosition startPos = new ChessPosition(
             Integer.parseInt(pre[0]),
-            ChessFile.letterToNumber(post[1])
+            ChessFile.letterToNumber(pre[1])
     );
     ChessPosition endPos = new ChessPosition(
             Integer.parseInt(post[0]),
@@ -170,12 +171,16 @@ public class GameplayUI {
 
   private void help() {
     System.out.println(SET_TEXT_COLOR_GREEN + """
+                - help
                 - redraw
                 - leave
+                - move
+                - highlight
+                - resign
                 """);
   }
 
-  public String redraw() throws IOException, URISyntaxException {
+  public String redraw() throws Exception {
     ListGamesResult gamesResult = serverFacade.listGames(authToken);
     GameData updatedGame = findGameById(gamesResult.games(), gameData.gameID());
 

@@ -82,7 +82,7 @@ public class PostLoginUI {
     System.out.println("Invalid command. Type 'help' for a list of valid commands.");
   }
 
-  private String observe(String[] params) throws IOException, URISyntaxException {
+  private String observe(String[] params) throws Exception {
     if (params.length != 1) {
       throw new IOException("Expected: <GAME#>");
     }
@@ -105,7 +105,7 @@ public class PostLoginUI {
     return gameList.get(gameID);
   }
 
-  private void joinGame(GameData game, String playerColor) throws IOException, URISyntaxException {
+  private void joinGame(GameData game, String playerColor) throws Exception {
     try {
       System.out.println("Attempting to join game...");
       if (game == null) {
@@ -126,7 +126,7 @@ public class PostLoginUI {
     }
   }
 
-  private String join(String[] params) throws IOException, URISyntaxException {
+  private String join(String[] params) throws Exception {
     if (params.length != 2) {
       throw new IOException("Expected: <GAME#> [WHITE | BLACK]");
     }
@@ -147,7 +147,7 @@ public class PostLoginUI {
     }
   }
 
-  private String create(String[] params) throws IOException, URISyntaxException {
+  private String create(String[] params) throws Exception {
     if (params.length != 1) {
       throw new IOException("Expected: <GAME NAME>");
     }
@@ -156,18 +156,18 @@ public class PostLoginUI {
     return String.format("Chess game %s created.", params[0]);
   }
 
-  private void createGame(String gameName) throws IOException, URISyntaxException {
+  private void createGame(String gameName) throws Exception {
     server.createGame(gameName, authToken);
     ListGamesResult gamesListed = getGames();
     buildGamesList(gamesListed);
   }
 
-  private String list() throws IOException, URISyntaxException {
+  private String list() throws Exception {
     ListGamesResult gamesListed = getGames();
     return buildGamesList(gamesListed);
   }
 
-  private ListGamesResult getGames() throws IOException, URISyntaxException {
+  private ListGamesResult getGames() throws Exception {
     return server.listGames(authToken);
   }
 
@@ -199,7 +199,7 @@ public class PostLoginUI {
                 """);
   }
 
-  private void logout() throws IOException, URISyntaxException {
+  private void logout() throws Exception {
     server.logoutUser(authToken);
   }
 }

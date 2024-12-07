@@ -89,7 +89,7 @@ public class PreLoginUI {
     }
   }
 
-  private void register(String[] params) throws IOException, URISyntaxException {
+  private void register(String[] params) throws Exception {
     if (params.length != 3) {
       throw new IOException("Expected: <USERNAME> <PASSWORD> <EMAIL>");
     }
@@ -106,7 +106,7 @@ public class PreLoginUI {
         }
     }
 
-  private void login(String[] params) throws IOException, URISyntaxException {
+  private void login(String[] params) throws Exception {
     if (params.length != 2) {
       throw new IOException("Expected: <USERNAME> <PASSWORD>");
     }
