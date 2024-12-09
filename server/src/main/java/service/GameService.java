@@ -101,25 +101,28 @@ public class GameService {
 
   public String connect(Map<String, Object> command) throws DataAccessException {
     AuthData authData = authDAO.getAuth((String) command.get("authToken"));
-    GameData gameData = gameDAO.getGame(((Double) command.get("gameID")).intValue());
+    Integer gameID = ((Double) command.get("gameID")).intValue(); // Get gameID from command
+    GameData gameData = gameDAO.getGame(gameID); // Fetch the game data
+
     String playerColor = (String) command.get("playerColor");
+    String playerName = (String) command.get("playerName");
 
     if (authData == null) {
-      return "Error: bad auth token";
+      throw new DataAccessException("Error: bad auth token");
     }
 
     if (gameData == null) {
-      return "Error: incorrect gameID";
+      throw new DataAccessException("Error: Game with ID " + gameID + " does not exist.");
     }
 
     if (playerColor == null) {
-      return authData.username() + " joined the game as an observer.";
+      return playerName + " joined the game as an observer.";
     }
 
     JoinGameRequest joinRequest = new JoinGameRequest(playerColor, gameData.gameID());
     joinGame(joinRequest, authData.authToken());
 
-    return authData.username() + " joined the game as " + playerColor;
+    return playerName + " joined the game as " + playerColor;
   }
 
   private String handleJoinPlayer(Map<String, Object> command) throws DataAccessException {
