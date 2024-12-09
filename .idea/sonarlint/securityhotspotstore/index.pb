@@ -29,8 +29,6 @@ l
 <shared/src/test/java/passoff/chess/game/ValidMovesTests.java,f\f\ffd727fc5e9fd2b43cbe3581e669a4c1ed406a80
 h
 8server/src/main/java/dataaccess/DataAccessException.java,2\e\2ea31417f70d86666411d348ab6c6846566a4c92
-X
-(shared/src/main/java/model/AuthData.java,f\7\f7739bee04cb37ee6899e6476894792bc648a47e
 b
 2shared/src/main/java/model/Login/LoginRequest.java,b\1\b1807f7be1c54570be06799b0975c77e9c7c9400
 a
@@ -93,8 +91,6 @@ i
 9shared/src/main/java/model/listgames/ListGamesResult.java,0\3\03fa024ff871e14bbc53a4f3c18e3ae95dd0d423
 b
 2shared/src/main/java/model/login/LoginRequest.java,7\3\73559a907584b8f521a32102b22430e40c25469d
-h
-8shared/src/main/java/model/joingame/JoinGameRequest.java,5\3\531dae995628ad809b72bde3fff62665fbad5642
 l
 <server/src/main/java/server/websocket/ConnectionManager.java,a\e\ae1bfb65e9ab25be5225484affcae15659f7cee0
 r
@@ -109,15 +105,3 @@ b
 2client/src/test/java/client/ServerFacadeTests.java,e\6\e6826acb161285e1dab795e5cfe93be0d16ca8b4
 V
 &client/src/main/java/ui/ChessFile.java,2\f\2fc5975eb245ccece73b28a86b459b0b625934b1
-k
-;shared/src/main/java/websocket/commands/ConnectCommand.java,0\6\06537295408171a344f416b3cf1d1db629647416
-l
-<shared/src/main/java/websocket/commands/UserGameCommand.java,f\9\f96f36bc77280a61997004d435062b4a33b2286d
-X
-(client/src/main/java/ui/PostLoginUI.java,e\5\e53f4478716203b0ec6d8110171d927f1b7442b8
-g
-7server/src/test/java/passoff/server/WebSocketTests.java,a\2\a289ce880b9b814b771ad551c85542d0cccba3a8
-W
-'client/src/main/java/ui/PreLoginUI.java,2\e\2eedaf1f360af900713e3782ea74b5553a51e5b3
-W
-'server/src/main/java/server/Server.java,8\0\8036b8cb9ce2e6760f04e2a3b475b260935bb7b8

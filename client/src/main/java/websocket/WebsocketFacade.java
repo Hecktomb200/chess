@@ -35,7 +35,7 @@ public class WebsocketFacade extends Endpoint{
       this.session.addMessageHandler(new MessageHandler.Whole<String>() {
         @Override
         public void onMessage (String message){
-        logger.info("Received message: " + message);
+        //logger.info("Received message: " + message);
         ServerMessage serverMessage=parseServerMessage(message);
         if (serverMessage != null) {
           handleServerMessage(serverMessage);
@@ -49,7 +49,7 @@ public class WebsocketFacade extends Endpoint{
 
   @Override
   public void onOpen(Session session, EndpointConfig endpointConfig) {
-    logger.info("WebSocket connection opened.");
+    //logger.info("WebSocket connection opened.");
   }
 
   private void handleServerMessage(ServerMessage serverMessage) {
@@ -61,34 +61,36 @@ public class WebsocketFacade extends Endpoint{
   }
 
   private void handleLoadGame(LoadMessage loadMessage) {
-    logger.info("Game loaded: " + loadMessage);
+    //System.out.println("Game loaded: " + loadMessage);
+    System.out.println("Game has been updated");
   }
 
   private void handleNotification(String message) {
-    logger.info("Notification: " + message);
+    System.out.println("Notification: " + message);
   }
 
   private void handleError(String errorMessage) {
-    logger.info(errorMessage);
+    System.out.println(errorMessage);
   }
 
-  public void connect(String authToken, Integer gameID) throws IOException {
-    sendCommand(UserGameCommand.CommandType.CONNECT, authToken, gameID, null);
+  public void connect(String authToken, Integer gameID, String playerColor, String playerName) throws IOException {
+    sendCommand(UserGameCommand.CommandType.CONNECT, authToken, gameID, playerColor, playerName, null);
   }
 
   public void makeMove(String authToken, Integer gameID, ChessMove move) throws IOException, DataAccessException {
-    sendCommand(UserGameCommand.CommandType.MAKE_MOVE, authToken,gameID,move);
+    sendCommand(UserGameCommand.CommandType.MAKE_MOVE, authToken,gameID, null, null, move);
   }
 
   public void leave(String authToken, Integer gameID) throws IOException {
-    sendCommand(UserGameCommand.CommandType.LEAVE, authToken, gameID, null);
+    sendCommand(UserGameCommand.CommandType.LEAVE, authToken, gameID, null, null, null);
   }
 
   public void resign(String authToken, Integer gameID) throws IOException {
-    sendCommand(UserGameCommand.CommandType.RESIGN, authToken, gameID, null);
+    sendCommand(UserGameCommand.CommandType.RESIGN, authToken, gameID, null, null, null);
   }
 
-  private void sendCommand(UserGameCommand.CommandType commandType, String authToken, Integer gameID, ChessMove move) throws IOException {
+  private void sendCommand(UserGameCommand.CommandType commandType, String authToken, Integer gameID,
+                           String playerColor, String playerName, ChessMove move) throws IOException {
     try {
       UserGameCommand command = new UserGameCommand(commandType, authToken, gameID);
 
@@ -96,6 +98,8 @@ public class WebsocketFacade extends Endpoint{
       jsonObject.addProperty("commandType", command.getCommandType().name());
       jsonObject.addProperty("authToken", command.getAuthToken());
       jsonObject.addProperty("gameID", command.getGameID());
+      jsonObject.addProperty("playerColor", playerColor);
+      jsonObject.addProperty("playerName", playerName);
 
       if (commandType == UserGameCommand.CommandType.MAKE_MOVE && move != null) {
         JsonObject moveJson = new JsonObject();
@@ -107,7 +111,7 @@ public class WebsocketFacade extends Endpoint{
       }
 
       String messageToSend = new Gson().toJson(jsonObject);
-      logger.info("Sending message: " + messageToSend);
+      //logger.info("Sending message: " + messageToSend);
       if (this.session.isOpen()) {
         this.session.getBasicRemote().sendText(new Gson().toJson(jsonObject));
       } else {

@@ -3,6 +3,7 @@ package ui;
 import model.GameData;
 import model.listgames.ListGamesResult;
 import server.ServerFacade;
+import websocket.WebsocketFacade;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -20,13 +21,15 @@ public class PostLoginUI {
   private final String username;
   private final Scanner scanner;
   private static final String INVALID_GAME_NUMBER_MESSAGE = "Invalid game number. Please enter a valid number for the game.";
-  public PostLoginUI(String url, String authToken, String username) {
+  private final WebsocketFacade webSocketFacade;
+  public PostLoginUI(String url, String authToken, String username) throws IOException {
     server = new ServerFacade(url);
     sURL = url;
     this.authToken = authToken;
     gameList = new HashMap<>();
     this.username = username;
     this.scanner = new Scanner(System.in);
+    webSocketFacade = new WebsocketFacade(sURL);
   }
 
   public void run(String username) throws IOException, URISyntaxException {
@@ -87,13 +90,13 @@ public class PostLoginUI {
       throw new IOException("Expected: <GAME#>");
     }
     try {
-      int gameID=Integer.parseInt(params[0]);
-      GameData game=getGameById(gameID);
+      int gameID = Integer.parseInt(params[0]);
+      GameData game = getGameById(gameID);
       boolean observer = true;
       if (game == null) {
         throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
       }
-      //joinGame(game, null); // just jump to GameplayUI and print board immediately
+      webSocketFacade.connect(authToken, game.gameID(), null, username);
       new GameplayUI(game, sURL, authToken, username, observer).run();
       return String.format("Chess game %s left.", params[0]);
     } catch (NumberFormatException e) {
@@ -119,7 +122,7 @@ public class PostLoginUI {
       } else if ("black".equalsIgnoreCase(playerColor) && game.blackUsername() != null) {
         throw new IOException("The black team is already taken. Please choose white.");
       }
-      server.joinGame(authToken, playerColor, game.gameID());
+      webSocketFacade.connect(authToken, game.gameID(), playerColor, username);
       list();
     } catch (NumberFormatException e) {
       throw new IOException(INVALID_GAME_NUMBER_MESSAGE);

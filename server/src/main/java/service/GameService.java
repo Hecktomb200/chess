@@ -14,6 +14,7 @@ import model.creategame.CreateGameRequest;
 import model.creategame.CreateGameResult;
 import websocket.commands.*;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class GameService {
@@ -98,9 +99,10 @@ public class GameService {
     return new ListGamesResult(gameDAO.listGames());
   }
 
-  public String connect(ConnectCommand command) throws DataAccessException {
-    AuthData authData = authDAO.getAuth(command.getAuthToken());
-    GameData gameData = gameDAO.getGame(command.getGameID());
+  public String connect(Map<String, Object> command) throws DataAccessException {
+    AuthData authData = authDAO.getAuth((String) command.get("authToken"));
+    GameData gameData = gameDAO.getGame(((Double) command.get("gameID")).intValue());
+    String playerColor = (String) command.get("playerColor");
 
     if (authData == null) {
       return "Error: bad auth token";
@@ -110,44 +112,47 @@ public class GameService {
       return "Error: incorrect gameID";
     }
 
-    if (command.isObserver()) {
-      return authData.username();
-    } else {
-      return handleJoinPlayer(command);
+    if (playerColor == null) {
+      return authData.username() + " joined the game as an observer.";
     }
+
+    JoinGameRequest joinRequest = new JoinGameRequest(playerColor, gameData.gameID());
+    joinGame(joinRequest, authData.authToken());
+
+    return authData.username() + " joined the game as " + playerColor;
   }
 
-  private String handleJoinPlayer(ConnectCommand command) throws DataAccessException {
-    AuthData authData = authDAO.getAuth(command.getAuthToken());
-    GameData gameData = gameDAO.getGame(command.getGameID());
+  private String handleJoinPlayer(Map<String, Object> command) throws DataAccessException {
+    AuthData authData = authDAO.getAuth((String) command.get("authToken"));
+    GameData gameData = gameDAO.getGame(((Double) command.get("gameID")).intValue());
 
-    if(authData == null) {
+    if (authData == null) {
       return "Error: bad auth token";
     }
 
-    if(gameData == null) {
+    if (gameData == null) {
       return "Error: incorrect gameID";
     }
 
-    if (isGameEmpty(command.getPlayerColor(), gameData)) {
+    if (isGameEmpty((String) command.get("playerColor"), gameData)) {
       return "Error: game empty";
     }
 
-    if (isColorTaken(command.getPlayerColor(), authData.username(), gameData)) {
+    if (isColorTaken((String) command.get("playerColor"), authData.username(), gameData)) {
       return "Error: spot already taken";
     }
 
     return "";
   }
 
-  private boolean isGameEmpty(ChessGame.TeamColor playerColor, GameData gameData) {
-    return (playerColor == ChessGame.TeamColor.WHITE && gameData.whiteUsername() == null) ||
-            (playerColor == ChessGame.TeamColor.BLACK && gameData.blackUsername() == null);
+  private boolean isGameEmpty(String playerColor, GameData gameData) {
+    return (playerColor.equals("WHITE") && gameData.whiteUsername() == null) ||
+            (playerColor.equals("BLACK") && gameData.blackUsername() == null);
   }
 
-  private boolean isColorTaken(ChessGame.TeamColor playerColor, String username, GameData gameData) {
-    return (playerColor == ChessGame.TeamColor.WHITE && Objects.equals(username, gameData.blackUsername())) ||
-            (playerColor == ChessGame.TeamColor.BLACK && Objects.equals(username, gameData.whiteUsername()));
+  private boolean isColorTaken(String playerColor, String username, GameData gameData) {
+    return (playerColor.equals("WHITE") && Objects.equals(username, gameData.blackUsername())) ||
+            (playerColor.equals("BLACK") && Objects.equals(username, gameData.whiteUsername()));
   }
 
   private String doCheck(GameData gameData, ChessGame game) {
@@ -163,22 +168,21 @@ public class GameService {
     return "null";
   }
 
-  public String leave(LeaveCommand command) throws DataAccessException {
-    AuthData authData = authDAO.getAuth(command.getAuthString());
-    GameData gameData = gameDAO.getGame(command.getGameID());
+  public String leave(Map<String, Object> command) throws DataAccessException {
+    GameData gameData = gameDAO.getGame(((Double) command.get("gameID")).intValue());
+    AuthData authData = authDAO.getAuth((String) command.get("authToken"));
 
     var result = validateAuth(authData, gameData);
     if (result.contains("Error")) {
       return result;
     }
 
-
-    return authData.username() + "left the game successfully.";
+    return authData.username() + " left the game successfully.";
   }
 
-  public String resign(ResignCommand command) throws DataAccessException {
-    AuthData authData = authDAO.getAuth(command.getAuthString());
-    GameData gameData = gameDAO.getGame(command.getGameID());
+  public String resign(Map<String, Object> command) throws DataAccessException {
+    AuthData authData = authDAO.getAuth((String) command.get("authToken"));
+    GameData gameData = gameDAO.getGame(((Double) command.get("gameID")).intValue());
 
     var result = validateAuth(authData, gameData);
     if (result.contains("Error")) {
@@ -189,7 +193,7 @@ public class GameService {
       return "Error: player not in game";
     }
 
-    return authData.username() + "resigned the game successfully.";
+    return authData.username() + " resigned the game successfully.";
   }
 
   private boolean isPlayerInGame(String username, GameData gameData) {
@@ -240,7 +244,6 @@ public class GameService {
   }
 
   private boolean checkTurn(AuthData authData, GameData gameData, ChessGame game) {
-    //TODO THIS HERE IS THE PROBLEM CHILD
     return ((game.getTeamTurn() == ChessGame.TeamColor.WHITE && !authData.username().equals(gameData.whiteUsername())) ||
             (game.getTeamTurn() == ChessGame.TeamColor.BLACK && !authData.username().equals(gameData.blackUsername())));
   }

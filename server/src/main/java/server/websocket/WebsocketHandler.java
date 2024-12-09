@@ -21,6 +21,7 @@ import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;
 import websocket.messages.Error;
 
+import javax.management.Notification;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -48,32 +49,43 @@ public class WebsocketHandler {
 
   @OnWebSocketMessage
   public void onMessage(Session session, String message) throws IOException, DataAccessException, InvalidMoveException {
-    logger.info("Received message: " + message);
-    UserGameCommand command=new Gson().fromJson(message, UserGameCommand.class);
-    switch (command.getCommandType()) {
-      case CONNECT -> handleConnect(new Gson().fromJson(message, ConnectCommand.class), session);
-      case MAKE_MOVE -> handleMakeMove(new Gson().fromJson(message, MoveCommand.class), session);
-      case RESIGN -> handleResign(new Gson().fromJson(message, ResignCommand.class), session);
-      case LEAVE -> handleLeaveGame(new Gson().fromJson(message, LeaveCommand.class), session);
+    //logger.info("Received message: " + message);
+    Map<String, Object> commandData = new Gson().fromJson(message, Map.class);
+    String commandType = (String) commandData.get("commandType");
+
+    switch (commandType) {
+      case "CONNECT":
+        handleConnect(commandData, session);
+        break;
+      case "MAKE_MOVE":
+        handleMakeMove(commandData, session);
+        break;
+      case "RESIGN":
+        handleResign(commandData, session);
+        break;
+      case "LEAVE":
+        handleLeaveGame(commandData, session);
+        break;
+      default:
+        logger.warning("Unknown command type: " + commandType);
+        break;
     }
   }
 
-  private void handleLeaveGame(LeaveCommand leaveCommand, Session session) throws IOException, DataAccessException {
-    String response = gameService.leave(leaveCommand);
-    if (handleError(response, session)) {
+  private void handleLeaveGame(Map<String, Object> leaveCommand, Session session) throws IOException, DataAccessException {
+    Integer gameID = ((Double) leaveCommand.get("gameID")).intValue();
+    String authToken = (String) leaveCommand.get("authToken");
+
+    try {
+      String response=gameService.leave(leaveCommand);
+
+      removeSessionFromGame(gameID, authToken, session);
+      String notificationMessage=String.format("%s has left the game.", response);
+      notifyAllPlayers(gameID, new NotificationMessage(notificationMessage), authToken);
+    } catch (IOException e) {
+      sendResponse(new Error(e.getMessage()), session);
       return;
     }
-    removeSessionFromGame(leaveCommand.getGameID(), leaveCommand.getAuthString(), session);
-    String notificationMessage = String.format("%s has left the game.", response);
-    notifyAllPlayers(leaveCommand.getGameID(), new NotificationMessage(notificationMessage), leaveCommand.getAuthString());
-  }
-
-  private boolean handleError(String result, Session session) throws IOException {
-    if (result.contains("Error")) {
-      sendResponse(new Error(result), session);
-      return true;
-    }
-    return false;
   }
 
   private void removeSessionFromGame(Integer gameID, String authToken, Session session) {
@@ -83,18 +95,23 @@ public class WebsocketHandler {
     }
   }
 
-  private void handleResign(ResignCommand resignCommand, Session session) throws IOException, DataAccessException {
-    String result = gameService.resign(resignCommand);
-    if (handleError(result, session)) {
-      return;
-    }
-    if (isGameResigned(resignCommand.getGameID())) {
+  private void handleResign(Map<String, Object> resignCommand, Session session) throws IOException, DataAccessException {
+    Integer gameID = ((Double) resignCommand.get("gameID")).intValue();
+    String authToken = (String) resignCommand.get("authToken");
+
+    if (isGameResigned(gameID)) {
       sendResponse(new Error("Another player has already resigned"), session);
       return;
     }
-    markGameAsResigned(resignCommand.getGameID());
-    String notificationMessage = String.format("%s has resigned", result);
-    notifyAllPlayers(resignCommand.getGameID(), new NotificationMessage(notificationMessage), null);
+    try {
+      gameService.resign(resignCommand);
+      markGameAsResigned(gameID);
+
+      String notificationMessage = String.format("%s has resigned", authToken);
+      notifyAllPlayers(gameID, new NotificationMessage(notificationMessage), null);
+    } catch (IOException e) {
+      sendResponse(new Error(e.getMessage()), session);
+    }
   }
 
   private boolean isGameResigned(Integer gameID) {
@@ -114,49 +131,50 @@ public class WebsocketHandler {
     return super.toString();
   }
 
-  private void handleMakeMove(MoveCommand moveCommand, Session session) throws IOException, DataAccessException, InvalidMoveException {
-    if (isGameResigned(moveCommand.getGameID())) {
+  private void handleMakeMove(Map<String, Object> moveCommand, Session session) throws IOException, DataAccessException {
+    Integer gameID = ((Double) moveCommand.get("gameID")).intValue();
+    String authToken = (String) moveCommand.get("authToken");
+    Map<String, Object> move = (Map<String, Object>) moveCommand.get("move");
+    ChessPosition startPosition = new ChessPosition(((Double) move.get("startRow")).intValue(), ((Double) move.get("startColumn")).intValue());
+    ChessPosition endPosition = new ChessPosition(((Double) move.get("endRow")).intValue(), ((Double) move.get("endColumn")).intValue());
+    ChessPiece.PieceType promotionPiece = null;
+
+    if (isGameResigned(gameID)) {
       sendResponse(new Error("A player has already resigned"), session);
       return;
     }
 
-    ChessPosition startPosition = moveCommand.getMove().getStartPosition();
-    ChessPosition endPosition = moveCommand.getMove().getEndPosition();
-    ChessPiece.PieceType promotionPiece = moveCommand.getMove().getPromotionPiece();
-
     try {
-      AuthData authData = authDAO.getAuth(moveCommand.getAuthString());
-      GameData gameData = gameDAO.getGame(moveCommand.getGameID());
+      AuthData authData = authDAO.getAuth(authToken);
+      GameData gameData = gameDAO.getGame(gameID);
 
       validateAuth(authData, gameData);
 
       ChessMove chessMove = new ChessMove(startPosition, endPosition, promotionPiece);
       chessGame.makeMove(chessMove);
-      ChessGame game = gameData.game();
       GameData newGame = new GameData(gameData.gameID(), gameData.whiteUsername(),
-              gameData.blackUsername(), gameData.gameName(), game);
+              gameData.blackUsername(), gameData.gameName(), gameData.game());
       gameDAO.updateGame(newGame);
 
       String checkResponse = doCheck(newGame, chessGame);
       if (!checkResponse.equals("null")) {
         String[] responseParts = checkResponse.split(",");
         if (Objects.equals(responseParts[0], "checkmate")) {
-          notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(String.format("%s is in checkmate! Game over!", responseParts[1])), "null");
+          notifyAllPlayers(gameID, new NotificationMessage(String.format("%s is in checkmate! Game over!", responseParts[1])), "null");
         } else if (Objects.equals(responseParts[0], "check")) {
-          notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(String.format("%s is in check!", responseParts[1])), "null");
+          notifyAllPlayers(gameID, new NotificationMessage(String.format("%s is in check!", responseParts[1])), "null");
         }
       }
 
-      String moveNotification = String.format("%s moved the piece from %s to %s", moveCommand.getAuthString(),
-              startPosition.toString(), endPosition.toString());
-      notifyAllPlayers(moveCommand.getGameID(), new NotificationMessage(moveNotification), moveCommand.getAuthString());
+      String moveNotification = String.format("%s moved the piece from %s to %s", authToken, startPosition.toString(), endPosition.toString());
+      notifyAllPlayers(gameID, new NotificationMessage(moveNotification), authToken);
 
     } catch (InvalidMoveException e) {
       sendResponse(new Error(e.getMessage()), session);
       return;
     }
-    sendResponse(new LoadMessage(moveCommand.getGameID()), session);
-    notifyAllPlayers(moveCommand.getGameID(), new LoadMessage(moveCommand.getGameID()), moveCommand.getAuthString());
+    sendResponse(new LoadMessage(gameID), session);
+    notifyAllPlayers(gameID, new LoadMessage(gameID), authToken);
   }
 
   private String doCheck(GameData gameData, ChessGame game) {
@@ -182,24 +200,22 @@ public class WebsocketHandler {
     }
   }
 
-  private void handleConnect(ConnectCommand command, Session session) throws IOException {
-
+  private void handleConnect(Map<String, Object> command, Session session) throws IOException {
     try {
+      String playerColor = (String) command.get("playerColor");
       gameService.connect(command);
+
+      Integer gameID = ((Double) command.get("gameID")).intValue();
+      String authToken = (String) command.get("authToken");
+      addSessionToGame(gameID, authToken, session);
+      String notificationMessage = (playerColor == null)
+              ? String.format("%s joined as an observer", command.get("playerName"))
+              : String.format("%s joined as %s", command.get("playerName"), playerColor);
+      notifyAllPlayers(gameID, new NotificationMessage(notificationMessage), authToken);
+      sendResponse(new LoadMessage(gameID), session);
     } catch (DataAccessException e) {
       sendResponse(new Error(e.getMessage()), session);
-      return;
     }
-
-    var playerColor = command.getPlayerColor().toString();
-    if (playerColor == null) {
-      playerColor = "observer";
-    }
-
-    addSessionToGame(command.getGameID(), command.getAuthToken(), session);
-    sendResponse(new LoadMessage(command.getGameID()), session);
-    String notificationMessage = String.format("%s joined as %s", command.getPlayerName(), command.getPlayerColor());
-    notifyAllPlayers(command.getGameID(), new NotificationMessage(notificationMessage), command.getAuthToken());
   }
 
   private void notifyAllPlayers(Integer gameID, ServerMessage message, String exceptThisAuthToken) throws IOException {
@@ -218,7 +234,7 @@ public class WebsocketHandler {
   private void sendResponse(ServerMessage message, Session session) throws IOException {
     if (session.isOpen()) {
       String jsonMessage = new Gson().toJson(message);
-      logger.info("Sending message: " + jsonMessage);
+      //logger.info("Sending message: " + jsonMessage);
       session.getRemote().sendString(jsonMessage);
     }
   }
