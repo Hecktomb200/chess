@@ -161,7 +161,7 @@ public class WebsocketHandler {
               gameData.blackUsername(), gameData.gameName(), chessGame);
       gameDAO.updateGame(newGame);
 
-      String checkResponse = doCheck(newGame, chessGame);
+      String checkResponse = gameService.doCheck(newGame, chessGame);
       if (!checkResponse.equals("null")) {
         String[] responseParts = checkResponse.split(",");
         if (Objects.equals(responseParts[0], "checkmate")) {
@@ -171,7 +171,8 @@ public class WebsocketHandler {
         }
       }
 
-      String moveNotification = String.format("%s moved the piece from %s to %s", authData.username(), chessMove.getStartPosition(), chessMove.getEndPosition());
+      String moveNotification = String.format("%s moved the piece from %s to %s",
+              authData.username(), chessMove.getStartPosition(), chessMove.getEndPosition());
       notifyAllPlayers(gameID , new NotificationMessage(moveNotification), authToken);
       notifyAllPlayers(gameID, new LoadMessage(chessGame), authToken);
       sendResponse(new LoadMessage(chessGame), session);
@@ -180,19 +181,6 @@ public class WebsocketHandler {
     } catch (DataAccessException e) {
       sendResponse(new Error(e.getMessage()), session);
     }
-  }
-
-  private String doCheck(GameData gameData, ChessGame game) {
-    if (game.isInCheckmate(ChessGame.TeamColor.WHITE)) {
-      return "checkmate, " + gameData.whiteUsername();
-    } else if (game.isInCheckmate(ChessGame.TeamColor.BLACK)) {
-      return "checkmate, " + gameData.blackUsername();
-    } else if (game.isInCheck(ChessGame.TeamColor.WHITE)) {
-      return "check, " + gameData.whiteUsername();
-    } else if (game.isInCheck(ChessGame.TeamColor.BLACK)) {
-      return "check, " + gameData.blackUsername();
-    }
-    return "null";
   }
 
   private void validateAuth(AuthData authData, GameData gameData, String authToken, int gameID) throws DataAccessException {

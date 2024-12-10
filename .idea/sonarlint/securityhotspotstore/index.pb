@@ -87,5 +87,3 @@ j
 :shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
 b
 2client/src/test/java/client/ServerFacadeTests.java,e\6\e6826acb161285e1dab795e5cfe93be0d16ca8b4
-V
-&client/src/main/java/ui/ChessFile.java,2\f\2fc5975eb245ccece73b28a86b459b0b625934b1

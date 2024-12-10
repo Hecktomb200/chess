@@ -126,29 +126,6 @@ public class GameService {
     return playerName + " joined the game as " + playerColor;
   }
 
-  private String handleJoinPlayer(Map<String, Object> command) throws DataAccessException {
-    AuthData authData = authDAO.getAuth((String) command.get("authToken"));
-    GameData gameData = gameDAO.getGame(((Double) command.get("gameID")).intValue());
-
-    if (authData == null) {
-      return "Error: bad auth token";
-    }
-
-    if (gameData == null) {
-      return "Error: incorrect gameID";
-    }
-
-    if (isGameEmpty((String) command.get("playerColor"), gameData)) {
-      return "Error: game empty";
-    }
-
-    if (isColorTaken((String) command.get("playerColor"), authData.username(), gameData)) {
-      return "Error: spot already taken";
-    }
-
-    return "";
-  }
-
   private boolean isGameEmpty(String playerColor, GameData gameData) {
     return (playerColor.equals("WHITE") && gameData.whiteUsername() == null) ||
             (playerColor.equals("BLACK") && gameData.blackUsername() == null);
@@ -159,7 +136,7 @@ public class GameService {
             (playerColor.equals("BLACK") && Objects.equals(username, gameData.whiteUsername()));
   }
 
-  private String doCheck(GameData gameData, ChessGame game) {
+  public String doCheck(GameData gameData, ChessGame game) {
     if (game.isInCheckmate(ChessGame.TeamColor.WHITE)) {
       return "checkmate, " + gameData.whiteUsername();
     } else if (game.isInCheckmate(ChessGame.TeamColor.BLACK)) {

@@ -31,7 +31,6 @@ public class WebsocketFacade extends Endpoint{
       this.session.addMessageHandler(new MessageHandler.Whole<String>() {
         @Override
         public void onMessage (String message){
-        logger.info("Received message: " + message);
         ServerMessage serverMessage=parseServerMessage(message);
         if (serverMessage != null) {
           handleServerMessage(serverMessage);
@@ -45,7 +44,6 @@ public class WebsocketFacade extends Endpoint{
 
   @Override
   public void onOpen(Session session, EndpointConfig endpointConfig) {
-    //logger.info("WebSocket connection opened.");
   }
 
   private void handleServerMessage(ServerMessage serverMessage) {
@@ -107,11 +105,8 @@ public class WebsocketFacade extends Endpoint{
       }
 
       String messageToSend = new Gson().toJson(jsonObject);
-      //logger.info("Sending message: " + messageToSend);
       if (this.session.isOpen()) {
         this.session.getBasicRemote().sendText(new Gson().toJson(jsonObject));
-      } else {
-        logger.severe("WebSocket session is not open.");
       }
     } catch (IOException ex) {
       handleException(ex);
@@ -119,7 +114,6 @@ public class WebsocketFacade extends Endpoint{
   }
 
   private void handleException(IOException ex) throws IOException {
-    logger.log(Level.SEVERE, "IOException occurred: " + ex.getMessage(), ex);
     throw new IOException("Error during WebSocket operation: " + ex.getMessage(), ex);
   }
 

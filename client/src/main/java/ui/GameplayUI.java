@@ -129,14 +129,16 @@ public class GameplayUI {
     return boardRepresentation.toString();
   }
 
-  private String getSquareDisplay(boolean isSquareBlack, Collection<ChessMove> validMoves, ChessPosition piecePosition, ChessPosition targetPosition) {
+  private String getSquareDisplay(boolean isSquareBlack, Collection<ChessMove> validMoves,
+                                  ChessPosition piecePosition, ChessPosition targetPosition) {
     String squareColor = isSquareBlack ? SET_BG_COLOR_BLACK : SET_BG_COLOR_WHITE;
     String highlight = validMoves.contains(new ChessMove(piecePosition, targetPosition, null)) ? SET_BG_COLOR_YELLOW : "";
     return squareColor + highlight + "   " + RESET_BG_COLOR;
   }
 
   private String getBoardHeader(boolean isBlack) {
-    return SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK + (isBlack ? "    H  G  F  E  D  C  B  A    " : "    A  B  C  D  E  F  G  H    ") + RESET_BG_COLOR + "\n";
+    return SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_BLACK +
+            (isBlack ? "    H  G  F  E  D  C  B  A    " : "    A  B  C  D  E  F  G  H    ") + RESET_BG_COLOR + "\n";
   }
 
   private String handleResign() throws IOException {
