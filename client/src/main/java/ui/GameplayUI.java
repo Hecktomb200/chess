@@ -5,7 +5,11 @@ import model.GameData;
 import model.listgames.ListGamesResult;
 import server.ServerFacade;
 import ui.ChessFile;
+import websocket.NotificationHandler;
 import websocket.WebsocketFacade;
+import websocket.messages.Error;
+import websocket.messages.LoadMessage;
+import websocket.messages.NotificationMessage;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -15,7 +19,7 @@ import static chess.ChessGame.TeamColor.BLACK;
 import static chess.ChessGame.TeamColor.WHITE;
 import static ui.EscapeSequences.*;
 
-public class GameplayUI {
+public class GameplayUI implements NotificationHandler {
   private final ServerFacade serverFacade;
   private final String username;
 
@@ -47,7 +51,7 @@ public class GameplayUI {
     System.out.println();
   }
 
-  public void processCommand(String input) throws IOException, URISyntaxException {
+  public void processCommand(String input) throws Exception {
     try {
       String[] integers=input.toLowerCase().split(" ");
       String command=(integers.length > 0) ? integers[0] : "help";
@@ -311,5 +315,23 @@ public class GameplayUI {
 
   private void invalidCommandMessage() {
     System.out.println("Invalid command. Type 'help' for a list of valid commands.");
+  }
+
+  @Override
+  public void updateGame(LoadMessage loadMessage) throws Exception {
+    System.out.println(redraw());
+    System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[IN_GAME]>>> " + SET_TEXT_COLOR_GREEN);
+  }
+
+  @Override
+  public void notify(NotificationMessage notificationMessage) {
+    System.out.println(SET_TEXT_COLOR_BLUE + notificationMessage);
+    System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[GAMEPLAY]>>> " + SET_TEXT_COLOR_GREEN);
+  }
+
+  @Override
+  public void error(Error errorMessage) {
+    System.out.println(SET_TEXT_COLOR_RED + errorMessage);
+    System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[GAMEPLAY]>>> " + SET_TEXT_COLOR_GREEN);
   }
 }

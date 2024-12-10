@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 public class WebsocketFacade extends Endpoint{
   private Session session;
+  NotificationHandler notificationHandler;
 
   public WebsocketFacade(String url) throws IOException {
     try {
@@ -32,7 +33,11 @@ public class WebsocketFacade extends Endpoint{
         public void onMessage (String message){
         ServerMessage serverMessage=parseServerMessage(message);
         if (serverMessage != null) {
-          handleServerMessage(serverMessage);
+          try {
+            handleServerMessage(serverMessage);
+          } catch (Exception e) {
+            throw new RuntimeException(e);
+          }
         }
       }
       });
@@ -45,25 +50,24 @@ public class WebsocketFacade extends Endpoint{
   public void onOpen(Session session, EndpointConfig endpointConfig) {
   }
 
-  private void handleServerMessage(ServerMessage serverMessage) {
+  private void handleServerMessage(ServerMessage serverMessage) throws Exception {
     switch (serverMessage.getServerMessageType()) {
       case LOAD_GAME -> handleLoadGame((LoadMessage) serverMessage);
-      case NOTIFICATION -> handleNotification(((NotificationMessage) serverMessage).getMessage());
-      case ERROR -> handleError(((Error)serverMessage).getErrorMessage());
+      case NOTIFICATION -> handleNotification((NotificationMessage) serverMessage);
+      case ERROR -> handleError((Error)serverMessage);
     }
   }
 
-  private void handleLoadGame(LoadMessage loadMessage) {
-    //System.out.println("Game loaded: " + loadMessage);
-    System.out.println("Game has been updated");
+  private void handleLoadGame(LoadMessage loadMessage) throws Exception {
+    notificationHandler.updateGame(new Gson().fromJson(loadMessage.toString(), LoadMessage.class));
   }
 
-  private void handleNotification(String message) {
-    System.out.println("Notification: " + message);
+  private void handleNotification(NotificationMessage notificationMessage) {
+    notificationHandler.notify(new Gson().fromJson(String.valueOf(notificationMessage), NotificationMessage.class));
   }
 
-  private void handleError(String errorMessage) {
-    System.out.println(errorMessage);
+  private void handleError(Error errorMessage) {
+    notificationHandler.error(errorMessage);
   }
 
   public void connect(String authToken, Integer gameID, String playerColor, String playerName) throws IOException {
@@ -127,4 +131,5 @@ public class WebsocketFacade extends Endpoint{
       default -> null;
     };
   }
+
 }

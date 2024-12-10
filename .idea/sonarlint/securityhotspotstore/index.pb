@@ -85,5 +85,3 @@ r
 Bshared/src/main/java/websocket/commands/UserGameCommandParams.java,2\c\2c34a200e5045142dba747ac0e32f40d99aee0c9
 j
 :shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
-b
-2client/src/test/java/client/ServerFacadeTests.java,e\6\e6826acb161285e1dab795e5cfe93be0d16ca8b4

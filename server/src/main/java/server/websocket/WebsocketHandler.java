@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 @WebSocket
 public class WebsocketHandler {
@@ -36,6 +37,7 @@ public class WebsocketHandler {
   private final GameDAO gameDAO;
   private final GameService gameService;
   private ChessGame chessGame;
+  Logger logger;
   public WebsocketHandler(ConnectionManager connectionManager, GameService gameService, AuthDAO authDAO, GameDAO gameDAO) {
     this.connectionManager=connectionManager;
     this.gameService=gameService;
