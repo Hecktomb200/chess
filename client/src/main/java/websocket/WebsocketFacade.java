@@ -4,7 +4,6 @@ import chess.ChessMove;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dataaccess.DataAccessException;
 import websocket.commands.UserGameCommand;
 import websocket.messages.LoadMessage;
 import websocket.messages.NotificationMessage;
@@ -74,7 +73,7 @@ public class WebsocketFacade extends Endpoint{
     sendCommand(UserGameCommand.CommandType.CONNECT, authToken, gameID, playerColor, playerName, null);
   }
 
-  public void makeMove(String authToken, Integer gameID, ChessMove move) throws IOException, DataAccessException {
+  public void makeMove(String authToken, Integer gameID, ChessMove move) throws IOException {
     sendCommand(UserGameCommand.CommandType.MAKE_MOVE, authToken,gameID, null, null, move);
   }
 

@@ -1,7 +1,6 @@
 package ui;
 
 import chess.*;
-import dataaccess.DataAccessException;
 import model.GameData;
 import model.listgames.ListGamesResult;
 import server.ServerFacade;
@@ -145,7 +144,7 @@ public class GameplayUI {
     return "";
   }
 
-  private String makeMove(String[] params) throws IOException, DataAccessException {
+  private String makeMove(String[] params) throws IOException {
     if (params.length != 2) {
       throw new IllegalArgumentException("Expected [ROW],[COLUMN] [ROW],[COLUMN]");
     }
