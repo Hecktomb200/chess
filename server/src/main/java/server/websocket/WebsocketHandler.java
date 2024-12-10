@@ -98,11 +98,10 @@ public class WebsocketHandler {
     Integer gameID = ((Double) resignCommand.get("gameID")).intValue();
     String authToken = (String) resignCommand.get("authToken");
 
-    if (isGameResigned(gameID)) {
-      sendResponse(new Error("Another player has already resigned"), session);
-      return;
-    }
     try {
+      if (isGameResigned(gameID)) {
+        throw new IOException("Another player has already resigned");
+      }
       gameService.resign(resignCommand);
       markGameAsResigned(gameID);
 

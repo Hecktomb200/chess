@@ -14,6 +14,7 @@ import model.creategame.CreateGameRequest;
 import model.creategame.CreateGameResult;
 import websocket.commands.*;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -192,7 +193,7 @@ public class GameService {
     return authData.username() + " left the game successfully.";
   }
 
-  public String resign(Map<String, Object> command) throws DataAccessException {
+  public String resign(Map<String, Object> command) throws DataAccessException, IOException {
     AuthData authData = authDAO.getAuth((String) command.get("authToken"));
     GameData gameData = gameDAO.getGame(((Double) command.get("gameID")).intValue());
 
@@ -202,7 +203,7 @@ public class GameService {
     }
 
     if (!isPlayerInGame(authData.username(), gameData)) {
-      return "Error: player not in game";
+      throw new IOException("Error: player not in game");
     }
 
     return authData.username() + " resigned the game successfully.";

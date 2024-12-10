@@ -132,6 +132,7 @@ public class Server {
 
         try {
             clearService.removeAllServices();
+            websocketHandler.clearResigned();
         } catch (Exception e) {
             response.status(500);
             return new Gson().toJson(new Error(e.toString()));

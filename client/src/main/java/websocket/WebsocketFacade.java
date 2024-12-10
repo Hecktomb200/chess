@@ -1,14 +1,11 @@
 package websocket;
 
-import chess.ChessGame;
 import chess.ChessMove;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dataaccess.DataAccessException;
-import websocket.commands.MoveCommand;
 import websocket.commands.UserGameCommand;
-import websocket.commands.UserGameCommandParams;
 import websocket.messages.LoadMessage;
 import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;

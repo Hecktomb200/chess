@@ -19,8 +19,6 @@ i
 9shared/src/test/java/passoff/chess/game/FullGameTest.java,3\0\304a628b79462cebf64407482375f8e693e3f5cc
 l
 <shared/src/test/java/passoff/chess/game/GameStatusTests.java,3\d\3d8e6e324b6bb763d5d4a1a3f28e088c47790aa0
-h
-8server/src/main/java/dataaccess/DataAccessException.java,2\e\2ea31417f70d86666411d348ab6c6846566a4c92
 b
 2shared/src/main/java/model/Login/LoginRequest.java,b\1\b1807f7be1c54570be06799b0975c77e9c7c9400
 a
