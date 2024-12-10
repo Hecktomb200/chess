@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 public class WebsocketFacade extends Endpoint{
   private Session session;
-  private static final Logger logger = Logger.getLogger(WebsocketFacade.class.getName());
 
   public WebsocketFacade(String url) throws IOException {
     try {

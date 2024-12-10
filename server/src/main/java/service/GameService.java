@@ -126,16 +126,6 @@ public class GameService {
     return playerName + " joined the game as " + playerColor;
   }
 
-  private boolean isGameEmpty(String playerColor, GameData gameData) {
-    return (playerColor.equals("WHITE") && gameData.whiteUsername() == null) ||
-            (playerColor.equals("BLACK") && gameData.blackUsername() == null);
-  }
-
-  private boolean isColorTaken(String playerColor, String username, GameData gameData) {
-    return (playerColor.equals("WHITE") && Objects.equals(username, gameData.blackUsername())) ||
-            (playerColor.equals("BLACK") && Objects.equals(username, gameData.whiteUsername()));
-  }
-
   public String doCheck(GameData gameData, ChessGame game) {
     if (game.isInCheckmate(ChessGame.TeamColor.WHITE)) {
       return "checkmate, " + gameData.whiteUsername();

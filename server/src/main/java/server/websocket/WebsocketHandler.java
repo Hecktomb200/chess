@@ -21,13 +21,11 @@ import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;
 import websocket.messages.Error;
 
-import javax.management.Notification;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 @WebSocket
 public class WebsocketHandler {
@@ -38,7 +36,6 @@ public class WebsocketHandler {
   private final GameDAO gameDAO;
   private final GameService gameService;
   private ChessGame chessGame;
-  private static final Logger logger = Logger.getLogger(WebsocketHandler.class.getName());
   public WebsocketHandler(ConnectionManager connectionManager, GameService gameService, AuthDAO authDAO, GameDAO gameDAO) {
     this.connectionManager=connectionManager;
     this.gameService=gameService;
@@ -49,7 +46,6 @@ public class WebsocketHandler {
 
   @OnWebSocketMessage
   public void onMessage(Session session, String message) throws IOException, DataAccessException, InvalidMoveException {
-    //logger.info("Received message: " + message);
     Map<String, Object> commandData = new Gson().fromJson(message, Map.class);
     String commandType = (String) commandData.get("commandType");
 
@@ -65,9 +61,6 @@ public class WebsocketHandler {
         break;
       case "LEAVE":
         handleLeaveGame(commandData, session);
-        break;
-      default:
-        logger.warning("Unknown command type: " + commandType);
         break;
     }
   }
@@ -233,7 +226,6 @@ public class WebsocketHandler {
   private void sendResponse(ServerMessage message, Session session) throws IOException {
     if (session.isOpen()) {
       String jsonMessage = new Gson().toJson(message);
-      logger.info("Sending message: " + jsonMessage);
       session.getRemote().sendString(jsonMessage);
     }
   }
