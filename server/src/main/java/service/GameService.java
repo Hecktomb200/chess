@@ -180,6 +180,15 @@ public class GameService {
       return result;
     }
 
+    if (authData.username().equals(gameData.whiteUsername())) {
+      gameData = new GameData(gameData.gameID(), null, gameData.blackUsername(), gameData.gameName(), gameData.game());
+    } else if (authData.username().equals(gameData.blackUsername())) {
+      gameData = new GameData(gameData.gameID(), gameData.whiteUsername(), null, gameData.gameName(), gameData.game());
+    } else {
+      return "Error: player not in game";
+    }
+
+    gameDAO.updateGame(gameData);
     return authData.username() + " left the game successfully.";
   }
 

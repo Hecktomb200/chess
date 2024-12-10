@@ -85,8 +85,6 @@ l
 <server/src/main/java/server/websocket/ConnectionManager.java,a\e\ae1bfb65e9ab25be5225484affcae15659f7cee0
 r
 Bshared/src/main/java/websocket/commands/UserGameCommandParams.java,2\c\2c34a200e5045142dba747ac0e32f40d99aee0c9
-i
-9shared/src/main/java/websocket/commands/LeaveCommand.java,e\b\ebfcec35676c73c4bc23fbbce4cf8415d7da42c6
 j
 :shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
 b

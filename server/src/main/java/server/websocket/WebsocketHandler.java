@@ -138,19 +138,23 @@ public class WebsocketHandler {
     ChessPosition endPosition = moveCommand.getMove().getEndPosition();
     ChessPiece.PieceType promotionPiece = moveCommand.getMove().getPromotionPiece();
 
-    if (isGameResigned(gameID)) {
-      sendResponse(new Error("A player has already resigned"), session);
-      return;
-    }
-
     try {
       AuthData authData = authDAO.getAuth(authToken);
       GameData gameData = gameDAO.getGame(gameID);
 
       validateAuth(authData, gameData, authToken, gameID);
 
+      if (isGameResigned(gameID)) {
+        throw new InvalidMoveException("Error: a player has already resigned");
+      }
 
       chessGame = gameData.game();
+      if((chessGame.getTeamTurn() == ChessGame.TeamColor.WHITE
+              && !Objects.equals(gameData.whiteUsername(), authData.username())) ||
+              (chessGame.getTeamTurn() == ChessGame.TeamColor.BLACK
+                      && !Objects.equals(gameData.blackUsername(), authData.username()))) {
+        throw new InvalidMoveException("Error: not current player's turn");
+      }
       ChessMove chessMove = new ChessMove(startPosition, endPosition, promotionPiece);
       chessGame.makeMove(chessMove);
 

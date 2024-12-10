@@ -35,7 +35,7 @@ public class WebsocketFacade extends Endpoint{
       this.session.addMessageHandler(new MessageHandler.Whole<String>() {
         @Override
         public void onMessage (String message){
-        //logger.info("Received message: " + message);
+        logger.info("Received message: " + message);
         ServerMessage serverMessage=parseServerMessage(message);
         if (serverMessage != null) {
           handleServerMessage(serverMessage);

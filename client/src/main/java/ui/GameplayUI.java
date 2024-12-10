@@ -58,6 +58,7 @@ public class GameplayUI {
           System.out.println(redraw());
           break;
         case "leave":
+          handleLeave();
           System.out.println("Leaving game");
           break;
         case "help":
@@ -80,6 +81,11 @@ public class GameplayUI {
       System.out.println("An error occurred: " + e.getMessage());
       System.out.println("Please try again.");
     }
+  }
+
+  private String handleLeave() throws IOException {
+    webSocketFacade.leave(authToken, gameData.gameID());
+    return "";
   }
 
   private String handleHighlight(String[] params) {

@@ -122,6 +122,8 @@ public class ChessGame {
     public void makeMove(ChessMove move) throws InvalidMoveException {
         ChessPiece piece = board.getPiece(move.getStartPosition());
 
+
+
         if (piece == null) {
             throw new InvalidMoveException("No piece at the start position");
         }
@@ -129,6 +131,8 @@ public class ChessGame {
         if (piece.getTeamColor() != getTeamTurn()) {
             throw new InvalidMoveException("Error: It's not your turn to move this piece");
         }
+
+
 
         if (!isValidStartPosition(move.getStartPosition()) || !isValidEndPosition(move.getEndPosition())) {
             throw new InvalidMoveException("Invalid move position");
