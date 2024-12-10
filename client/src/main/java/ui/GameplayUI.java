@@ -160,7 +160,7 @@ public class GameplayUI {
     );
 
     try {
-      ChessMove chessMove=new ChessMove(startPos, endPos, null);
+      ChessMove chessMove = new ChessMove(startPos, endPos, null);
       webSocketFacade.makeMove(authToken, gameData.gameID(), chessMove);
 
       return "";

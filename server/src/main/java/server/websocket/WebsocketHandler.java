@@ -37,7 +37,7 @@ public class WebsocketHandler {
   private final AuthDAO authDAO;
   private final GameDAO gameDAO;
   private final GameService gameService;
-  private final ChessGame chessGame;
+  private ChessGame chessGame;
   private static final Logger logger = Logger.getLogger(WebsocketHandler.class.getName());
   public WebsocketHandler(ConnectionManager connectionManager, GameService gameService, AuthDAO authDAO, GameDAO gameDAO) {
     this.connectionManager=connectionManager;
@@ -58,7 +58,7 @@ public class WebsocketHandler {
         handleConnect(commandData, session);
         break;
       case "MAKE_MOVE":
-        handleMakeMove(commandData, session);
+        handleMakeMove(message, session);
         break;
       case "RESIGN":
         handleResign(commandData, session);
@@ -84,7 +84,6 @@ public class WebsocketHandler {
       notifyAllPlayers(gameID, new NotificationMessage(notificationMessage), authToken);
     } catch (IOException e) {
       sendResponse(new Error(e.getMessage()), session);
-      return;
     }
   }
 
@@ -131,13 +130,13 @@ public class WebsocketHandler {
     return super.toString();
   }
 
-  private void handleMakeMove(Map<String, Object> moveCommand, Session session) throws IOException, DataAccessException {
-    Integer gameID = ((Double) moveCommand.get("gameID")).intValue();
-    String authToken = (String) moveCommand.get("authToken");
-    Map<String, Object> move = (Map<String, Object>) moveCommand.get("move");
-    ChessPosition startPosition = new ChessPosition(((Double) move.get("startRow")).intValue(), ((Double) move.get("startColumn")).intValue());
-    ChessPosition endPosition = new ChessPosition(((Double) move.get("endRow")).intValue(), ((Double) move.get("endColumn")).intValue());
-    ChessPiece.PieceType promotionPiece = null;
+  private void handleMakeMove(String move, Session session) throws IOException, DataAccessException {
+    MoveCommand moveCommand = new Gson().fromJson(move, MoveCommand.class);
+    Integer gameID = moveCommand.getGameID();
+    String authToken = moveCommand.getAuthToken();
+    ChessPosition startPosition = moveCommand.getMove().getStartPosition();
+    ChessPosition endPosition = moveCommand.getMove().getEndPosition();
+    ChessPiece.PieceType promotionPiece = moveCommand.getMove().getPromotionPiece();
 
     if (isGameResigned(gameID)) {
       sendResponse(new Error("A player has already resigned"), session);
@@ -148,12 +147,15 @@ public class WebsocketHandler {
       AuthData authData = authDAO.getAuth(authToken);
       GameData gameData = gameDAO.getGame(gameID);
 
-      validateAuth(authData, gameData);
+      validateAuth(authData, gameData, authToken, gameID);
 
+
+      chessGame = gameData.game();
       ChessMove chessMove = new ChessMove(startPosition, endPosition, promotionPiece);
       chessGame.makeMove(chessMove);
+
       GameData newGame = new GameData(gameData.gameID(), gameData.whiteUsername(),
-              gameData.blackUsername(), gameData.gameName(), gameData.game());
+              gameData.blackUsername(), gameData.gameName(), chessGame);
       gameDAO.updateGame(newGame);
 
       String checkResponse = doCheck(newGame, chessGame);
@@ -166,15 +168,15 @@ public class WebsocketHandler {
         }
       }
 
-      String moveNotification = String.format("%s moved the piece from %s to %s", authToken, startPosition.toString(), endPosition.toString());
-      notifyAllPlayers(gameID, new NotificationMessage(moveNotification), authToken);
-
+      String moveNotification = String.format("%s moved the piece from %s to %s", authData.username(), chessMove.getStartPosition(), chessMove.getEndPosition());
+      notifyAllPlayers(gameID , new NotificationMessage(moveNotification), authToken);
+      notifyAllPlayers(gameID, new LoadMessage(chessGame), authToken);
+      sendResponse(new LoadMessage(chessGame), session);
     } catch (InvalidMoveException e) {
       sendResponse(new Error(e.getMessage()), session);
-      return;
+    } catch (DataAccessException e) {
+      sendResponse(new Error(e.getMessage()), session);
     }
-    sendResponse(new LoadMessage(gameID), session);
-    notifyAllPlayers(gameID, new LoadMessage(gameID), authToken);
   }
 
   private String doCheck(GameData gameData, ChessGame game) {
@@ -190,14 +192,19 @@ public class WebsocketHandler {
     return "null";
   }
 
-  private void validateAuth(AuthData authData, GameData gameData) throws DataAccessException {
+  private void validateAuth(AuthData authData, GameData gameData, String authToken, int gameID) throws DataAccessException {
     if (authData == null) {
+      throw new DataAccessException("Error: bad auth token");
+    }
+
+    if (!authData.authToken().equals(authToken)) {
       throw new DataAccessException("Error: bad auth token");
     }
 
     if (gameData == null) {
       throw new DataAccessException("Error: incorrect gameID");
     }
+
   }
 
   private void handleConnect(Map<String, Object> command, Session session) throws IOException {
@@ -212,7 +219,8 @@ public class WebsocketHandler {
               ? String.format("%s joined as an observer", command.get("playerName"))
               : String.format("%s joined as %s", command.get("playerName"), playerColor);
       notifyAllPlayers(gameID, new NotificationMessage(notificationMessage), authToken);
-      sendResponse(new LoadMessage(gameID), session);
+      //notifyAllPlayers(gameID, new LoadMessage(chessGame), authToken);
+      sendResponse(new LoadMessage(chessGame), session);
     } catch (DataAccessException e) {
       sendResponse(new Error(e.getMessage()), session);
     }
@@ -234,7 +242,7 @@ public class WebsocketHandler {
   private void sendResponse(ServerMessage message, Session session) throws IOException {
     if (session.isOpen()) {
       String jsonMessage = new Gson().toJson(message);
-      //logger.info("Sending message: " + jsonMessage);
+      logger.info("Sending message: " + jsonMessage);
       session.getRemote().sendString(jsonMessage);
     }
   }

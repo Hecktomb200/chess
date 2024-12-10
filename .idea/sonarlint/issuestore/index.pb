@@ -9,10 +9,6 @@ l
 <shared/src/test/java/passoff/chess/piece/QueenMoveTests.java,a\2\a2bd15f35595ddc78d142da6ccffd03c5a50bac2
 k
 ;shared/src/test/java/passoff/chess/piece/RookMoveTests.java,7\f\7fcc205671386de1ff9a72d54f687d72d4f2fde0
-f
-6shared/src/test/java/passoff/chess/ChessMoveTests.java,d\0\d0976cffcef29072b835886c43fd62174459be03
-j
-:shared/src/test/java/passoff/chess/ChessPositionTests.java,0\c\0cdc26a7fcc196ec68a5ed8d48a21c75493b79ef
 j
 :shared/src/test/java/passoff/chess/game/MakeMoveTests.java,9\1\9175234a3f303bad2cdae147fbe2e704f0f9016d
 d
@@ -21,12 +17,8 @@ e
 5shared/src/test/java/passoff/chess/TestUtilities.java,1\4\14062c2f20526a866f3144a841b2af7bd4bb47af
 i
 9shared/src/test/java/passoff/chess/game/FullGameTest.java,3\0\304a628b79462cebf64407482375f8e693e3f5cc
-g
-7shared/src/test/java/passoff/chess/ChessBoardTests.java,7\0\704add9b7257f7adc3fb4fb5f33f76b7c8820901
 l
 <shared/src/test/java/passoff/chess/game/GameStatusTests.java,3\d\3d8e6e324b6bb763d5d4a1a3f28e088c47790aa0
-l
-<shared/src/test/java/passoff/chess/game/ValidMovesTests.java,f\f\ffd727fc5e9fd2b43cbe3581e669a4c1ed406a80
 h
 8server/src/main/java/dataaccess/DataAccessException.java,2\e\2ea31417f70d86666411d348ab6c6846566a4c92
 a
@@ -63,8 +55,6 @@ b
 2server/src/test/java/service/GameServiceTests.java,c\b\cbbd93c03402376669a48a743c29d734c3573acf
 \
 ,server/src/main/java/dataaccess/AuthDAO.java,3\2\32b7a2b97a8957e906a6d7e19358db18d9b6f1b5
-Z
-*shared/src/main/java/chess/ChessBoard.java,d\f\dfc4ec84b5d57ac6e0266e9c319b728da99e0c51
 \
 ,server/src/main/java/server/AuthHandler.java,e\c\ec34fdd9b07f98fa177938bdd8fc5aed112589f3
 h
@@ -99,8 +89,6 @@ i
 9shared/src/main/java/websocket/commands/LeaveCommand.java,e\b\ebfcec35676c73c4bc23fbbce4cf8415d7da42c6
 j
 :shared/src/main/java/websocket/commands/ResignCommand.java,9\8\98cc97e710152062750aa448719425719ff82abd
-X
-(shared/src/main/java/model/GameData.java,5\5\5576294e62ca35aee743ff8a314bab938effe594
 b
 2client/src/test/java/client/ServerFacadeTests.java,e\6\e6826acb161285e1dab795e5cfe93be0d16ca8b4
 V
