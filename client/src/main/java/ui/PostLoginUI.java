@@ -21,7 +21,6 @@ public class PostLoginUI {
   private final String username;
   private final Scanner scanner;
   private static final String INVALID_GAME_NUMBER_MESSAGE = "Invalid game number. Please enter a valid number for the game.";
-  private final WebsocketFacade webSocketFacade;
   public PostLoginUI(String url, String authToken, String username) throws IOException {
     server = new ServerFacade(url);
     sURL = url;
@@ -29,7 +28,6 @@ public class PostLoginUI {
     gameList = new HashMap<>();
     this.username = username;
     this.scanner = new Scanner(System.in);
-    webSocketFacade = new WebsocketFacade(sURL);
   }
 
   public void run(String username) throws IOException, URISyntaxException {
@@ -96,8 +94,10 @@ public class PostLoginUI {
       if (game == null) {
         throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
       }
-      webSocketFacade.connect(authToken, game.gameID(), null, username);
-      new GameplayUI(game, sURL, authToken, username, observer).run();
+      //webSocketFacade.connect(authToken, game.gameID(), null, username);
+      String playerColor = null;
+      server.joinGame(authToken, playerColor, game.gameID());
+      new GameplayUI(game, sURL, authToken, username, observer, playerColor).run();
       return String.format("Chess game %s left.", params[0]);
     } catch (NumberFormatException e) {
       throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
@@ -122,7 +122,8 @@ public class PostLoginUI {
       } else if ("black".equalsIgnoreCase(playerColor) && game.blackUsername() != null) {
         throw new IOException("The black team is already taken. Please choose white.");
       }
-      webSocketFacade.connect(authToken, game.gameID(), playerColor, username);
+      server.joinGame(authToken, playerColor, game.gameID());
+      //webSocketFacade.connect(authToken, game.gameID(), playerColor, username);
       list();
     } catch (NumberFormatException e) {
       throw new IOException(INVALID_GAME_NUMBER_MESSAGE);
@@ -143,7 +144,7 @@ public class PostLoginUI {
       GameData game = getGameById(gameId);
       joinGame(game, playerColor);
       boolean observer = false;
-      new GameplayUI(game, sURL, authToken, username, observer).run();
+      new GameplayUI(game, sURL, authToken, username, observer, playerColor).run();
       return String.format("Chess game %s left.", params[0]);
     } catch (NumberFormatException e) {
       throw new IOException(INVALID_GAME_NUMBER_MESSAGE);

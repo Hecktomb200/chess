@@ -27,19 +27,23 @@ public class GameplayUI implements NotificationHandler {
   private GameData gameData;
   private final Scanner scanner;
   private final Boolean observer;
+  private final String playerColor;
+  private ChessGame chessGame;
   private final WebsocketFacade webSocketFacade;
-  public GameplayUI(GameData game, String sURL, String authToken, String username, boolean observer) throws IOException {
+  public GameplayUI(GameData game, String sURL, String authToken, String username, boolean observer, String playerColor) throws IOException {
     serverFacade = new ServerFacade(sURL);
     this.authToken = authToken;
+    this.playerColor = playerColor;
     gameData = game;
     this.username = username;
     this.scanner = new Scanner(System.in);
     this.observer = observer;
-    webSocketFacade = new WebsocketFacade(sURL);
+    webSocketFacade = new WebsocketFacade(sURL, this);
   }
 
   public void run() throws Exception {
-    System.out.println(redraw());
+    webSocketFacade.connect(authToken, gameData.gameID(), playerColor, username);
+    //System.out.println(redraw());
     help();
     String command=" ";
     do {
@@ -192,19 +196,20 @@ public class GameplayUI implements NotificationHandler {
   }
 
   public String redraw() throws Exception {
-    ListGamesResult gamesResult = serverFacade.listGames(authToken);
-    GameData updatedGame = findGameById(gamesResult.games(), gameData.gameID());
+    //ListGamesResult gamesResult = serverFacade.listGames(authToken);
+
+    ChessGame updatedGame = chessGame;
 
     if (updatedGame != null) {
-      gameData = updatedGame;
-      return "\n" + draw();
+      //gameData = updatedGame;
+      return "\n" + draw(playerColor);
     } else {
       throw new IOException("No game found.");
     }
   }
 
-  private String draw() {
-    if(Objects.equals(gameData.blackUsername(), username)) {
+  private String draw(String playerColor) {
+    if(playerColor.equalsIgnoreCase("BLACK")) {
       if (observer) {
         return drawWhiteBoard();
       }
@@ -222,8 +227,8 @@ public class GameplayUI implements NotificationHandler {
   }
 
   private String drawBoard(boolean isBlack) {
-    ChessGame currentGame = gameData.game();
-    ChessBoard chessboard = currentGame.getBoard();
+    //ChessGame currentGame = gameData.game();
+    ChessBoard chessboard = chessGame.getBoard();
     StringBuilder boardRepresentation = new StringBuilder();
 
     if (isBlack) {
@@ -319,6 +324,7 @@ public class GameplayUI implements NotificationHandler {
 
   @Override
   public void updateGame(LoadMessage loadMessage) throws Exception {
+    chessGame = loadMessage.getGame();
     System.out.println(redraw());
     System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[IN_GAME]>>> " + SET_TEXT_COLOR_GREEN);
   }
@@ -326,12 +332,12 @@ public class GameplayUI implements NotificationHandler {
   @Override
   public void notify(NotificationMessage notificationMessage) {
     System.out.println(SET_TEXT_COLOR_BLUE + notificationMessage);
-    System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[GAMEPLAY]>>> " + SET_TEXT_COLOR_GREEN);
+    System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[IN_GAME]>>> " + SET_TEXT_COLOR_GREEN);
   }
 
   @Override
   public void error(Error errorMessage) {
     System.out.println(SET_TEXT_COLOR_RED + errorMessage);
-    System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[GAMEPLAY]>>> " + SET_TEXT_COLOR_GREEN);
+    System.out.print("\n" + SET_TEXT_COLOR_YELLOW + "[IN_GAME]>>> " + SET_TEXT_COLOR_GREEN);
   }
 }

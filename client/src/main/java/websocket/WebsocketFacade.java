@@ -21,12 +21,12 @@ public class WebsocketFacade extends Endpoint{
   private Session session;
   NotificationHandler notificationHandler;
 
-  public WebsocketFacade(String url) throws IOException {
+  public WebsocketFacade(String url, NotificationHandler notificationHandler) throws IOException {
     try {
       URI socketURI=new URI(url.replace("http", "ws") + "/ws");
-
       WebSocketContainer container=ContainerProvider.getWebSocketContainer();
       this.session=container.connectToServer(this, socketURI);
+      this.notificationHandler = notificationHandler;
 
       this.session.addMessageHandler(new MessageHandler.Whole<String>() {
         @Override
@@ -59,7 +59,7 @@ public class WebsocketFacade extends Endpoint{
   }
 
   private void handleLoadGame(LoadMessage loadMessage) throws Exception {
-    notificationHandler.updateGame(new Gson().fromJson(loadMessage.toString(), LoadMessage.class));
+    notificationHandler.updateGame(loadMessage);
   }
 
   private void handleNotification(NotificationMessage notificationMessage) {
